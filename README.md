@@ -34,47 +34,136 @@ The Javari Platform is a strategic consolidation initiative to unify 175 GitHub 
 
 ## Architecture
 
+### Customer-Facing Structure
+
+The Javari Platform uses a hierarchical mental model that customers navigate naturally:
+
+**Universe → Communities → Capabilities**
+
+#### Universe
+**Javari Universe** is the top-level realm where all capabilities exist. In the future, additional universes (Mars, Moon, custom white-label) can be added without restructuring.
+
+#### Communities
+**Communities** are the primary way customers navigate. Each Community groups related capabilities around a common theme:
+
+- 🎨 **Identity Community** - Brand creation, logos, business cards
+- 📊 **Business Community** - Planning, pitch decks, financials
+- ✍️ **Content Community** - Presentations, resumes, eBooks, social media
+- 📄 **PDF Community** - Document creation, editing, merging
+- 🦸 **Collectors Community** - 70+ specialized collection management apps
+- 🏥 **Verticals Community** - Industry-specific solutions
+- ❤️ **Impact Community** - Social good and community service
+
+#### Capabilities
+**Capabilities** are what users want to accomplish:
+- "Create a logo" (capability in Identity Community)
+- "Build a business plan" (capability in Business Community)
+- "Track my comic collection" (capability in Collectors Community)
+
+**Customers never see:** Modules, services, route groups, or other implementation details.
+
+---
+
+### Technical Structure (Developer View)
+
+Behind the scenes, the platform uses Next.js App Router with nested route groups:
+
 ### Route Groups
 
-The platform uses Next.js route groups to organize capabilities:
+Route groups organize code by Community without affecting URLs:
 
 ```
 app/
-├── (core)/              # Homepage, auth, dashboard
-├── (identity)/          # Logo Creator, Brand Kit, Business Cards
-│   ├── logo/
-│   ├── brand-kit/
-│   └── cards/
-├── (business)/          # Business Plan, Pitch Deck, Financials
-│   ├── planner/
-│   ├── pitch/
-│   └── financials/
-├── (content)/           # Content creation tools
-│   ├── presentation/
-│   ├── resume/
-│   ├── ebook/
-│   ├── social/
-│   ├── email/
-│   └── cover-letter/
-├── (pdf)/               # PDF tools
-│   ├── create/
-│   ├── edit/
-│   ├── merge/
-│   └── forms/
-├── (collectors)/        # Dynamic collector apps (70+ categories)
-│   └── [category]/
-├── (verticals)/         # Industry-specific apps
-│   ├── health/
-│   ├── travel/
-│   ├── education/
-│   ├── entertainment/
-│   └── family/
-└── (impact)/            # Social good apps
-    ├── first-responders/
-    ├── veterans/
-    ├── faith-communities/
-    └── animal-rescue/
+├── (core)/                           # Core platform (auth, dashboard)
+│   └── layout.tsx
+│
+├── (communities)/                    # All customer-facing Communities
+│   │
+│   ├── (identity)/                   # Identity Community
+│   │   ├── layout.tsx               # Purple theme, Community nav
+│   │   ├── logo/                    # /logo (not /identity/logo)
+│   │   ├── brand-kit/               # /brand-kit
+│   │   └── cards/                   # /cards
+│   │
+│   ├── (business)/                   # Business Community
+│   │   ├── layout.tsx               # Blue theme, Community nav
+│   │   ├── planner/                 # /planner
+│   │   ├── pitch/                   # /pitch
+│   │   └── financials/              # /financials
+│   │
+│   ├── (content)/                    # Content Community
+│   │   ├── layout.tsx               # Green theme, Community nav
+│   │   ├── presentation/            # /presentation
+│   │   ├── resume/                  # /resume
+│   │   ├── ebook/                   # /ebook
+│   │   ├── social/                  # /social
+│   │   ├── email/                   # /email
+│   │   └── cover-letter/            # /cover-letter
+│   │
+│   ├── (pdf)/                        # PDF Community
+│   │   ├── layout.tsx               # Red theme, Community nav
+│   │   ├── create/                  # /create
+│   │   ├── edit/                    # /edit
+│   │   ├── merge/                   # /merge
+│   │   └── forms/                   # /forms
+│   │
+│   ├── (collectors)/                 # Collectors Community
+│   │   ├── layout.tsx               # Orange theme, Community nav
+│   │   └── [category]/              # /collectors/comic-crypt, etc.
+│   │       └── page.tsx             # Dynamic route for all 70+ categories
+│   │
+│   ├── (verticals)/                  # Verticals Community
+│   │   ├── layout.tsx               # Indigo theme, Community nav
+│   │   ├── health/                  # /health
+│   │   ├── travel/                  # /travel
+│   │   ├── education/               # /education
+│   │   ├── entertainment/           # /entertainment
+│   │   └── family/                  # /family
+│   │
+│   └── (impact)/                     # Impact Community
+│       ├── layout.tsx               # Teal theme, Community nav
+│       ├── first-responders/        # /first-responders
+│       ├── veterans/                # /veterans
+│       ├── faith-communities/       # /faith-communities
+│       └── animal-rescue/           # /animal-rescue
 ```
+
+**Key Points:**
+- `(communities)` groups all customer-facing areas
+- Each Community has its own layout with theme and navigation
+- Route groups don't appear in URLs
+- Clean URLs: `/logo`, `/planner`, `/collectors/comics`
+
+**Neighborhoods (Future):**
+Within large Communities (like Collectors), Neighborhoods may provide optional sub-organization:
+```
+Collectors Community
+├── Entertainment Neighborhood (comics, cards, action figures)
+├── Luxury Neighborhood (watches, wine, art)
+└── Hobbies Neighborhood (stamps, coins, models)
+```
+
+---
+
+### How Customers Navigate
+
+**User Journey:**
+1. User enters Javari Universe
+2. Sees Communities (Identity, Business, Content, etc.)
+3. Selects a Community based on intent
+4. Chooses a Capability (what they want to do)
+5. System loads appropriate modules invisibly
+
+**What Customers See:**
+- Homepage: Community cards with icons
+- Community page: List of capabilities
+- Capability page: The actual tool/app
+
+**What Customers DON'T See:**
+- Route groups like `(communities)` or `(identity)`
+- Modules or services
+- Technical implementation details
+
 
 ### Key Architectural Patterns
 
