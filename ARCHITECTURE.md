@@ -16,6 +16,437 @@
 
 ---
 
+## Canonical Platform Structure
+
+### Terminology Lock-in
+
+The Javari Platform uses a **hierarchical mental model** that separates customer-facing concepts from implementation details. This structure is designed to scale across multiple universes (Earth, Mars, Moon, etc.) without requiring architectural changes.
+
+#### Hierarchy Levels
+
+```
+Universe (Top Level)
+└── Communities (Primary Customer-Facing)
+    └── Neighborhoods (Optional Sub-Areas)
+        └── Capabilities (What Users Can Do)
+            └── Modules (Internal Implementation - Hidden)
+```
+
+---
+
+### 1. Universe
+
+**Definition:** The top-level realm or world where users operate.
+
+**Current Universe:** Javari Universe (Earth-based)
+
+**Future Universes:**
+- Mars Universe (Martian colony operations)
+- Moon Universe (Lunar base systems)
+- Custom Universes (White-label deployments)
+
+**Customer Visibility:** High - Users are aware they're in "Javari Universe"
+
+**Technical Representation:**
+```typescript
+interface Universe {
+  id: 'javari' | 'mars' | 'moon' | string;
+  name: string;
+  communities: Community[];
+  branding: UniverseBranding;
+}
+```
+
+**Why This Matters:**
+- Enables multi-planet expansion without code changes
+- Supports white-label deployments with different branding
+- Allows region-specific universes (e.g., "Javari Europe", "Javari Asia")
+
+**Example:**
+- User logs in → Selects "Javari Universe"
+- In the future → Might select "Mars Universe" for colony tools
+
+---
+
+### 2. Community
+
+**Definition:** The primary customer-facing organizational structure. Communities group related capabilities around a common theme or user intent.
+
+**Current Communities:**
+1. **Identity Community** - Brand creation and identity tools
+2. **Business Community** - Business planning and strategy
+3. **Content Community** - Content creation and publishing
+4. **PDF Community** - Document management and manipulation
+5. **Collectors Community** - Collection management and tracking
+6. **Verticals Community** - Industry-specific applications
+7. **Impact Community** - Social good and community service
+
+**Customer Visibility:** Very High - Primary navigation level
+
+**Technical Representation:**
+```typescript
+interface Community {
+  id: string;
+  name: string;              // "Identity Community"
+  description: string;
+  neighborhoods?: Neighborhood[];
+  capabilities: Capability[];
+  branding: CommunityBranding;
+}
+```
+
+**Navigation Example:**
+```
+User sees:
+├── 🎨 Identity Community
+├── 📊 Business Community
+├── ✍️ Content Community
+└── 🦸 Collectors Community
+
+User does NOT see:
+├── (identity) route group
+├── modules/identity/
+└── internal-identity-service
+```
+
+**Why "Community" Not "Suite" or "Category":**
+- "Community" implies belonging and shared purpose
+- More human-centric than technical terms
+- Scales better for social impact applications
+- Future: Actual user communities within each area
+
+---
+
+### 3. Neighborhood
+
+**Definition:** Optional sub-areas within a Community that provide additional organization for large or complex Communities.
+
+**When to Use Neighborhoods:**
+- Community has 10+ capabilities
+- Capabilities can be meaningfully grouped
+- Users benefit from sub-navigation
+
+**Example: Collectors Community Neighborhoods**
+```
+Collectors Community
+├── Entertainment Neighborhood
+│   ├── Comics capability
+│   ├── Trading Cards capability
+│   └── Action Figures capability
+│
+├── Luxury Neighborhood
+│   ├── Watches capability
+│   ├── Wine capability
+│   └── Art capability
+│
+└── Hobbies Neighborhood
+    ├── Stamps capability
+    ├── Coins capability
+    └── Models capability
+```
+
+**Customer Visibility:** Medium - Optional navigation layer
+
+**Technical Representation:**
+```typescript
+interface Neighborhood {
+  id: string;
+  name: string;              // "Entertainment Neighborhood"
+  description: string;
+  capabilities: Capability[];
+}
+```
+
+**Current Implementation:**
+- Phase 1: Not yet implemented (future enhancement)
+- Collectors Community will likely use Neighborhoods first
+- Other Communities may remain flat (no Neighborhoods)
+
+**Why "Neighborhood" Not "Category":**
+- More friendly and approachable than "category"
+- Implies a place you belong within a larger community
+- Consistent with community metaphor
+
+---
+
+### 4. Capability
+
+**Definition:** What users want to accomplish. The action-oriented, user-facing feature.
+
+**Examples:**
+- "Create a logo" (capability)
+- "Build a business plan" (capability)
+- "Track my comic collection" (capability)
+- "Generate a PDF" (capability)
+
+**Customer Visibility:** Very High - This is what users click on
+
+**Technical Representation:**
+```typescript
+interface Capability {
+  id: string;
+  name: string;              // "Logo Creator"
+  action: string;            // "Create a logo"
+  description: string;
+  modules: string[];         // Internal - which modules power this
+  route: string;             // "/logo"
+}
+```
+
+**User Mental Model:**
+```
+I want to → Create a logo
+           (capability)
+
+NOT:
+
+I want to → Use the identity module's logo generation service
+           (implementation detail - users don't think this way)
+```
+
+**Why "Capability" Not "Feature" or "Tool":**
+- Capability emphasizes what users can DO
+- More empowering than passive "feature"
+- Business-appropriate (capabilities-based planning)
+
+---
+
+### 5. Module
+
+**Definition:** Internal implementation detail. The code/service that powers capabilities. **Never shown to customers.**
+
+**Examples:**
+- `identity-module` powers Logo Creator capability
+- `business-planner-module` powers Business Plan Builder capability
+- `collector-engine-module` powers all 70+ collector capabilities
+
+**Customer Visibility:** Zero - Completely hidden
+
+**Technical Representation:**
+```typescript
+interface Module {
+  id: string;
+  name: string;              // Internal only
+  capabilities: string[];    // Which capabilities it powers
+  dependencies: string[];    // Other modules it needs
+  routes: RouteHandler[];    // Internal routing
+}
+```
+
+**Implementation Philosophy:**
+```typescript
+// Customer sees:
+"I want to create a logo"
+└── Click "Logo Creator" capability
+
+// System does (invisibly):
+LoadModule('identity-module')
+  .getCapability('logo-creator')
+  .render()
+```
+
+**Why Hide Modules:**
+- Users don't care about implementation
+- Modules can be refactored without user disruption
+- Allows technical flexibility (microservices, monolith, etc.)
+
+---
+
+### Practical Examples
+
+#### Example 1: New User Journey
+
+**User Perspective:**
+1. Login to Javari Universe
+2. See Communities: Identity, Business, Content, etc.
+3. Click "Identity Community"
+4. See capabilities: Logo Creator, Brand Kit, Business Cards
+5. Click "Logo Creator"
+6. Create logo
+
+**System Perspective (Hidden):**
+1. User authenticated → Load user's universe
+2. User navigates → Render Communities list
+3. User selects → Load Identity Community config
+4. User sees capabilities → Query available capabilities
+5. User clicks → Load `identity-module`, route to `/logo`
+6. Capability renders → Module executes, UI displays
+
+**Key Point:** User never sees "modules", "services", or technical structure.
+
+---
+
+#### Example 2: Future Mars Universe
+
+**Scenario:** Expanding to Mars colony operations
+
+**Implementation:**
+```typescript
+// Add Mars Universe
+const marsUniverse: Universe = {
+  id: 'mars',
+  name: 'Mars Universe',
+  communities: [
+    {
+      id: 'life-support',
+      name: 'Life Support Community',
+      capabilities: [
+        { name: 'Oxygen Monitor', route: '/oxygen' },
+        { name: 'Water Recycler', route: '/water' },
+      ],
+    },
+    {
+      id: 'habitat',
+      name: 'Habitat Community',
+      capabilities: [
+        { name: 'Pressure Control', route: '/pressure' },
+        { name: 'Temperature Regulation', route: '/temperature' },
+      ],
+    },
+  ],
+};
+```
+
+**Customer Experience:**
+- User logs in → Chooses "Mars Universe" (new option)
+- Sees Mars-specific Communities
+- Same platform, different universe
+- No code restructuring needed
+
+**Why This Architecture:**
+- Universe is top-level container
+- Communities/Capabilities pattern works anywhere
+- Modules are reusable across universes
+
+---
+
+### Routing Convention
+
+**Customer-Facing Routes:**
+```
+/logo                  # Capability route
+/planner               # Capability route
+/collectors/comics     # Capability route (dynamic)
+```
+
+**NOT:**
+```
+/modules/identity/logo           # ❌ Exposes implementation
+/services/business-planner       # ❌ Technical jargon
+/apps/collector-engine/comics    # ❌ Confusing hierarchy
+```
+
+**Route Groups (Internal Organization):**
+```typescript
+// Developer sees:
+app/(communities)/(identity)/logo/page.tsx
+app/(communities)/(business)/planner/page.tsx
+app/(communities)/(collectors)/[category]/page.tsx
+
+// Customer sees:
+/logo
+/planner
+/collectors/comics
+```
+
+**Why Nested Route Groups:**
+- `(communities)` = reminds developers this is a Community
+- `(identity)` = specific Community name
+- Clean URLs for customers
+- Clear structure for developers
+
+---
+
+### Customer Communication
+
+**How We Talk About the Platform:**
+
+✅ **DO Say:**
+- "Choose a Community to explore"
+- "What do you want to do today?" (capabilities)
+- "The Collectors Community has 70+ capabilities"
+- "In the Identity Community, you can create logos"
+
+❌ **DON'T Say:**
+- "Select a module"
+- "Choose which service to use"
+- "The identity route group"
+- "Navigate to the collector engine"
+
+**Marketing Language:**
+- "Join the Javari Universe"
+- "Explore Communities"
+- "Discover Capabilities"
+- "Accomplish your goals"
+
+**Technical Documentation (Internal):**
+- Can use "modules", "services", "route groups"
+- These terms are for developers only
+- Customer-facing docs use Community/Capability language
+
+---
+
+### Benefits of This Structure
+
+#### 1. Customer Clarity
+- Users think in terms of what they want to do (capabilities)
+- Communities provide clear organization
+- No exposure to technical complexity
+
+#### 2. Scalability
+- Add new Universes without restructuring
+- Add new Communities without breaking existing ones
+- Modules can be refactored independently
+
+#### 3. Flexibility
+- White-label deployments = new Universe with custom Communities
+- Enterprise customers can have custom Capabilities
+- Neighborhoods provide optional sub-organization
+
+#### 4. Marketing Alignment
+- "Community" is a powerful brand concept
+- "Capability" emphasizes user empowerment
+- "Universe" enables cosmic expansion narrative
+
+#### 5. Technical Agility
+- Modules hidden from users = refactor freely
+- Route groups organize code without affecting URLs
+- Clean separation of concerns
+
+---
+
+### Implementation Status
+
+**Phase 1 (Current):**
+- ✅ Universe: Javari Universe (implicit)
+- ✅ Communities: 7 defined
+- ⚠️ Neighborhoods: Not yet implemented (future)
+- ✅ Capabilities: Scaffolded as route stubs
+- ✅ Modules: Stub implementations
+
+**Phase 2+ (Planned):**
+- Real module implementations
+- Neighborhood structure for Collectors Community
+- Multi-universe support infrastructure
+- Customer-facing Community navigation
+
+---
+
+### Architecture Principles
+
+1. **Customer-First Naming**: All user-facing terms prioritize clarity over technical accuracy
+2. **Implementation Hiding**: Modules and services are developer concepts only
+3. **Hierarchical Clarity**: Universe → Community → Neighborhood → Capability
+4. **Future-Proof Design**: Structure supports multi-universe expansion
+5. **Consistent Metaphor**: Community/Neighborhood language throughout
+
+---
+
+This canonical structure ensures that as the platform grows from 100 apps to 1,000+ capabilities across multiple universes, the mental model remains clear and consistent for both customers and developers.
+
+
+---
+
 ## System Architecture
 
 ### High-Level Overview
