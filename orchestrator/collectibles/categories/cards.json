@@ -1,0 +1,18 @@
+{
+  "id": "cards",
+  "name": "Trading Cards",
+  "attributes": [
+    { "key": "sport", "label": "Sport/Type", "type": "select", "options": ["Baseball", "Basketball", "Football", "Hockey", "Soccer", "Pokemon", "Magic", "Other"], "required": true },
+    { "key": "player", "label": "Player/Character", "type": "text", "required": true },
+    { "key": "set", "label": "Set", "type": "text", "required": true },
+    { "key": "card_number", "label": "Card #", "type": "text" },
+    { "key": "rookie_card", "label": "Rookie Card", "type": "select", "options": ["Yes", "No"] },
+    { "key": "autograph", "label": "Autographed", "type": "select", "options": ["Yes", "No"] }
+  ],
+  "aiHints": {
+    "identificationPrompt": "Identify this trading card. Extract: sport, player/character, set, card number, year, special features.",
+    "gradingRules": "Use PSA/BGS grading (1-10). Assess: centering, corners, edges, surface.",
+    "valuationRules": "Consider: grade, player performance, rookie status, rarity, autograph, market trends."
+  },
+  "supportedTools": ["identification", "valuation", "grading", "authenticity"]
+}

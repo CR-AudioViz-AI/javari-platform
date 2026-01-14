@@ -1,0 +1,17 @@
+{
+  "id": "toys",
+  "name": "Collectible Toys",
+  "attributes": [
+    { "key": "manufacturer", "label": "Manufacturer", "type": "text", "required": true },
+    { "key": "toy_line", "label": "Toy Line", "type": "text", "required": true },
+    { "key": "character", "label": "Character/Name", "type": "text" },
+    { "key": "packaging", "label": "Packaging", "type": "select", "options": ["Mint in Box", "Opened", "Loose"] },
+    { "key": "vintage", "label": "Vintage (Pre-1990)", "type": "select", "options": ["Yes", "No"] }
+  ],
+  "aiHints": {
+    "identificationPrompt": "Identify this toy. Extract: manufacturer, toy line, character, year, packaging status.",
+    "gradingRules": "Assess: packaging condition (if MIB), completeness, paint condition, joints/articulation, accessories.",
+    "valuationRules": "Consider: rarity, packaging status, completeness, vintage status, character popularity."
+  },
+  "supportedTools": ["identification", "valuation", "grading"]
+}

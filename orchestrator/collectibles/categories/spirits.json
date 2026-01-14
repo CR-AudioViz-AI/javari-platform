@@ -1,0 +1,19 @@
+{
+  "id": "spirits",
+  "name": "Spirits & Whiskey",
+  "attributes": [
+    { "key": "distillery", "label": "Distillery", "type": "text", "required": true },
+    { "key": "age_statement", "label": "Age Statement", "type": "number" },
+    { "key": "abv", "label": "ABV %", "type": "number" },
+    { "key": "bottle_size", "label": "Bottle Size (ml)", "type": "number" },
+    { "key": "cask_type", "label": "Cask Type", "type": "text" },
+    { "key": "region", "label": "Region", "type": "text" },
+    { "key": "spirit_type", "label": "Type", "type": "select", "options": ["Whiskey", "Bourbon", "Scotch", "Rum", "Vodka", "Gin", "Tequila", "Cognac"] }
+  ],
+  "aiHints": {
+    "identificationPrompt": "Identify this spirit from the image. Extract: brand, distillery, age statement, ABV, bottle size, region, and spirit type.",
+    "gradingRules": "Assess condition: seal integrity, label condition, fill level, box condition (if applicable). Grade: Mint/Excellent/Good/Fair/Poor.",
+    "valuationRules": "Consider: rarity, age statement, distillery reputation, bottle condition, market demand. Use recent auction data for similar bottles."
+  },
+  "supportedTools": ["identification", "valuation", "grading", "authenticity", "forecast"]
+}

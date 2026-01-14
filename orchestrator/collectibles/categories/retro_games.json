@@ -1,0 +1,17 @@
+{
+  "id": "retro_games",
+  "name": "Retro Video Games",
+  "attributes": [
+    { "key": "platform", "label": "Platform", "type": "select", "options": ["NES", "SNES", "Genesis", "N64", "PlayStation", "Dreamcast", "GameBoy", "Other"], "required": true },
+    { "key": "title", "label": "Game Title", "type": "text", "required": true },
+    { "key": "region", "label": "Region", "type": "select", "options": ["NTSC", "PAL", "Japan"] },
+    { "key": "cib", "label": "Complete in Box", "type": "select", "options": ["Yes", "No"] },
+    { "key": "sealed", "label": "Factory Sealed", "type": "select", "options": ["Yes", "No"] }
+  ],
+  "aiHints": {
+    "identificationPrompt": "Identify this retro game. Extract: platform, title, publisher, region, year, packaging status.",
+    "gradingRules": "Assess: cartridge/disc condition, label condition, box condition (if CIB), manual condition, seal (if sealed).",
+    "valuationRules": "Consider: rarity, platform, CIB vs loose, sealed status, condition, market demand."
+  },
+  "supportedTools": ["identification", "valuation", "grading"]
+}

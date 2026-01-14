@@ -1,0 +1,18 @@
+{
+  "id": "vinyl",
+  "name": "Vinyl Records",
+  "attributes": [
+    { "key": "artist", "label": "Artist", "type": "text", "required": true },
+    { "key": "album", "label": "Album", "type": "text", "required": true },
+    { "key": "label", "label": "Label", "type": "text" },
+    { "key": "pressing", "label": "Pressing", "type": "text" },
+    { "key": "speed", "label": "Speed", "type": "select", "options": ["33 1/3", "45", "78"] },
+    { "key": "size", "label": "Size", "type": "select", "options": ["7\"", "10\"", "12\""] }
+  ],
+  "aiHints": {
+    "identificationPrompt": "Identify this vinyl record. Extract: artist, album, label, catalog number, pressing info.",
+    "gradingRules": "Use Goldmine grading: Mint (M), Near Mint (NM), Very Good Plus (VG+), Very Good (VG), Good (G), Poor (P). Assess record and sleeve separately.",
+    "valuationRules": "Consider: pressing rarity, condition, artist popularity, original vs reissue, market demand."
+  },
+  "supportedTools": ["identification", "valuation", "grading"]
+}

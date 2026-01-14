@@ -1,0 +1,18 @@
+{
+  "id": "stamps",
+  "name": "Stamps",
+  "attributes": [
+    { "key": "country", "label": "Country", "type": "text", "required": true },
+    { "key": "denomination", "label": "Denomination", "type": "text" },
+    { "key": "catalog_number", "label": "Catalog #", "type": "text" },
+    { "key": "perforation", "label": "Perforation", "type": "text" },
+    { "key": "watermark", "label": "Watermark", "type": "text" },
+    { "key": "used_unused", "label": "Condition", "type": "select", "options": ["Unused", "Used", "Mint"] }
+  ],
+  "aiHints": {
+    "identificationPrompt": "Identify this stamp. Extract: country, year, denomination, catalog number, special features.",
+    "gradingRules": "Assess: centering, gum condition, perforation, cancellation (if used), color freshness.",
+    "valuationRules": "Consider: rarity, condition, historical significance, demand, catalog value."
+  },
+  "supportedTools": ["identification", "valuation", "grading", "authenticity"]
+}

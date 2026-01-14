@@ -1,0 +1,18 @@
+{
+  "id": "sneakers",
+  "name": "Sneakers",
+  "attributes": [
+    { "key": "model", "label": "Model", "type": "text", "required": true },
+    { "key": "colorway", "label": "Colorway", "type": "text" },
+    { "key": "size", "label": "Size", "type": "number", "required": true },
+    { "key": "sku", "label": "SKU", "type": "text" },
+    { "key": "release_date", "label": "Release Date", "type": "date" },
+    { "key": "box", "label": "Original Box", "type": "select", "options": ["Yes", "No"] }
+  ],
+  "aiHints": {
+    "identificationPrompt": "Identify these sneakers. Extract: brand, model, colorway, size, SKU, release year.",
+    "gradingRules": "Assess: sole condition, upper condition, box condition, authenticity markers. Grade: Deadstock/VNDS/Used.",
+    "valuationRules": "Consider: rarity, hype, size availability, condition, box, market trends, StockX/GOAT data."
+  },
+  "supportedTools": ["identification", "valuation", "grading", "authenticity", "forecast"]
+}

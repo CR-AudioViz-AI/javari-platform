@@ -1,0 +1,18 @@
+{
+  "id": "comics",
+  "name": "Comic Books",
+  "attributes": [
+    { "key": "publisher", "label": "Publisher", "type": "select", "options": ["Marvel", "DC", "Image", "Dark Horse", "IDW", "Other"], "required": true },
+    { "key": "issue_number", "label": "Issue #", "type": "number", "required": true },
+    { "key": "series", "label": "Series", "type": "text", "required": true },
+    { "key": "grade", "label": "Grade", "type": "text" },
+    { "key": "key_issue", "label": "Key Issue", "type": "text" },
+    { "key": "variant", "label": "Variant Cover", "type": "text" }
+  ],
+  "aiHints": {
+    "identificationPrompt": "Identify this comic from the cover. Extract: publisher, series, issue number, key storylines, character appearances.",
+    "gradingRules": "Use CGC/CBCS grading standards (0.5-10.0). Assess: spine, corners, pages, color, defects.",
+    "valuationRules": "Consider: grade, key issue status, first appearances, historical significance, market demand."
+  },
+  "supportedTools": ["identification", "valuation", "grading", "authenticity"]
+}

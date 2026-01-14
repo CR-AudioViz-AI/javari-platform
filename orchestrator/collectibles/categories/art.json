@@ -1,0 +1,18 @@
+{
+  "id": "art",
+  "name": "Fine Art",
+  "attributes": [
+    { "key": "artist", "label": "Artist", "type": "text", "required": true },
+    { "key": "medium", "label": "Medium", "type": "select", "options": ["Oil", "Acrylic", "Watercolor", "Print", "Sculpture", "Mixed Media", "Digital"] },
+    { "key": "dimensions", "label": "Dimensions", "type": "text" },
+    { "key": "signed", "label": "Signed", "type": "select", "options": ["Yes", "No"] },
+    { "key": "edition", "label": "Edition Info", "type": "text" },
+    { "key": "certificate", "label": "Certificate of Authenticity", "type": "select", "options": ["Yes", "No"] }
+  ],
+  "aiHints": {
+    "identificationPrompt": "Identify this artwork. Extract: artist, title, medium, style, period, signature details.",
+    "gradingRules": "Assess: condition, signature authenticity, provenance documentation, frame condition, conservation needs.",
+    "valuationRules": "Consider: artist reputation, provenance, condition, size, medium, market trends, auction history."
+  },
+  "supportedTools": ["identification", "valuation", "authenticity", "forecast"]
+}

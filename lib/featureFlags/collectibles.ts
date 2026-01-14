@@ -1,0 +1,45 @@
+/**
+ * Collectibles Feature Flags
+ * Phase III: Granular control for collectibles features
+ */
+
+export const COLLECTIBLES_FLAGS = {
+  COLLECTIBLES_UNIVERSE_ENABLED: process.env.NEXT_PUBLIC_COLLECTIBLES_UNIVERSE_ENABLED === 'true',
+  COLLECTIBLES_AI_IDENTIFICATION: process.env.NEXT_PUBLIC_COLLECTIBLES_AI_IDENTIFICATION === 'true',
+  COLLECTIBLES_AI_VALUATION: process.env.NEXT_PUBLIC_COLLECTIBLES_AI_VALUATION === 'true',
+  COLLECTIBLES_AI_GRADING: process.env.NEXT_PUBLIC_COLLECTIBLES_AI_GRADING === 'true',
+  COLLECTIBLES_AI_AUTHENTICITY: process.env.NEXT_PUBLIC_COLLECTIBLES_AI_AUTHENTICITY === 'true',
+  COLLECTIBLES_MARKET_SYNC: process.env.NEXT_PUBLIC_COLLECTIBLES_MARKET_SYNC === 'true',
+  COLLECTIBLES_SPIRITS_ENABLED: process.env.NEXT_PUBLIC_COLLECTIBLES_SPIRITS_ENABLED === 'true',
+  COLLECTIBLES_COMICS_ENABLED: process.env.NEXT_PUBLIC_COLLECTIBLES_COMICS_ENABLED === 'true',
+  COLLECTIBLES_SNEAKERS_ENABLED: process.env.NEXT_PUBLIC_COLLECTIBLES_SNEAKERS_ENABLED === 'true',
+  COLLECTIBLES_DYNAMIC_CATEGORIES_ENABLED: process.env.NEXT_PUBLIC_COLLECTIBLES_DYNAMIC_CATEGORIES_ENABLED === 'true',
+} as const;
+
+export function isCollectiblesEnabled(): boolean {
+  return COLLECTIBLES_FLAGS.COLLECTIBLES_UNIVERSE_ENABLED;
+}
+
+export function isAIIdentificationEnabled(): boolean {
+  return COLLECTIBLES_FLAGS.COLLECTIBLES_UNIVERSE_ENABLED && COLLECTIBLES_FLAGS.COLLECTIBLES_AI_IDENTIFICATION;
+}
+
+export function isAIValuationEnabled(): boolean {
+  return COLLECTIBLES_FLAGS.COLLECTIBLES_UNIVERSE_ENABLED && COLLECTIBLES_FLAGS.COLLECTIBLES_AI_VALUATION;
+}
+
+export function isCategoryEnabled(categoryId: string): boolean {
+  if (!COLLECTIBLES_FLAGS.COLLECTIBLES_UNIVERSE_ENABLED) return false;
+  
+  const categoryFlags: Record<string, boolean> = {
+    spirits: COLLECTIBLES_FLAGS.COLLECTIBLES_SPIRITS_ENABLED,
+    comics: COLLECTIBLES_FLAGS.COLLECTIBLES_COMICS_ENABLED,
+    sneakers: COLLECTIBLES_FLAGS.COLLECTIBLES_SNEAKERS_ENABLED,
+  };
+  
+  // If dynamic categories enabled, all categories allowed
+  if (COLLECTIBLES_FLAGS.COLLECTIBLES_DYNAMIC_CATEGORIES_ENABLED) return true;
+  
+  // Otherwise check specific flag
+  return categoryFlags[categoryId] ?? false;
+}

@@ -1,0 +1,17 @@
+{
+  "id": "shot_glasses",
+  "name": "Shot Glasses",
+  "attributes": [
+    { "key": "location", "label": "Location/City", "type": "text" },
+    { "key": "theme", "label": "Theme", "type": "text" },
+    { "key": "material", "label": "Material", "type": "select", "options": ["Glass", "Ceramic", "Metal", "Plastic"] },
+    { "key": "vintage", "label": "Vintage", "type": "select", "options": ["Yes", "No"] },
+    { "key": "manufacturer", "label": "Manufacturer", "type": "text" }
+  ],
+  "aiHints": {
+    "identificationPrompt": "Identify this shot glass. Extract: location/city, theme, design elements, manufacturer marks, era.",
+    "gradingRules": "Assess: chips, cracks, print condition, color fading, base condition. Grade: Mint/Excellent/Good/Fair/Poor.",
+    "valuationRules": "Consider: rarity, location significance, vintage status, condition, collectibility, set completeness."
+  },
+  "supportedTools": ["identification", "valuation", "grading"]
+}

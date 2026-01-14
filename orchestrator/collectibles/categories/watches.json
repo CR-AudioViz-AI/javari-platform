@@ -1,0 +1,19 @@
+{
+  "id": "watches",
+  "name": "Luxury Watches",
+  "attributes": [
+    { "key": "manufacturer", "label": "Manufacturer", "type": "text", "required": true },
+    { "key": "model", "label": "Model", "type": "text", "required": true },
+    { "key": "reference", "label": "Reference #", "type": "text" },
+    { "key": "movement", "label": "Movement", "type": "select", "options": ["Automatic", "Manual", "Quartz"] },
+    { "key": "case_material", "label": "Case Material", "type": "text" },
+    { "key": "papers", "label": "Papers", "type": "select", "options": ["Yes", "No"] },
+    { "key": "box", "label": "Box", "type": "select", "options": ["Yes", "No"] }
+  ],
+  "aiHints": {
+    "identificationPrompt": "Identify this watch. Extract: brand, model, reference number, movement type, case material, year.",
+    "gradingRules": "Assess: case condition, dial condition, movement function, bracelet/strap, crystal, papers/box.",
+    "valuationRules": "Consider: brand prestige, model rarity, condition, papers/box, service history, market demand."
+  },
+  "supportedTools": ["identification", "valuation", "grading", "authenticity", "forecast"]
+}
