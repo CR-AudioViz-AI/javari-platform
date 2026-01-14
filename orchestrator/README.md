@@ -1101,3 +1101,352 @@ The orchestrator is now production-ready with enterprise-grade hardening, compre
 3. Set up alerting (circuit breakers, rate limits)
 4. Establish SLAs per provider
 5. Begin Phase E (Advanced Features)
+
+---
+
+# Phase E: AI-Driven Cost Intelligence
+
+**Status**: ✅ Complete  
+**Features**: Cost Ledger, Analytics Engine, AI Forecasting, Anomaly Detection, Admin Dashboard APIs
+
+---
+
+## Cost Intelligence Features
+
+### 💰 Cost Ledger
+**Table**: `ai_cost_ledger`
+
+**Tracks Every AI Operation**:
+- Provider & model used
+- Token counts (input/output)
+- Exact cost in USD
+- Workflow association
+- Cache hit status
+- Fallback usage
+- Anomaly flagging (auto-detected)
+
+**Automatic Cost Ingestion**:
+- Every generation writes to ledger
+- Cost calculated using provider pricing table
+- Anomalies detected (>2x historical average)
+- Real-time tracking, zero configuration
+
+---
+
+### 📊 Cost Analytics Engine
+
+**Real-Time Queries**:
+```typescript
+// Total spend for any time range
+const summary = await costAnalyticsEngine.getTotalSpend(startDate, endDate);
+
+// Provider cost breakdown
+const breakdown = await costAnalyticsEngine.getProviderBreakdown(startDate, endDate);
+
+// Workflow cost stats
+const workflows = await costAnalyticsEngine.getWorkflowCostStats(startDate, endDate);
+
+// Cache savings analysis
+const savings = await costAnalyticsEngine.getCacheSavings(startDate, endDate);
+
+// Current burn rate
+const hourlyBurn = await costAnalyticsEngine.getHourlyBurnRate();
+```
+
+**Metrics Provided**:
+- Total spend & request count
+- Average cost per request
+- Provider-level breakdown with percentages
+- Workflow-level cost analysis
+- Cache hit savings calculation
+- Hourly/daily cost curves
+- Top cost drivers
+
+---
+
+### 🤖 AI-Driven Forecast Engine
+
+**Intelligent Forecasting**:
+- **Linear Regression** - Trend line analysis
+- **Exponential Smoothing** - Short-term predictions
+- **Anomaly Detection** - Risk scoring (0-100)
+- **7-Day Projection** - Near-term cost estimate
+- **30-Day Projection** - Monthly budget forecast
+
+**Endpoint**: `GET /api/admin/costs/forecast`
+
+**Sample Response**:
+```json
+{
+  "projected7DayCost": 45.32,
+  "projected30DayCost": 189.45,
+  "projectedMonthlyRecurring": 189.45,
+  "anomalyRiskScore": 15.2,
+  "confidenceLevel": 78,
+  "trendDirection": "increasing",
+  "topCostDrivers": [
+    {
+      "name": "openai",
+      "cost": 12.45,
+      "projection": 14.94
+    }
+  ],
+  "recommendedActions": [
+    "Cost trend is increasing - review recent provider usage changes",
+    "Consider enabling more aggressive caching to reduce costs"
+  ],
+  "metadata": {
+    "dataPoints": 24,
+    "forecastMethod": "linear-regression-exponential-smoothing",
+    "lastUpdated": "2026-01-13T16:00:00Z"
+  }
+}
+```
+
+**Forecast Methods**:
+1. **Trend Analysis**: Linear regression on historical data
+2. **Smoothing**: Exponential smoothing (α=0.3)
+3. **Projection**: Weighted combination of trend + last value
+4. **Confidence**: Based on data quantity + trend stability
+
+---
+
+### 🚨 Cost Alerts & Anomaly Detection
+
+**Automatic Monitoring**:
+- **Daily Threshold**: Alert when daily spend >$50
+- **Provider Drift**: Alert when provider cost changes >30%
+- **Workflow Overrun**: Flag workflows >2x baseline
+- **Anomaly Detection**: Auto-flag unusual costs
+
+**Alert Types**:
+- `threshold` - Budget limits exceeded
+- `anomaly` - Unusual cost spike detected
+- `drift` - Provider pricing changed
+- `spike` - Sudden cost increase
+
+**Endpoint**: `GET /api/admin/costs/anomalies`
+
+**Sample Alert**:
+```json
+{
+  "alertType": "drift",
+  "severity": "warning",
+  "provider": "openai",
+  "thresholdValue": 0.0015,
+  "actualValue": 0.0024,
+  "message": "Provider openai cost increased by 60%",
+  "metadata": {
+    "priorAvg": 0.0015,
+    "currentAvg": 0.0024
+  }
+}
+```
+
+---
+
+## Admin Dashboard APIs
+
+### GET /api/admin/costs/summary
+Overview of all cost metrics.
+
+**Response**:
+```json
+{
+  "daily": {
+    "totalSpend": 12.45,
+    "requestCount": 1234,
+    "avgCostPerRequest": 0.0101
+  },
+  "weekly": {
+    "totalSpend": 78.32,
+    "requestCount": 8456
+  },
+  "monthly": {
+    "totalSpend": 345.67,
+    "requestCount": 34567
+  },
+  "hourlyBurnRate": 0.52,
+  "cacheSavings": {
+    "cacheHits": 456,
+    "cacheMisses": 778,
+    "cacheHitRate": 36.9,
+    "estimatedSavings": 4.56
+  }
+}
+```
+
+### GET /api/admin/costs/providers
+Provider cost breakdown.
+
+### GET /api/admin/costs/workflows
+Workflow cost statistics.
+
+### GET /api/admin/costs/forecast
+AI-driven cost projections.
+
+### GET /api/admin/costs/anomalies
+Recent cost alerts and anomalies.
+
+---
+
+## Provider Pricing Configuration
+
+**File**: `orchestrator/providers/pricing.ts`
+
+**Current Pricing** (as of Jan 2026):
+
+| Provider | Model | Input/1M | Output/1M |
+|----------|-------|----------|-----------|
+| OpenAI | gpt-4o-mini | $0.150 | $0.600 |
+| Anthropic | claude-3-5-haiku | $0.800 | $4.000 |
+| Gemini | gemini-1.5-flash | $0.075 | $0.300 |
+| Groq | llama-3.3-70b | $0.590 | $0.790 |
+| Perplexity | sonar | $1.000 | $1.000 |
+| Mistral | mistral-large | $2.000 | $6.000 |
+| Together | llama-3.1-70b | $0.880 | $0.880 |
+| Cohere | command-r | $0.500 | $1.500 |
+| OpenRouter | claude-3.5-sonnet | $3.000 | $15.000 |
+| DeepInfra | llama-3.1-70b | $0.350 | $0.400 |
+
+**Cost Calculation**:
+```typescript
+const cost = calculateCost('openai', 'gpt-4o-mini', tokensIn, tokensOut);
+// Returns exact USD cost
+```
+
+---
+
+## Cost Optimization Guide
+
+### 1. Enable Aggressive Caching
+```typescript
+// Workflow with caching
+{
+  "steps": [
+    {
+      "id": "step1",
+      "cache": true  // Enable step-level caching
+    }
+  ],
+  "settings": {
+    "enableCaching": true  // Global caching
+  }
+}
+```
+
+**Savings**: ~100% on cache hits
+
+### 2. Choose Cheaper Providers
+**For simple tasks**: Use Gemini ($0.075/$0.3) or DeepInfra ($0.35/$0.4)  
+**For quality**: Use Claude Haiku ($0.8/$4) over Claude Sonnet ($3/$15)  
+**For speed**: Use Groq ($0.59/$0.79) with fast inference
+
+### 3. Set Cost Limits
+```typescript
+{
+  "settings": {
+    "maxTotalCost": 0.50  // Workflow cost cap
+  }
+}
+```
+
+### 4. Monitor Fallback Costs
+Fallbacks can be expensive if they use more expensive providers. Review fallback frequency in analytics.
+
+### 5. Optimize Token Usage
+- Use concise prompts
+- Set appropriate `maxTokens` limits
+- Leverage streaming for early termination
+
+---
+
+## Database Schema (Phase E)
+
+### ai_cost_ledger
+```sql
+CREATE TABLE ai_cost_ledger (
+    id UUID PRIMARY KEY,
+    timestamp TIMESTAMPTZ,
+    provider TEXT,
+    model TEXT,
+    tokens_in INTEGER,
+    tokens_out INTEGER,
+    cost_usd NUMERIC(12, 8),
+    workflow_id UUID,
+    user_id TEXT,
+    cache_hit BOOLEAN,
+    fallback_used BOOLEAN,
+    anomaly_flag BOOLEAN,
+    metadata JSONB
+);
+```
+
+### ai_provider_pricing
+```sql
+CREATE TABLE ai_provider_pricing (
+    provider TEXT,
+    model TEXT,
+    cost_per_1m_input NUMERIC(10, 4),
+    cost_per_1m_output NUMERIC(10, 4),
+    effective_date TIMESTAMPTZ
+);
+```
+
+### ai_cost_alerts
+```sql
+CREATE TABLE ai_cost_alerts (
+    alert_type TEXT,  -- threshold, anomaly, drift, spike
+    severity TEXT,     -- info, warning, critical
+    provider TEXT,
+    threshold_value NUMERIC,
+    actual_value NUMERIC,
+    message TEXT,
+    resolved BOOLEAN
+);
+```
+
+---
+
+## Testing Phase E
+
+### Run Test Harness
+```bash
+ts-node orchestrator/tests/phase-e-tests.ts
+```
+
+### Expected Output
+```
+══════════════════════════════════════
+   Phase E Test Harness - Cost Intelligence
+══════════════════════════════════════
+
+✓ Cost Calculation: accurate ($0.000450 vs $0.000450)
+✓ Cost Analytics: $12.3400 total, 3 providers
+✓ Forecast Generation: 7-day projection $45.32, confidence 78%
+✓ Cost Alerts: 2 active alerts
+✓ Ledger Integration: Supabase connected
+
+══════════════════════════════════════
+   Test Summary: 5/5 passed
+══════════════════════════════════════
+```
+
+---
+
+## Phase E Metrics
+
+- **Files Added**: 10+
+- **Database Tables**: 3
+- **API Endpoints**: 5
+- **Test Suites**: 5
+- **Lines of Code**: ~2,000
+- **AI Features**: Forecasting, anomaly detection, trend analysis
+
+---
+
+**Phase E Complete!** 🎉
+
+The orchestrator now includes complete financial intelligence with AI-driven forecasting, real-time analytics, and comprehensive cost tracking.
+
+**Cost Intelligence Status**: ✅ **READY FOR PRODUCTION**

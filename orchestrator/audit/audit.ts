@@ -45,6 +45,12 @@ export class AuditLogger {
     if (isSupabaseConfigured()) {
       try {
         const result = await db.auditLog.insert(entry);
+        
+        // Also insert into cost ledger if this is a generation event with cost
+        if (event.eventType === 'generation_completed' && event.costUSD && event.provider) {
+          await this.insertCostLedger(event);
+        }
+        
         return result?.id || null;
       } catch (error) {
         console.error('[AuditLogger] Failed to write to Supabase:', error);
@@ -67,6 +73,58 @@ export class AuditLogger {
     });
 
     return null;
+  }
+
+  /**
+   * Insert cost ledger entry with anomaly detection
+   */
+  private async insertCostLedger(event: AuditLogType): Promise<void> {
+    if (!isSupabaseConfigured()) return;
+
+    try {
+      const client = db['supabase'];
+      if (!client) return;
+
+      const tokensIn = this.extractTokens(event, 'input') || 0;
+      const tokensOut = this.extractTokens(event, 'output') || 0;
+
+      // Detect anomaly (cost >2x historical average)
+      let anomalyFlag = false;
+      try {
+        const { data: avgData } = await client
+          .from('ai_cost_ledger')
+          .select('cost_usd')
+          .eq('provider', event.provider)
+          .gte('timestamp', new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString());
+
+        if (avgData && avgData.length > 0) {
+          const avgCost = avgData.reduce((sum, r) => sum + parseFloat(r.cost_usd || '0'), 0) / avgData.length;
+          anomalyFlag = (event.costUSD || 0) > avgCost * 2;
+        }
+      } catch (error) {
+        // Ignore anomaly detection errors
+      }
+
+      await client.from('ai_cost_ledger').insert({
+        provider: event.provider,
+        model: event.model || 'unknown',
+        tokens_in: tokensIn,
+        tokens_out: tokensOut,
+        cost_usd: event.costUSD,
+        workflow_id: event.metadata?.workflowId,
+        workflow_name: event.metadata?.workflowName,
+        user_id: event.userId,
+        cache_hit: event.metadata?.cached || false,
+        fallback_used: event.metadata?.fallbackUsed || false,
+        anomaly_flag: anomalyFlag,
+        metadata: {
+          requestId: event.requestId,
+          latencyMs: event.latencyMs,
+        },
+      });
+    } catch (error) {
+      console.error('[AuditLogger] Failed to insert cost ledger:', error);
+    }
   }
 
   /**
