@@ -141,3 +141,44 @@ export function interpolateVariables(template: string, variables: Record<string,
     return value !== undefined ? String(value) : match;
   });
 }
+
+/**
+ * Workflow safety limits (sandbox)
+ */
+export const WORKFLOW_SAFETY_LIMITS = {
+  MAX_STEPS: 20,
+  MAX_TOTAL_COST_USD: 1.0,
+  MAX_RUNTIME_MS: 300000, // 5 minutes
+  MAX_RETRIES_PER_STEP: 5,
+  MAX_TOKENS_PER_STEP: 10000,
+};
+
+/**
+ * Detect recursion in workflow
+ */
+export function detectRecursion(workflow: WorkflowDefinition): boolean {
+  const visited = new Set<string>();
+  const stack = new Set<string>();
+
+  function dfs(stepId: string): boolean {
+    if (stack.has(stepId)) return true; // Cycle detected
+    if (visited.has(stepId)) return false;
+
+    visited.add(stepId);
+    stack.add(stepId);
+
+    const step = workflow.steps.find(s => s.id === stepId);
+    if (!step) return false;
+
+    const nextSteps = [step.onSuccess, step.onFailure, step.condition?.onTrue, step.condition?.onFalse].filter(Boolean);
+    
+    for (const next of nextSteps) {
+      if (next && dfs(next as string)) return true;
+    }
+
+    stack.delete(stepId);
+    return false;
+  }
+
+  return workflow.steps.some(step => dfs(step.id));
+}

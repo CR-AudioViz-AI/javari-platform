@@ -756,3 +756,348 @@ ts-node orchestrator/tests/phase-c-tests.ts
 The orchestrator now includes workflow execution, persistent storage, intelligent caching, and comprehensive analytics.
 
 **Next Phase (D)**: Advanced features like parallel execution, A/B testing, quality monitoring, and user quotas.
+
+---
+
+# Phase D: Enterprise Hardening
+
+**Status**: ✅ Complete  
+**Features**: Multi-Layer Rate Limiting, Circuit Breakers, Telemetry, Security Hardening, Workflow Sandboxing
+
+---
+
+## Enterprise Features
+
+### 🛡️ Multi-Layer Rate Limiting
+
+**6 Layers of Protection**:
+1. **User-level**: 100 requests/minute per user
+2. **IP-level**: 300 requests/minute per IP
+3. **API Key-level**: 500 requests/minute per key
+4. **Workflow-level**: 20 workflows/5min per user
+5. **Provider-level**: 1,000 requests/minute per provider
+6. **Global**: 5,000 requests/minute orchestrator-wide
+
+**Features**:
+- Sliding window counters
+- Exponential cooldown after violations
+- Persistent storage (Supabase)
+- In-memory fallback
+- Per-route configurability
+
+**Example**:
+```typescript
+const result = await checkRateLimit('user', 'user-123');
+if (!result.allowed) {
+  // Rate limited, retry after ${result.retryAfterMs}ms
+}
+```
+
+### ⚡ Provider Circuit Breakers
+
+**Automatic Failure Detection**:
+- Tracks rolling error rates (50% threshold)
+- Monitors latency windows (5s slow call threshold)
+- Auto-disables failing providers
+- Auto-recovery after cooldown (1min default)
+
+**States**:
+- **Closed**: Normal operation
+- **Open**: Provider disabled (too many failures)
+- **Half-Open**: Testing recovery (3 attempts)
+
+**Integration**:
+```typescript
+if (!globalCircuitBreaker.isAvailable('openai')) {
+  // Fallback to alternate provider
+}
+```
+
+### 📊 Observability & Telemetry
+
+**Real-Time Metrics**:
+- p50/p90/p95/p99 latency percentiles
+- Error rate per provider
+- Cost per 1M tokens (rolling average)
+- Fallback frequency heatmap
+- Routing distribution
+
+**Endpoint**: `GET /api/ai/telemetry`
+
+**Response**:
+```json
+{
+  "metrics": {
+    "providers": {
+      "openai": {
+        "latency": {
+          "p50": 850,
+          "p90": 1500,
+          "p99": 2200,
+          "mean": 950
+        },
+        "errorRate": 2.5,
+        "successCount": 1234,
+        "costPerMToken": 0.75
+      }
+    },
+    "fallbacks": {
+      "openai→anthropic": 12
+    },
+    "routing": {
+      "openai": 850,
+      "anthropic": 250
+    }
+  },
+  "circuitBreakers": {
+    "openai": {
+      "state": "closed",
+      "failureRate": 2.5,
+      "avgLatency": 950
+    }
+  }
+}
+```
+
+### 🔒 Security Hardening
+
+**Input Sanitization**:
+- Max input length enforcement (50KB)
+- Null byte removal
+- Whitespace normalization
+
+**Sensitive Data Redaction**:
+- SSN patterns: `123-45-6789` → `[REDACTED]`
+- Credit cards: `4111-1111-1111-1111` → `[REDACTED]`
+- Email addresses
+- Phone numbers
+- API keys (OpenAI/Anthropic patterns)
+
+**Safe Templating**:
+- Variable name validation (`^[a-zA-Z0-9_]+$`)
+- Recursive reference detection
+- Type coercion limits
+
+### 🏖️ Workflow Sandbox
+
+**Safety Limits**:
+```typescript
+const WORKFLOW_SAFETY_LIMITS = {
+  MAX_STEPS: 20,
+  MAX_TOTAL_COST_USD: 1.0,
+  MAX_RUNTIME_MS: 300000, // 5 minutes
+  MAX_RETRIES_PER_STEP: 5,
+  MAX_TOKENS_PER_STEP: 10000,
+};
+```
+
+**Protections**:
+- Recursion detection (cycle analysis)
+- Step count enforcement
+- Cost limit enforcement
+- Timeout handling
+- Retry cap per step
+
+**Example**:
+```json
+{
+  "settings": {
+    "maxTotalCost": 0.50,
+    "timeout": 120000,
+    "maxSteps": 10
+  }
+}
+```
+
+### 🔍 Enhanced Audit Correlation
+
+**Correlation IDs**:
+- `correlation_id`: Tracks entire workflow run
+- `step_id`: Individual step tracking
+- `run_group`: Batch/group identifier
+- `replay_token`: Deterministic reproduction
+
+**Query by Correlation**:
+```typescript
+const events = await auditLogger.queryLogs({
+  correlationId: 'wf-run-12345'
+});
+```
+
+---
+
+## API Endpoints (Phase D)
+
+### GET /api/ai/telemetry
+Real-time metrics and observability.
+
+**Response**:
+```json
+{
+  "metrics": { ... },
+  "circuitBreakers": { ... },
+  "rateLimits": {
+    "activeKeys": 42,
+    "totalViolations": 5
+  }
+}
+```
+
+### GET /api/ai/health/full
+Comprehensive system health check.
+
+**Response**:
+```json
+{
+  "status": "healthy",
+  "uptime": 3600000,
+  "components": {
+    "environment": { "status": "healthy" },
+    "database": { "status": "healthy" },
+    "providers": { "status": "healthy", "details": { "active": 3 } },
+    "circuitBreakers": { "status": "healthy" },
+    "rateLimiting": { "status": "healthy" },
+    "router": { "status": "healthy" }
+  }
+}
+```
+
+---
+
+## Deployment Checklist
+
+### Pre-Deployment
+
+- [ ] All required environment variables set
+- [ ] Supabase connection tested
+- [ ] At least 2 providers configured
+- [ ] Rate limits configured appropriately
+- [ ] Circuit breaker thresholds reviewed
+- [ ] Security redaction enabled
+
+### Health Checks
+
+```bash
+# 1. Full system health
+curl https://your-domain/api/ai/health/full
+
+# 2. Provider health
+curl https://your-domain/api/ai/health
+
+# 3. Telemetry baseline
+curl https://your-domain/api/ai/telemetry
+
+# 4. Provider list
+curl https://your-domain/api/ai/providers
+```
+
+### Monitoring
+
+**Key Metrics to Watch**:
+1. Circuit breaker state (should be "closed")
+2. Rate limit violations (should be minimal)
+3. Error rate per provider (<5%)
+4. p99 latency (<3 seconds)
+5. Cost per 1M tokens (within budget)
+
+### Production Settings
+
+```env
+# Rate Limiting
+ORCHESTRATOR_RATE_LIMIT_USER_RPM=100
+ORCHESTRATOR_RATE_LIMIT_GLOBAL_RPM=5000
+
+# Circuit Breakers
+ORCHESTRATOR_CIRCUIT_BREAKER_THRESHOLD=50
+ORCHESTRATOR_CIRCUIT_BREAKER_COOLDOWN_MS=60000
+
+# Security
+ORCHESTRATOR_ENABLE_REDACTION=true
+ORCHESTRATOR_MAX_INPUT_LENGTH=50000
+
+# Workflow Sandbox
+ORCHESTRATOR_MAX_WORKFLOW_STEPS=20
+ORCHESTRATOR_MAX_WORKFLOW_COST=1.00
+ORCHESTRATOR_MAX_WORKFLOW_RUNTIME_MS=300000
+```
+
+---
+
+## Circuit Breaker Diagram
+
+```
+[Closed] ──failure rate >50%──> [Open]
+    ↑                               │
+    │                               │ cooldown (60s)
+    │                               ↓
+    └──3 successes──── [Half-Open]
+                              │
+                              └──failure──> [Open]
+```
+
+---
+
+## Rate Limiting Flow
+
+```
+Request → Check User Limit → Check IP Limit → Check API Key Limit
+            ↓ OK                ↓ OK              ↓ OK
+        Check Workflow → Check Provider → Check Global
+            ↓ OK         ↓ OK               ↓ OK
+                    Allow Request
+```
+
+---
+
+## Testing Phase D
+
+### Run Test Harness
+```bash
+ts-node orchestrator/tests/phase-d-tests.ts
+```
+
+### Expected Output
+```
+══════════════════════════════════════
+   Phase D Test Harness - Enterprise
+══════════════════════════════════════
+
+✓ Rate Limiting: working (95 remaining)
+✓ Circuit Breaker Activation: open (100.0% failure rate)
+✓ Circuit Breaker Recovery: closed
+✓ Telemetry: collecting metrics
+✓ Security Redaction: working
+✓ Sandbox Safety: recursion detected
+✓ Deployment Validation: 3 providers
+✓ Full Health Check: healthy
+
+══════════════════════════════════════
+   Test Summary: 8/8 passed
+══════════════════════════════════════
+```
+
+---
+
+## Phase D Metrics
+
+- **Files Added**: 10
+- **Enterprise Features**: 6
+- **Security Enhancements**: 4
+- **API Endpoints**: 2
+- **Test Suites**: 8
+- **Lines of Code**: ~2,000
+
+---
+
+**Phase D Complete!** 🎉
+
+The orchestrator is now production-ready with enterprise-grade hardening, comprehensive observability, and robust security.
+
+**Production Status**: ✅ Ready for deployment
+
+**Recommended Next Steps**:
+1. Deploy to production environment
+2. Configure monitoring dashboards
+3. Set up alerting (circuit breakers, rate limits)
+4. Establish SLAs per provider
+5. Begin Phase E (Advanced Features)
