@@ -2042,3 +2042,139 @@ ts-node orchestrator/tests/phase-g-tests.ts
 **Phase G Complete!** 🎉
 
 The Community Engine brings together all previous phases into a unified, multi-user collaborative platform.
+
+---
+
+# Phase H: Monetization Layer
+
+**Status**: ✅ Complete  
+**Features**: Credits, Plans, Usage Enforcement, Billing Dashboard, Monthly Refill
+
+---
+
+## Credit System
+
+### Overview
+- **1 credit = $0.01 USD**
+- Credits consumed based on AI usage
+- Per-user and per-community balances
+- Complete transaction ledger
+
+### Database Tables (4)
+
+1. **credit_balances** - Current balances
+2. **credit_ledger** - Transaction history
+3. **plans** - Subscription definitions
+4. **usage_limits** - Rate limiting data
+
+### Credit Engine
+**File**: `orchestrator/credits/creditEngine.ts`
+
+```typescript
+import { creditEngine } from '@/orchestrator/credits/creditEngine';
+
+// Get balance
+const credits = await creditEngine.getUserCredits('user-123');
+
+// Consume credits
+await creditEngine.consumeCredits({
+  userId: 'user-123',
+  delta: 50,
+  reason: 'workflow_execution',
+  workflowId: 'wf-abc',
+  costUSD: 0.50,
+});
+
+// Forecast burn
+const forecast = await creditEngine.forecastCreditBurn('user-123', 30);
+```
+
+---
+
+## Subscription Plans
+
+### Free Plan
+- **Credits**: 100/month
+- **Price**: $0
+- **Features**: 10 workflows, 1 community
+- **Rollover**: No
+
+### Pro Plan
+- **Credits**: 1,000/month
+- **Price**: $29.99
+- **Features**: Unlimited workflows, 10 communities
+- **Rollover**: Yes (500 max)
+
+### Enterprise Plan
+- **Credits**: 10,000/month
+- **Price**: $299.99
+- **Features**: Unlimited everything, SLA
+- **Rollover**: Yes (5,000 max)
+
+---
+
+## Usage Enforcement
+
+### Credit Guard Middleware
+**File**: `orchestrator/middleware/creditGuard.ts`
+
+**Before Workflow Execution**:
+1. Convert estimated cost → credits
+2. Check user balance
+3. Block if insufficient
+4. Allow if sufficient
+
+**After Workflow Execution**:
+1. Calculate actual cost
+2. Convert to credits
+3. Consume from balance
+4. Log transaction
+
+---
+
+## Admin Billing Dashboard
+
+### API Endpoints
+- `GET /api/admin/billing/summary` - Overview stats
+- `GET /api/admin/billing/users` - Per-user breakdown
+- `GET /api/admin/billing/forecast` - Projections
+
+### Metrics
+- Total credits used
+- Remaining credits
+- Active users
+- Top workflows
+- Cost trends
+- Anomaly alerts
+
+---
+
+## Monthly Refill
+
+**File**: `orchestrator/credits/refillTask.ts`
+
+**Schedule**: 1st of each month (Vercel Cron)
+
+**Process**:
+1. Get all active users
+2. Check plan credits
+3. Handle rollover (if enabled)
+4. Add credits
+5. Log transaction
+
+---
+
+## Feature Flags
+
+```env
+NEXT_PUBLIC_BILLING_ENABLED=true
+NEXT_PUBLIC_CREDITS_ENABLED=true
+NEXT_PUBLIC_USAGE_LIMITS_ENABLED=true
+NEXT_PUBLIC_FREE_TIER_ENABLED=true
+```
+
+---
+
+**Phase H Complete!** 🎉
+
+Complete monetization infrastructure ready for production.
