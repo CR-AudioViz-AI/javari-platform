@@ -1,0 +1,11 @@
+{
+  "name": "orchestrator-phase-a",
+  "version": "0.1.0",
+  "description": "Multi-AI Orchestrator Phase A - Foundation Layer",
+  "dependencies": {
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "@types/uuid": "^9.0.7"
+  }
+}

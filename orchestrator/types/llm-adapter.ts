@@ -1,80 +1,91 @@
 /**
- * LLM Adapter Interface
- * All AI provider adapters must implement this interface
+ * Multi-AI Orchestrator - LLM Adapter Interface
+ * Phase A: Foundation Layer
+ * 
+ * Defines the contract that all LLM provider adapters must implement.
  */
 
-export type AICapability = 
-  | 'text-generation'
-  | 'code-generation'
-  | 'function-calling'
-  | 'json-mode'
-  | 'streaming'
-  | 'vision'
-  | 'embeddings';
-
-export interface GenerationRequest {
+export interface LLMGenerationRequest {
   prompt: string;
   systemPrompt?: string;
-  temperature?: number;                  // 0.0 - 2.0
+  temperature?: number;
   maxTokens?: number;
-  model?: string;                        // Provider-specific model name
   stopSequences?: string[];
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }
 
-export interface GenerationResponse {
+export interface LLMGenerationResponse {
   content: string;
-  tokensUsed: {
-    prompt: number;
-    completion: number;
-    total: number;
-  };
-  model: string;                         // Actual model used
-  provider: string;                      // Provider name
-  latencyMs: number;
-  costUsd: number;
   finishReason: 'stop' | 'length' | 'content_filter' | 'error';
-  metadata?: Record<string, any>;
+  usage: {
+    promptTokens: number;
+    completionTokens: number;
+    totalTokens: number;
+  };
+  modelUsed: string;
+  latencyMs: number;
+  metadata?: Record<string, unknown>;
 }
 
-export interface HealthStatus {
-  status: 'healthy' | 'degraded' | 'down';
-  responseTimeMs: number;
-  lastChecked: string;
-  message?: string;
+export interface LLMHealthStatus {
+  provider: string;
+  status: 'healthy' | 'degraded' | 'unavailable';
+  latencyMs: number;
+  lastChecked: Date;
+  errorMessage?: string;
 }
 
-export interface RateLimitInfo {
+export interface LLMCostEstimate {
+  estimatedCostUSD: number;
+  inputTokenCost: number;
+  outputTokenCost: number;
+  estimatedInputTokens: number;
+  estimatedOutputTokens: number;
+}
+
+export interface LLMRateLimits {
   requestsPerMinute: number;
   tokensPerMinute: number;
-  remaining: number;
-  resetAt: string;
+  requestsRemaining: number;
+  tokensRemaining: number;
+  resetAtMs: number;
 }
 
-export interface CostEstimate {
-  estimatedCostUsd: number;
-  basedOn: 'prompt_tokens' | 'model_default' | 'historical_average';
-  confidence: number;                    // 0.0 - 1.0
+export interface LLMCapability {
+  name: string;
+  supported: boolean;
+  details?: Record<string, unknown>;
 }
 
+/**
+ * Base interface that all LLM adapters must implement
+ */
 export interface LLMAdapter {
-  // Metadata
-  name: string;                          // 'openai' | 'anthropic' | 'google' | etc.
-  version: string;                       // Adapter version
+  readonly providerName: string;
+  readonly modelName: string;
   
-  // Capabilities
-  supports(capability: AICapability): boolean;
+  /**
+   * Generate completion from the LLM
+   */
+  generate(request: LLMGenerationRequest): Promise<LLMGenerationResponse>;
   
-  // Generation
-  generate(request: GenerationRequest): Promise<GenerationResponse>;
+  /**
+   * Check provider health and availability
+   */
+  healthCheck(): Promise<LLMHealthStatus>;
   
-  // Streaming (Phase B)
-  generateStream?(request: GenerationRequest): AsyncIterator<any>;
+  /**
+   * Estimate cost for a generation request
+   */
+  estimateCost(request: LLMGenerationRequest): Promise<LLMCostEstimate>;
   
-  // Health & Limits
-  healthCheck(): Promise<HealthStatus>;
-  getRateLimits(): Promise<RateLimitInfo>;
+  /**
+   * Get current rate limit status
+   */
+  getRateLimits(): Promise<LLMRateLimits>;
   
-  // Cost Estimation
-  estimateCost(request: GenerationRequest): Promise<CostEstimate>;
+  /**
+   * Check if provider supports a specific capability
+   */
+  supports(capability: string): boolean;
 }

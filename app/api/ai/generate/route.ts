@@ -1,80 +1,126 @@
 /**
- * AI Generation API Endpoint
+ * Multi-AI Orchestrator - Generate API Endpoint
+ * Phase A: Foundation Layer
+ * 
  * POST /api/ai/generate
+ * Handles AI generation requests through the orchestrator
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { routeRequest } from '@/orchestrator/router/router';
-import type { GenerationRequest } from '@/orchestrator/types/generation';
+import { OpenAIAdapter } from '@/orchestrator/adapters/openai';
+import { RouterEngine } from '@/orchestrator/router/router';
+import { v4 as uuidv4 } from 'uuid';
+import type { LLMGenerationRequest } from '@/orchestrator/types/llm-adapter';
+import type { GenerationMetadata } from '@/orchestrator/types/generation';
+
+// Initialize router (singleton pattern)
+let router: RouterEngine | null = null;
+
+function getRouter(): RouterEngine {
+  if (!router) {
+    router = new RouterEngine({
+      defaultProvider: 'openai',
+      autoApproveThresholdUSD: 1.0,
+      enableAudit: true,
+    });
+
+    // Register OpenAI adapter
+    const openaiAdapter = new OpenAIAdapter('gpt-4');
+    router.registerAdapter('openai', openaiAdapter);
+  }
+  return router;
+}
 
 export async function POST(request: NextRequest) {
   try {
-    // Parse request body
     const body = await request.json();
 
-    // Extract user ID (in production, get from auth session)
-    const userId = body.userId || 'anonymous';
-
-    // Validate required fields
-    if (!body.prompt) {
+    // Validate request
+    if (!body.prompt || typeof body.prompt !== 'string') {
       return NextResponse.json(
-        { error: 'Prompt is required' },
+        { error: 'Prompt is required and must be a string' },
         { status: 400 }
       );
     }
 
+    // Extract user ID (in Phase A, use mock user ID)
+    // TODO Phase B: Get from auth session
+    const userId = body.userId || 'phase-a-test-user';
+
     // Build generation request
-    const generationRequest: GenerationRequest = {
+    const generationRequest: LLMGenerationRequest = {
       prompt: body.prompt,
       systemPrompt: body.systemPrompt,
-      temperature: body.temperature,
-      maxTokens: body.maxTokens,
-      model: body.model,
+      temperature: body.temperature ?? 0.7,
+      maxTokens: body.maxTokens ?? 500,
       stopSequences: body.stopSequences,
       metadata: body.metadata,
     };
 
-    // Route through orchestrator
-    const result = await routeRequest({
+    // Build metadata
+    const metadata: GenerationMetadata = {
+      requestId: uuidv4(),
       userId,
-      request: generationRequest,
-      workflowId: body.workflowId,
-      taskId: body.taskId,
-    });
+      timestamp: new Date(),
+      priority: body.priority || 'normal',
+      tags: body.tags,
+      context: body.context,
+    };
 
-    // Return response
-    return NextResponse.json({
-      success: true,
-      taskId: result.taskId,
-      content: result.response.content,
-      tokensUsed: result.response.tokensUsed,
-      model: result.response.model,
-      provider: result.response.provider,
-      costUsd: result.response.costUsd,
-      latencyMs: result.response.latencyMs,
-      approvalGate: result.approvalGate,
-    });
+    // Route through orchestrator
+    const router = getRouter();
+    const result = await router.route(generationRequest, metadata);
+
+    // Return result
+    if (result.status === 'completed') {
+      return NextResponse.json({
+        success: true,
+        requestId: result.requestId,
+        content: result.content,
+        usage: result.usage,
+        costUSD: result.costUSD,
+        latencyMs: result.latencyMs,
+        provider: result.provider,
+        model: result.model,
+      });
+    } else if (result.status === 'requires_approval') {
+      return NextResponse.json({
+        success: false,
+        requiresApproval: true,
+        requestId: result.requestId,
+        reason: result.error,
+        provider: result.provider,
+        model: result.model,
+      }, { status: 402 }); // 402 Payment Required (repurposed for approval required)
+    } else {
+      return NextResponse.json({
+        success: false,
+        requestId: result.requestId,
+        error: result.error,
+        status: result.status,
+      }, { status: 500 });
+    }
+
   } catch (error) {
-    console.error('AI Generation Error:', error);
-
+    console.error('Error in /api/ai/generate:', error);
     return NextResponse.json(
       {
-        success: false,
-        error: error instanceof Error ? error.message : 'Unknown error',
+        error: 'Internal server error',
+        message: error instanceof Error ? error.message : 'Unknown error',
       },
       { status: 500 }
     );
   }
 }
 
-export async function GET() {
-  return NextResponse.json({
-    service: 'AI Generation API',
-    version: '1.0.0 (Phase A)',
-    status: 'operational',
-    endpoints: {
-      generate: 'POST /api/ai/generate',
-      health: 'GET /api/ai/health',
+// OPTIONS for CORS
+export async function OPTIONS(request: NextRequest) {
+  return new NextResponse(null, {
+    status: 200,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'POST, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
     },
   });
 }

@@ -1,47 +1,46 @@
 /**
- * Audit Log Types
- * Types for audit logging of AI interactions
+ * Multi-AI Orchestrator - Audit Log Types
+ * Phase A: Foundation Layer
  */
 
+export type AuditEventType = 
+  | 'generation_requested'
+  | 'generation_approved'
+  | 'generation_denied'
+  | 'generation_started'
+  | 'generation_completed'
+  | 'generation_failed'
+  | 'health_check'
+  | 'cost_threshold_exceeded'
+  | 'rate_limit_exceeded';
+
 export interface AuditLogEntry {
-  // Identity
-  id: string;
+  eventId: string;
+  eventType: AuditEventType;
+  timestamp: Date;
   userId: string;
-  workflowId: string | null;
-  taskId: string;
-  
-  // Request
-  provider: string;
-  model: string;
-  promptHash: string;                    // SHA-256 of prompt
-  promptTokens: number;
-  systemPromptHash: string | null;
-  
-  // Response
-  responseHash: string;                  // SHA-256 of response
-  completionTokens: number;
-  totalTokens: number;
-  
-  // Cost & Performance
-  costUsd: number;
-  latencyMs: number;
-  
-  // Approval
-  gatesTriggered: string[];
-  approvalRequired: boolean;
-  approvedBy: string | null;
-  approvedAt: string | null;
-  
-  // Outcome
-  status: 'success' | 'failure' | 'rejected';
-  errorCode: string | null;
-  errorMessage: string | null;
-  
-  // Timing
-  requestedAt: string;
-  startedAt: string | null;
-  completedAt: string | null;
-  
-  // Metadata
-  metadata: Record<string, any>;
+  provider?: string;
+  model?: string;
+  requestId?: string;
+  status?: string;
+  costUSD?: number;
+  latencyMs?: number;
+  error?: string;
+  metadata?: Record<string, unknown>;
+}
+
+export interface AuditLogQuery {
+  startDate?: Date;
+  endDate?: Date;
+  userId?: string;
+  eventType?: AuditEventType;
+  provider?: string;
+  limit?: number;
+  offset?: number;
+}
+
+export interface AuditLogResult {
+  entries: AuditLogEntry[];
+  total: number;
+  hasMore: boolean;
 }

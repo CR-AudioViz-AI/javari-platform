@@ -1,33 +1,36 @@
 /**
- * Approval Gate Types
- * Types for approval gate decisions and metadata
+ * Multi-AI Orchestrator - Approval Gates Types
+ * Phase A: Foundation Layer
  */
 
-export type GateStatus = 'approved' | 'requires_approval' | 'rejected';
+export type ApprovalStatus = 'approved' | 'requires_approval' | 'denied';
 
-export type GateType = 'approval' | 'safety' | 'cost' | 'escalation';
-
-export interface ApprovalGateResult {
-  status: GateStatus;
-  gatesTriggered: GateType[];
-  reason: string;
-  estimatedCost?: number;
-  requiresHumanApproval: boolean;
+export interface ApprovalRule {
+  id: string;
+  name: string;
+  description: string;
+  enabled: boolean;
+  check: (request: ApprovalCheckRequest) => ApprovalCheckResult;
 }
 
-export interface ApprovalRequest {
-  taskId: string;
-  userId: string;
+export interface ApprovalCheckRequest {
   prompt: string;
-  estimatedCost: number;
-  gatesTriggered: GateType[];
-  metadata?: Record<string, any>;
+  systemPrompt?: string;
+  estimatedCostUSD: number;
+  estimatedTokens: number;
+  userId: string;
+  metadata?: Record<string, unknown>;
 }
 
-export interface ApprovalDecision {
-  taskId: string;
-  approved: boolean;
-  approvedBy: string;
-  approvedAt: string;
-  reason?: string;
+export interface ApprovalCheckResult {
+  status: ApprovalStatus;
+  reason: string;
+  triggeredRules: string[];
+  requiresHuman: boolean;
+}
+
+export interface ApprovalGateConfig {
+  rules: ApprovalRule[];
+  autoApproveThresholdUSD: number;
+  sensitiveKeywords: string[];
 }

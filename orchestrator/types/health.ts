@@ -1,24 +1,22 @@
 /**
- * Health Status Types
- * Health check and monitoring types
+ * Multi-AI Orchestrator - Health Check Types
+ * Phase A: Foundation Layer
  */
 
-export interface HealthStatus {
-  status: 'healthy' | 'degraded' | 'down';
-  responseTimeMs: number;
-  lastChecked: string;
-  message?: string;
+export type HealthStatus = 'healthy' | 'degraded' | 'unavailable';
+
+export interface ProviderHealth {
+  provider: string;
+  model: string;
+  status: HealthStatus;
+  latencyMs: number;
+  lastChecked: Date;
+  errorMessage?: string;
+  details?: Record<string, unknown>;
 }
 
-export interface RateLimitInfo {
-  requestsPerMinute: number;
-  tokensPerMinute: number;
-  remaining: number;
-  resetAt: string;
-}
-
-export interface CostEstimate {
-  estimatedCostUsd: number;
-  basedOn: 'prompt_tokens' | 'model_default' | 'historical_average';
-  confidence: number;
+export interface SystemHealth {
+  overall: HealthStatus;
+  providers: ProviderHealth[];
+  checkedAt: Date;
 }

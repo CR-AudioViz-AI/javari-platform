@@ -1,194 +1,243 @@
 /**
- * Orchestrator Router (Phase A)
- * Routes AI requests to appropriate providers with approval gates
+ * Multi-AI Orchestrator - Router Engine
+ * Phase A: Foundation Layer
+ * 
+ * Routes generation requests to appropriate LLM adapters,
+ * applies approval gates, and orchestrates the generation flow.
  */
 
-import type { GenerationRequest, GenerationResponse } from '../types/generation';
-import type { ApprovalGateResult } from '../types/approval-gates';
+import type { LLMAdapter, LLMGenerationRequest } from '../types/llm-adapter';
+import type { GenerationResult, GenerationMetadata } from '../types/generation';
 import type { AuditLogEntry } from '../types/audit-log';
-import { openaiAdapter } from '../adapters/openai';
-import { evaluateApprovalGate } from '../gates/approval';
-import { logAuditEvent } from '../audit/audit-stub';
-import crypto from 'crypto';
+import { ApprovalGateEngine } from '../gates/approval';
+import { v4 as uuidv4 } from 'uuid';
 
-export interface RouterRequest {
-  userId: string;
-  request: GenerationRequest;
-  workflowId?: string;
-  taskId?: string;
+export interface RouterConfig {
+  defaultProvider: string;
+  autoApproveThresholdUSD?: number;
+  enableAudit?: boolean;
 }
 
-export interface RouterResponse {
-  response: GenerationResponse;
-  approvalGate: ApprovalGateResult;
-  taskId: string;
-}
+export class RouterEngine {
+  private adapters: Map<string, LLMAdapter> = new Map();
+  private approvalGate: ApprovalGateEngine;
+  private config: RouterConfig;
+  private auditLog: AuditLogEntry[] = [];
 
-/**
- * Main router function - Phase A implementation
- */
-export async function routeRequest(routerReq: RouterRequest): Promise<RouterResponse> {
-  const startTime = Date.now();
-  const taskId = routerReq.taskId || generateTaskId();
+  constructor(config: RouterConfig) {
+    this.config = {
+      autoApproveThresholdUSD: 1.0,
+      enableAudit: true,
+      ...config,
+    };
+    this.approvalGate = new ApprovalGateEngine(this.config.autoApproveThresholdUSD);
+  }
 
-  try {
-    // Step 1: Validate request
-    validateRequest(routerReq.request);
+  /**
+   * Register an LLM adapter with the router
+   */
+  registerAdapter(provider: string, adapter: LLMAdapter): void {
+    this.adapters.set(provider, adapter);
+  }
 
-    // Step 2: Estimate cost
-    const costEstimate = await openaiAdapter.estimateCost(routerReq.request);
+  /**
+   * Route a generation request through approval gates and to the appropriate adapter
+   */
+  async route(
+    request: LLMGenerationRequest,
+    metadata: GenerationMetadata
+  ): Promise<GenerationResult> {
+    const requestId = metadata.requestId || uuidv4();
+    const provider = this.config.defaultProvider;
+    
+    // Log request
+    this.logAudit({
+      eventId: uuidv4(),
+      eventType: 'generation_requested',
+      timestamp: new Date(),
+      userId: metadata.userId,
+      provider,
+      requestId,
+      metadata: { priority: metadata.priority },
+    });
 
-    // Step 3: Run approval gate
-    const approvalGate = await evaluateApprovalGate(
-      routerReq.request,
-      costEstimate
-    );
+    try {
+      // Validate request
+      this.validateRequest(request);
 
-    // Step 4: Check if approval required (Phase A - fail fast if approval needed)
-    if (approvalGate.requiresHumanApproval) {
-      // In Phase A, we don't have approval workflow yet
-      // Log and throw error
-      const auditEntry = createAuditEntry({
-        taskId,
-        userId: routerReq.userId,
-        workflowId: routerReq.workflowId || null,
-        request: routerReq.request,
-        provider: 'openai',
-        status: 'rejected',
-        approvalGate,
-        startTime,
+      // Get adapter
+      const adapter = this.adapters.get(provider);
+      if (!adapter) {
+        throw new Error(`No adapter registered for provider: ${provider}`);
+      }
+
+      // Estimate cost
+      const costEstimate = await adapter.estimateCost(request);
+
+      // Check approval gate
+      const approvalResult = await this.approvalGate.checkApproval({
+        prompt: request.prompt,
+        systemPrompt: request.systemPrompt,
+        estimatedCostUSD: costEstimate.estimatedCostUSD,
+        estimatedTokens: costEstimate.estimatedInputTokens + costEstimate.estimatedOutputTokens,
+        userId: metadata.userId,
+        metadata: metadata.context,
       });
 
-      logAuditEvent(auditEntry);
+      if (approvalResult.status === 'requires_approval') {
+        // Log approval required
+        this.logAudit({
+          eventId: uuidv4(),
+          eventType: 'generation_denied',
+          timestamp: new Date(),
+          userId: metadata.userId,
+          provider,
+          requestId,
+          metadata: {
+            reason: approvalResult.reason,
+            triggeredRules: approvalResult.triggeredRules,
+            estimatedCost: costEstimate.estimatedCostUSD,
+          },
+        });
 
-      throw new Error(
-        `Request requires approval: ${approvalGate.reason}. Approval workflow not yet implemented in Phase A.`
-      );
+        return {
+          requestId,
+          status: 'requires_approval',
+          provider,
+          model: adapter.modelName,
+          error: approvalResult.reason,
+        };
+      }
+
+      // Log approval
+      this.logAudit({
+        eventId: uuidv4(),
+        eventType: 'generation_approved',
+        timestamp: new Date(),
+        userId: metadata.userId,
+        provider,
+        requestId,
+        costUSD: costEstimate.estimatedCostUSD,
+      });
+
+      // Log start
+      this.logAudit({
+        eventId: uuidv4(),
+        eventType: 'generation_started',
+        timestamp: new Date(),
+        userId: metadata.userId,
+        provider,
+        requestId,
+      });
+
+      // Generate
+      const startTime = Date.now();
+      const response = await adapter.generate(request);
+      const latencyMs = Date.now() - startTime;
+
+      // Calculate actual cost (in Phase A, use estimate)
+      const actualCost = costEstimate.estimatedCostUSD;
+
+      // Log completion
+      this.logAudit({
+        eventId: uuidv4(),
+        eventType: 'generation_completed',
+        timestamp: new Date(),
+        userId: metadata.userId,
+        provider,
+        requestId,
+        costUSD: actualCost,
+        latencyMs,
+      });
+
+      return {
+        requestId,
+        status: 'completed',
+        provider,
+        model: adapter.modelName,
+        content: response.content,
+        usage: response.usage,
+        costUSD: actualCost,
+        latencyMs: response.latencyMs,
+        completedAt: new Date(),
+      };
+
+    } catch (error) {
+      // Log failure
+      this.logAudit({
+        eventId: uuidv4(),
+        eventType: 'generation_failed',
+        timestamp: new Date(),
+        userId: metadata.userId,
+        provider,
+        requestId,
+        error: error instanceof Error ? error.message : 'Unknown error',
+      });
+
+      return {
+        requestId,
+        status: 'failed',
+        provider,
+        model: this.adapters.get(provider)?.modelName || 'unknown',
+        error: error instanceof Error ? error.message : 'Unknown error',
+      };
+    }
+  }
+
+  /**
+   * Validate generation request
+   */
+  private validateRequest(request: LLMGenerationRequest): void {
+    if (!request.prompt || request.prompt.trim().length === 0) {
+      throw new Error('Prompt is required and cannot be empty');
     }
 
-    // Step 5: Route to OpenAI adapter (Phase A only supports OpenAI)
-    const response = await openaiAdapter.generate(routerReq.request);
-
-    // Step 6: Create audit log entry
-    const auditEntry = createAuditEntry({
-      taskId,
-      userId: routerReq.userId,
-      workflowId: routerReq.workflowId || null,
-      request: routerReq.request,
-      provider: 'openai',
-      response,
-      status: 'success',
-      approvalGate,
-      startTime,
-    });
-
-    logAuditEvent(auditEntry);
-
-    // Step 7: Return response
-    return {
-      response,
-      approvalGate,
-      taskId,
-    };
-  } catch (error) {
-    // Log error
-    const auditEntry = createAuditEntry({
-      taskId,
-      userId: routerReq.userId,
-      workflowId: routerReq.workflowId || null,
-      request: routerReq.request,
-      provider: 'openai',
-      status: 'failure',
-      error: error as Error,
-      startTime,
-    });
-
-    logAuditEvent(auditEntry);
-
-    throw error;
-  }
-}
-
-/**
- * Validate generation request
- */
-function validateRequest(request: GenerationRequest): void {
-  if (!request.prompt || request.prompt.trim().length === 0) {
-    throw new Error('Prompt is required and cannot be empty');
-  }
-
-  if (request.temperature !== undefined) {
-    if (request.temperature < 0 || request.temperature > 2) {
+    if (request.temperature !== undefined && (request.temperature < 0 || request.temperature > 2)) {
       throw new Error('Temperature must be between 0 and 2');
     }
-  }
 
-  if (request.maxTokens !== undefined) {
-    if (request.maxTokens < 1 || request.maxTokens > 32000) {
-      throw new Error('maxTokens must be between 1 and 32000');
+    if (request.maxTokens !== undefined && request.maxTokens < 1) {
+      throw new Error('Max tokens must be at least 1');
     }
   }
-}
 
-/**
- * Generate unique task ID
- */
-function generateTaskId(): string {
-  return `task_${Date.now()}_${Math.random().toString(36).substring(7)}`;
-}
+  /**
+   * Get audit log entries (for testing/debugging)
+   */
+  getAuditLog(): AuditLogEntry[] {
+    return [...this.auditLog];
+  }
 
-/**
- * Create SHA-256 hash of string
- */
-function sha256Hash(input: string): string {
-  return crypto.createHash('sha256').update(input).digest('hex');
-}
+  /**
+   * Log audit event
+   */
+  private logAudit(entry: AuditLogEntry): void {
+    if (this.config.enableAudit) {
+      this.auditLog.push(entry);
+      // In Phase A, just keep in memory
+      // In future phases, this will persist to database
+    }
+  }
 
-/**
- * Create audit log entry
- */
-function createAuditEntry(params: {
-  taskId: string;
-  userId: string;
-  workflowId: string | null;
-  request: GenerationRequest;
-  provider: string;
-  response?: GenerationResponse;
-  status: 'success' | 'failure' | 'rejected';
-  approvalGate?: ApprovalGateResult;
-  error?: Error;
-  startTime: number;
-}): AuditLogEntry {
-  const now = new Date().toISOString();
-  const completedAt = params.status !== 'rejected' ? now : null;
+  /**
+   * Check health of all registered adapters
+   */
+  async checkHealth(): Promise<Map<string, any>> {
+    const healthResults = new Map();
 
-  return {
-    id: `audit_${Date.now()}_${Math.random().toString(36).substring(7)}`,
-    userId: params.userId,
-    workflowId: params.workflowId,
-    taskId: params.taskId,
-    provider: params.provider,
-    model: params.response?.model || params.request.model || 'unknown',
-    promptHash: sha256Hash(params.request.prompt),
-    promptTokens: params.response?.tokensUsed.prompt || 0,
-    systemPromptHash: params.request.systemPrompt 
-      ? sha256Hash(params.request.systemPrompt)
-      : null,
-    responseHash: params.response ? sha256Hash(params.response.content) : '',
-    completionTokens: params.response?.tokensUsed.completion || 0,
-    totalTokens: params.response?.tokensUsed.total || 0,
-    costUsd: params.response?.costUsd || params.approvalGate?.estimatedCost || 0,
-    latencyMs: params.response?.latencyMs || (Date.now() - params.startTime),
-    gatesTriggered: params.approvalGate?.gatesTriggered || [],
-    approvalRequired: params.approvalGate?.requiresHumanApproval || false,
-    approvedBy: null,
-    approvedAt: null,
-    status: params.status,
-    errorCode: params.error ? 'ROUTER_ERROR' : null,
-    errorMessage: params.error?.message || null,
-    requestedAt: new Date(params.startTime).toISOString(),
-    startedAt: params.response ? new Date(params.startTime + 10).toISOString() : null,
-    completedAt,
-    metadata: params.request.metadata || {},
-  };
+    for (const [provider, adapter] of this.adapters.entries()) {
+      try {
+        const health = await adapter.healthCheck();
+        healthResults.set(provider, health);
+      } catch (error) {
+        healthResults.set(provider, {
+          provider,
+          status: 'unavailable',
+          error: error instanceof Error ? error.message : 'Unknown error',
+        });
+      }
+    }
+
+    return healthResults;
+  }
 }
