@@ -1,0 +1,53 @@
+{
+  "id": "collectibles",
+  "name": "Collectibles Universe",
+  "description": "Multi-category collectibles with dynamic plugin architecture",
+  "version": "1.0.0",
+  "features": [
+    "dynamic_categories",
+    "ai_identification",
+    "ai_valuation",
+    "ai_grading",
+    "ai_authenticity",
+    "portfolio_tracking",
+    "spirits_integration"
+  ],
+  "workflows": [
+    "identification",
+    "valuation",
+    "grading",
+    "authenticity",
+    "forecast",
+    "spirit_enrichment",
+    "portfolio_report",
+    "rarity_detection",
+    "category_classifier"
+  ],
+  "api": [
+    "create_collectible",
+    "identify",
+    "value",
+    "grade",
+    "authenticity_check",
+    "get_categories"
+  ],
+  "ui": [
+    "category_hub",
+    "spirits_collection",
+    "comics_collection",
+    "vinyl_collection",
+    "portfolio_dashboard"
+  ],
+  "credits": {
+    "IDENTIFICATION": 30,
+    "VALUATION": 75,
+    "GRADING": 40,
+    "AUTHENTICITY": 60,
+    "FORECAST": 50,
+    "SPIRIT_ENRICH": 25,
+    "PORTFOLIO_REPORT": 100,
+    "RARITY_DETECT": 35,
+    "COLLECTION_SUMMARY": 45,
+    "CATEGORY_CLASSIFIER": 20
+  }
+}

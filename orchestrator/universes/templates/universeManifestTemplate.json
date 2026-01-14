@@ -1,0 +1,32 @@
+{
+  "id": "example_universe",
+  "name": "Example Universe",
+  "description": "Describe what this universe does.",
+  "version": "1.0.0",
+  "features": [
+    "ai_generation",
+    "database",
+    "portfolio",
+    "reports"
+  ],
+  "workflows": [
+    "identify_item",
+    "analyze_item",
+    "generate_report"
+  ],
+  "api": [
+    "create",
+    "update",
+    "search"
+  ],
+  "ui": [
+    "dashboard",
+    "detail_page",
+    "list_page"
+  ],
+  "credits": {
+    "IDENTIFICATION": 30,
+    "ANALYSIS": 50,
+    "REPORT": 75
+  }
+}

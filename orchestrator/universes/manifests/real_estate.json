@@ -1,0 +1,46 @@
+{
+  "id": "real_estate",
+  "name": "Real Estate Universe",
+  "description": "Complete property lifecycle management with AI-powered features",
+  "version": "1.0.0",
+  "features": [
+    "property_listings",
+    "ai_descriptions",
+    "virtual_staging",
+    "market_analysis",
+    "document_generation",
+    "agent_matching"
+  ],
+  "workflows": [
+    "property_description",
+    "market_analysis",
+    "virtual_staging",
+    "pricing_recommendation",
+    "contract_generation",
+    "neighborhood_insights",
+    "investment_analysis"
+  ],
+  "api": [
+    "create_property",
+    "search_properties",
+    "generate_description",
+    "analyze_market",
+    "match_agents"
+  ],
+  "ui": [
+    "listing_creator",
+    "market_analyzer",
+    "document_generator",
+    "property_matcher",
+    "agent_portal"
+  ],
+  "credits": {
+    "AI_DESCRIPTION": 25,
+    "VIRTUAL_STAGING": 50,
+    "MARKET_ANALYSIS": 75,
+    "PRICING_RECOMMENDATION": 30,
+    "CONTRACT_GENERATION": 100,
+    "NEIGHBORHOOD_INSIGHTS": 50,
+    "INVESTMENT_ANALYSIS": 75
+  }
+}

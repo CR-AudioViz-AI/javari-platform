@@ -1,0 +1,45 @@
+{
+  "id": "collections",
+  "name": "Collections Universe (Debt Ops)",
+  "description": "FDCPA-compliant debt collection management",
+  "version": "1.0.0",
+  "features": [
+    "account_lifecycle",
+    "segmentation",
+    "compliant_outreach",
+    "client_reporting",
+    "dashboards"
+  ],
+  "workflows": [
+    "account_intelligence",
+    "segmentation",
+    "first_notice",
+    "follow_up",
+    "settlement_offer",
+    "dispute_acknowledgement",
+    "client_report"
+  ],
+  "api": [
+    "create_account",
+    "segment_accounts",
+    "generate_outreach",
+    "client_report",
+    "supervisor_summary"
+  ],
+  "ui": [
+    "collector_dashboard",
+    "supervisor_dashboard",
+    "account_management",
+    "client_reporting"
+  ],
+  "credits": {
+    "ACCOUNT_INTELLIGENCE": 60,
+    "SEGMENTATION": 50,
+    "FIRST_NOTICE": 25,
+    "FOLLOW_UP": 30,
+    "SETTLEMENT_OFFER": 50,
+    "CLIENT_REPORT": 90,
+    "SUPERVISOR_DIGEST": 40,
+    "PAYMENT_PLAN": 50
+  }
+}
