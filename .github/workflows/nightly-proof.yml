@@ -1,0 +1,51 @@
+name: Nightly Universe Proof
+
+on:
+  schedule:
+    - cron: "0 4 * * *"  # 4 AM UTC daily
+  workflow_dispatch:  # Allow manual trigger
+
+jobs:
+  run-proof:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run universe verification
+        run: npm run proof
+
+      - name: Upload proof results
+        uses: actions/upload-artifact@v4
+        with:
+          name: proof-results
+          path: proof-results.json
+          retention-days: 30
+
+      - name: Commit proof results
+        run: |
+          git config user.email "proof-bot@javari.ai"
+          git config user.name "Javari Proof Bot"
+          git add proof-results.json
+          git commit -m "chore: nightly universe proof update [skip ci]" || echo "No changes"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create summary
+        run: |
+          echo "## Universe Verification Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          cat proof-results.json | jq -r '"**Total Universes:** \(.totalUniverses)"' >> $GITHUB_STEP_SUMMARY
+          cat proof-results.json | jq -r '"**Passed:** \(.passedUniverses)"' >> $GITHUB_STEP_SUMMARY
+          cat proof-results.json | jq -r '"**Failed:** \(.failedUniverses)"' >> $GITHUB_STEP_SUMMARY
