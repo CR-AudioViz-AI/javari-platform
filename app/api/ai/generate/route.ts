@@ -1,13 +1,12 @@
 /**
  * Multi-AI Orchestrator - Generate API Endpoint
- * Phase A: Foundation Layer
+ * Phase B: Enhanced with multi-provider support
  * 
  * POST /api/ai/generate
- * Handles AI generation requests through the orchestrator
+ * Handles AI generation requests through the enhanced orchestrator
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { OpenAIAdapter } from '@/orchestrator/adapters/openai';
 import { RouterEngine } from '@/orchestrator/router/router';
 import { v4 as uuidv4 } from 'uuid';
 import type { LLMGenerationRequest } from '@/orchestrator/types/llm-adapter';
@@ -19,14 +18,12 @@ let router: RouterEngine | null = null;
 function getRouter(): RouterEngine {
   if (!router) {
     router = new RouterEngine({
-      defaultProvider: 'openai',
+      routingStrategy: 'cheapest', // or 'fastest', 'specified'
       autoApproveThresholdUSD: 1.0,
       enableAudit: true,
+      enableFallback: true,
+      maxRetries: 2,
     });
-
-    // Register OpenAI adapter
-    const openaiAdapter = new OpenAIAdapter('gpt-4');
-    router.registerAdapter('openai', openaiAdapter);
   }
   return router;
 }
@@ -43,9 +40,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Extract user ID (in Phase A, use mock user ID)
-    // TODO Phase B: Get from auth session
-    const userId = body.userId || 'phase-a-test-user';
+    // Extract user ID (in Phase B, could come from auth)
+    const userId = body.userId || 'default-user';
 
     // Build generation request
     const generationRequest: LLMGenerationRequest = {
@@ -69,7 +65,11 @@ export async function POST(request: NextRequest) {
 
     // Route through orchestrator
     const router = getRouter();
-    const result = await router.route(generationRequest, metadata);
+    const result = await router.route(
+      generationRequest, 
+      metadata,
+      body.provider // Optional: specify preferred provider
+    );
 
     // Return result
     if (result.status === 'completed') {
@@ -91,7 +91,7 @@ export async function POST(request: NextRequest) {
         reason: result.error,
         provider: result.provider,
         model: result.model,
-      }, { status: 402 }); // 402 Payment Required (repurposed for approval required)
+      }, { status: 402 });
     } else {
       return NextResponse.json({
         success: false,
@@ -113,7 +113,6 @@ export async function POST(request: NextRequest) {
   }
 }
 
-// OPTIONS for CORS
 export async function OPTIONS(request: NextRequest) {
   return new NextResponse(null, {
     status: 200,

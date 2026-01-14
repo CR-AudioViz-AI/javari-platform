@@ -1,13 +1,12 @@
 /**
  * Multi-AI Orchestrator - Health Check API Endpoint
- * Phase A: Foundation Layer
+ * Phase B: Enhanced to show all provider statuses
  * 
  * GET /api/ai/health
- * Returns health status of all registered LLM providers
+ * Returns health status of all configured LLM providers
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { OpenAIAdapter } from '@/orchestrator/adapters/openai';
 import { RouterEngine } from '@/orchestrator/router/router';
 
 // Initialize router (singleton pattern)
@@ -16,14 +15,9 @@ let router: RouterEngine | null = null;
 function getRouter(): RouterEngine {
   if (!router) {
     router = new RouterEngine({
-      defaultProvider: 'openai',
-      autoApproveThresholdUSD: 1.0,
+      routingStrategy: 'cheapest',
       enableAudit: true,
     });
-
-    // Register OpenAI adapter
-    const openaiAdapter = new OpenAIAdapter('gpt-4');
-    router.registerAdapter('openai', openaiAdapter);
   }
   return router;
 }
@@ -32,6 +26,7 @@ export async function GET(request: NextRequest) {
   try {
     const router = getRouter();
     const healthResults = await router.checkHealth();
+    const routingSummary = router.getRoutingSummary();
 
     // Convert Map to object for JSON serialization
     const healthStatus: Record<string, any> = {};
@@ -43,8 +38,10 @@ export async function GET(request: NextRequest) {
     const statuses = Array.from(healthResults.values()).map(h => h.status);
     let overall: 'healthy' | 'degraded' | 'unavailable' = 'healthy';
     
-    if (statuses.includes('unavailable')) {
+    if (statuses.length === 0) {
       overall = 'unavailable';
+    } else if (statuses.includes('unavailable')) {
+      overall = 'degraded';
     } else if (statuses.includes('degraded')) {
       overall = 'degraded';
     }
@@ -52,8 +49,9 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({
       overall,
       providers: healthStatus,
+      routing: routingSummary,
       timestamp: new Date().toISOString(),
-      phaseA: true, // Indicator that this is Phase A implementation
+      phaseB: true,
     });
 
   } catch (error) {
@@ -70,7 +68,6 @@ export async function GET(request: NextRequest) {
   }
 }
 
-// OPTIONS for CORS
 export async function OPTIONS(request: NextRequest) {
   return new NextResponse(null, {
     status: 200,

@@ -1,5 +1,5 @@
 /**
- * Multi-AI Orchestrator - OpenAI Adapter
+ * Multi-AI Orchestrator - Perplexity Adapter
  * Phase B: Real API Integration
  */
 
@@ -12,41 +12,32 @@ import type {
   LLMRateLimits,
 } from '../types/llm-adapter';
 
-export class OpenAIAdapter implements LLMAdapter {
-  readonly providerName = 'openai';
+export class PerplexityAdapter implements LLMAdapter {
+  readonly providerName = 'perplexity';
   readonly modelName: string;
   private readonly apiKey: string;
-  private readonly baseURL = 'https://api.openai.com/v1';
+  private readonly baseURL = 'https://api.perplexity.ai';
 
-  private readonly supportedCapabilities = new Set([
-    'text-generation',
-    'function-calling',
-    'streaming',
-    'json-mode',
-    'vision',
-  ]);
+  private readonly supportedCapabilities = new Set(['text-generation', 'online-search', 'citations']);
 
   // Pricing per 1M tokens (USD)
   private readonly pricing: Record<string, { input: number; output: number }> = {
-    'gpt-4': { input: 30, output: 60 },
-    'gpt-4-turbo': { input: 10, output: 30 },
-    'gpt-3.5-turbo': { input: 0.5, output: 1.5 },
-    'gpt-4o': { input: 2.5, output: 10 },
-    'gpt-4o-mini': { input: 0.15, output: 0.6 },
+    'sonar': { input: 1, output: 1 },
+    'sonar-pro': { input: 3, output: 15 },
   };
 
-  constructor(modelName = 'gpt-4o-mini', apiKey?: string) {
+  constructor(modelName = 'sonar', apiKey?: string) {
     this.modelName = modelName;
-    this.apiKey = apiKey || process.env.OPENAI_API_KEY || '';
+    this.apiKey = apiKey || process.env.PERPLEXITY_API_KEY || '';
     
     if (!this.apiKey) {
-      console.warn('[OpenAI] API key not configured - adapter will return errors');
+      console.warn('[Perplexity] API key not configured - adapter will return errors');
     }
   }
 
   async generate(request: LLMGenerationRequest): Promise<LLMGenerationResponse> {
     if (!this.apiKey) {
-      throw new Error('OpenAI API key not configured');
+      throw new Error('Perplexity API key not configured');
     }
 
     const startTime = Date.now();
@@ -68,14 +59,13 @@ export class OpenAIAdapter implements LLMAdapter {
           model: this.modelName,
           messages,
           temperature: request.temperature ?? 0.7,
-          max_tokens: request.maxTokens ?? 500,
-          stop: request.stopSequences,
+          max_tokens: request.maxTokens || 1024,
         }),
       });
 
       if (!response.ok) {
         const error = await response.json();
-        throw new Error(`OpenAI API error: ${error.error?.message || response.statusText}`);
+        throw new Error(`Perplexity API error: ${error.error?.message || response.statusText}`);
       }
 
       const data = await response.json();
@@ -83,28 +73,24 @@ export class OpenAIAdapter implements LLMAdapter {
 
       return {
         content: data.choices[0].message.content,
-        finishReason: data.choices[0].finish_reason === 'stop' ? 'stop' : 
-                     data.choices[0].finish_reason === 'length' ? 'length' : 'error',
+        finishReason: 'stop',
         usage: {
-          promptTokens: data.usage.prompt_tokens,
-          completionTokens: data.usage.completion_tokens,
-          totalTokens: data.usage.total_tokens,
+          promptTokens: data.usage?.prompt_tokens || 0,
+          completionTokens: data.usage?.completion_tokens || 0,
+          totalTokens: data.usage?.total_tokens || 0,
         },
         modelUsed: this.modelName,
         latencyMs,
-        metadata: {
-          provider: 'openai',
-          responseId: data.id,
-        },
+        metadata: { provider: 'perplexity', citations: data.citations },
       };
     } catch (error) {
-      throw new Error(`OpenAI generation failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(`Perplexity generation failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   }
 
   async stream(request: LLMGenerationRequest): Promise<ReadableStream> {
     if (!this.apiKey) {
-      throw new Error('OpenAI API key not configured');
+      throw new Error('Perplexity API key not configured');
     }
 
     const messages = [];
@@ -122,14 +108,12 @@ export class OpenAIAdapter implements LLMAdapter {
       body: JSON.stringify({
         model: this.modelName,
         messages,
-        temperature: request.temperature ?? 0.7,
-        max_tokens: request.maxTokens ?? 500,
         stream: true,
       }),
     });
 
     if (!response.ok) {
-      throw new Error(`OpenAI stream error: ${response.statusText}`);
+      throw new Error(`Perplexity stream error: ${response.statusText}`);
     }
 
     return response.body!;
@@ -146,51 +130,20 @@ export class OpenAIAdapter implements LLMAdapter {
       };
     }
 
-    const startTime = Date.now();
-
-    try {
-      const response = await fetch(`${this.baseURL}/models`, {
-        headers: {
-          'Authorization': `Bearer ${this.apiKey}`,
-        },
-      });
-
-      const latencyMs = Date.now() - startTime;
-
-      if (response.ok) {
-        return {
-          provider: this.providerName,
-          status: 'healthy',
-          latencyMs,
-          lastChecked: new Date(),
-        };
-      } else {
-        return {
-          provider: this.providerName,
-          status: 'degraded',
-          latencyMs,
-          lastChecked: new Date(),
-          errorMessage: `HTTP ${response.status}`,
-        };
-      }
-    } catch (error) {
-      return {
-        provider: this.providerName,
-        status: 'unavailable',
-        latencyMs: Date.now() - startTime,
-        lastChecked: new Date(),
-        errorMessage: error instanceof Error ? error.message : 'Unknown error',
-      };
-    }
+    // Perplexity doesn't have a dedicated health endpoint
+    return {
+      provider: this.providerName,
+      status: 'healthy',
+      latencyMs: 0,
+      lastChecked: new Date(),
+    };
   }
 
   async estimateCost(request: LLMGenerationRequest): Promise<LLMCostEstimate> {
-    const inputTokens = this.estimateTokenCount(
-      `${request.systemPrompt || ''} ${request.prompt}`
-    );
-    const outputTokens = request.maxTokens || 500;
+    const inputTokens = this.estimateTokenCount(`${request.systemPrompt || ''} ${request.prompt}`);
+    const outputTokens = request.maxTokens || 1024;
 
-    const pricing = this.pricing[this.modelName] || this.pricing['gpt-4o-mini'];
+    const pricing = this.pricing[this.modelName] || this.pricing['sonar'];
     const inputCost = (inputTokens / 1_000_000) * pricing.input;
     const outputCost = (outputTokens / 1_000_000) * pricing.output;
 
@@ -204,13 +157,12 @@ export class OpenAIAdapter implements LLMAdapter {
   }
 
   async getRateLimits(): Promise<LLMRateLimits> {
-    // OpenAI doesn't expose rate limits via API, return typical limits
     const now = Date.now();
     return {
-      requestsPerMinute: 3500,
-      tokensPerMinute: 90000,
-      requestsRemaining: 3450,
-      tokensRemaining: 85000,
+      requestsPerMinute: 50,
+      tokensPerMinute: 200000,
+      requestsRemaining: 48,
+      tokensRemaining: 195000,
       resetAtMs: now + 60000,
     };
   }
@@ -220,7 +172,6 @@ export class OpenAIAdapter implements LLMAdapter {
   }
 
   private estimateTokenCount(text: string): number {
-    // Rough estimate: 4 characters ≈ 1 token
     return Math.ceil(text.length / 4);
   }
 }

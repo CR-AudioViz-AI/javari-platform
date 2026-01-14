@@ -70,6 +70,11 @@ export interface LLMAdapter {
   generate(request: LLMGenerationRequest): Promise<LLMGenerationResponse>;
   
   /**
+   * Stream completion from the LLM (Phase B)
+   */
+  stream(request: LLMGenerationRequest): Promise<ReadableStream>;
+  
+  /**
    * Check provider health and availability
    */
   healthCheck(): Promise<LLMHealthStatus>;

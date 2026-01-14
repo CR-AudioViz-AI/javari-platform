@@ -1,5 +1,5 @@
 /**
- * Multi-AI Orchestrator - OpenAI Adapter
+ * Multi-AI Orchestrator - Anthropic Claude Adapter
  * Phase B: Real API Integration
  */
 
@@ -12,124 +12,119 @@ import type {
   LLMRateLimits,
 } from '../types/llm-adapter';
 
-export class OpenAIAdapter implements LLMAdapter {
-  readonly providerName = 'openai';
+export class AnthropicAdapter implements LLMAdapter {
+  readonly providerName = 'anthropic';
   readonly modelName: string;
   private readonly apiKey: string;
-  private readonly baseURL = 'https://api.openai.com/v1';
+  private readonly baseURL = 'https://api.anthropic.com/v1';
 
   private readonly supportedCapabilities = new Set([
     'text-generation',
-    'function-calling',
     'streaming',
-    'json-mode',
     'vision',
+    'long-context',
   ]);
 
   // Pricing per 1M tokens (USD)
   private readonly pricing: Record<string, { input: number; output: number }> = {
-    'gpt-4': { input: 30, output: 60 },
-    'gpt-4-turbo': { input: 10, output: 30 },
-    'gpt-3.5-turbo': { input: 0.5, output: 1.5 },
-    'gpt-4o': { input: 2.5, output: 10 },
-    'gpt-4o-mini': { input: 0.15, output: 0.6 },
+    'claude-3-opus': { input: 15, output: 75 },
+    'claude-3-sonnet': { input: 3, output: 15 },
+    'claude-3-haiku': { input: 0.25, output: 1.25 },
+    'claude-3-5-sonnet': { input: 3, output: 15 },
+    'claude-3-5-haiku': { input: 0.8, output: 4 },
   };
 
-  constructor(modelName = 'gpt-4o-mini', apiKey?: string) {
+  constructor(modelName = 'claude-3-5-haiku-20241022', apiKey?: string) {
     this.modelName = modelName;
-    this.apiKey = apiKey || process.env.OPENAI_API_KEY || '';
+    this.apiKey = apiKey || process.env.ANTHROPIC_API_KEY || '';
     
     if (!this.apiKey) {
-      console.warn('[OpenAI] API key not configured - adapter will return errors');
+      console.warn('[Anthropic] API key not configured - adapter will return errors');
     }
   }
 
   async generate(request: LLMGenerationRequest): Promise<LLMGenerationResponse> {
     if (!this.apiKey) {
-      throw new Error('OpenAI API key not configured');
+      throw new Error('Anthropic API key not configured');
     }
 
     const startTime = Date.now();
 
     try {
-      const messages = [];
-      if (request.systemPrompt) {
-        messages.push({ role: 'system', content: request.systemPrompt });
-      }
-      messages.push({ role: 'user', content: request.prompt });
-
-      const response = await fetch(`${this.baseURL}/chat/completions`, {
+      const response = await fetch(`${this.baseURL}/messages`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${this.apiKey}`,
+          'x-api-key': this.apiKey,
+          'anthropic-version': '2023-06-01',
         },
         body: JSON.stringify({
           model: this.modelName,
-          messages,
+          messages: [
+            {
+              role: 'user',
+              content: request.prompt,
+            },
+          ],
+          system: request.systemPrompt,
+          max_tokens: request.maxTokens || 1024,
           temperature: request.temperature ?? 0.7,
-          max_tokens: request.maxTokens ?? 500,
-          stop: request.stopSequences,
+          stop_sequences: request.stopSequences,
         }),
       });
 
       if (!response.ok) {
         const error = await response.json();
-        throw new Error(`OpenAI API error: ${error.error?.message || response.statusText}`);
+        throw new Error(`Anthropic API error: ${error.error?.message || response.statusText}`);
       }
 
       const data = await response.json();
       const latencyMs = Date.now() - startTime;
 
       return {
-        content: data.choices[0].message.content,
-        finishReason: data.choices[0].finish_reason === 'stop' ? 'stop' : 
-                     data.choices[0].finish_reason === 'length' ? 'length' : 'error',
+        content: data.content[0].text,
+        finishReason: data.stop_reason === 'end_turn' ? 'stop' : 
+                     data.stop_reason === 'max_tokens' ? 'length' : 'error',
         usage: {
-          promptTokens: data.usage.prompt_tokens,
-          completionTokens: data.usage.completion_tokens,
-          totalTokens: data.usage.total_tokens,
+          promptTokens: data.usage.input_tokens,
+          completionTokens: data.usage.output_tokens,
+          totalTokens: data.usage.input_tokens + data.usage.output_tokens,
         },
         modelUsed: this.modelName,
         latencyMs,
         metadata: {
-          provider: 'openai',
+          provider: 'anthropic',
           responseId: data.id,
         },
       };
     } catch (error) {
-      throw new Error(`OpenAI generation failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(`Anthropic generation failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   }
 
   async stream(request: LLMGenerationRequest): Promise<ReadableStream> {
     if (!this.apiKey) {
-      throw new Error('OpenAI API key not configured');
+      throw new Error('Anthropic API key not configured');
     }
 
-    const messages = [];
-    if (request.systemPrompt) {
-      messages.push({ role: 'system', content: request.systemPrompt });
-    }
-    messages.push({ role: 'user', content: request.prompt });
-
-    const response = await fetch(`${this.baseURL}/chat/completions`, {
+    const response = await fetch(`${this.baseURL}/messages`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${this.apiKey}`,
+        'x-api-key': this.apiKey,
+        'anthropic-version': '2023-06-01',
       },
       body: JSON.stringify({
         model: this.modelName,
-        messages,
-        temperature: request.temperature ?? 0.7,
-        max_tokens: request.maxTokens ?? 500,
+        messages: [{ role: 'user', content: request.prompt }],
+        system: request.systemPrompt,
+        max_tokens: request.maxTokens || 1024,
         stream: true,
       }),
     });
 
     if (!response.ok) {
-      throw new Error(`OpenAI stream error: ${response.statusText}`);
+      throw new Error(`Anthropic stream error: ${response.statusText}`);
     }
 
     return response.body!;
@@ -149,10 +144,19 @@ export class OpenAIAdapter implements LLMAdapter {
     const startTime = Date.now();
 
     try {
-      const response = await fetch(`${this.baseURL}/models`, {
+      // Anthropic doesn't have a dedicated health endpoint, so we make a minimal request
+      const response = await fetch(`${this.baseURL}/messages`, {
+        method: 'POST',
         headers: {
-          'Authorization': `Bearer ${this.apiKey}`,
+          'Content-Type': 'application/json',
+          'x-api-key': this.apiKey,
+          'anthropic-version': '2023-06-01',
         },
+        body: JSON.stringify({
+          model: this.modelName,
+          messages: [{ role: 'user', content: 'ping' }],
+          max_tokens: 1,
+        }),
       });
 
       const latencyMs = Date.now() - startTime;
@@ -188,9 +192,10 @@ export class OpenAIAdapter implements LLMAdapter {
     const inputTokens = this.estimateTokenCount(
       `${request.systemPrompt || ''} ${request.prompt}`
     );
-    const outputTokens = request.maxTokens || 500;
+    const outputTokens = request.maxTokens || 1024;
 
-    const pricing = this.pricing[this.modelName] || this.pricing['gpt-4o-mini'];
+    const pricingKey = Object.keys(this.pricing).find(k => this.modelName.includes(k)) || 'claude-3-5-haiku';
+    const pricing = this.pricing[pricingKey];
     const inputCost = (inputTokens / 1_000_000) * pricing.input;
     const outputCost = (outputTokens / 1_000_000) * pricing.output;
 
@@ -204,13 +209,12 @@ export class OpenAIAdapter implements LLMAdapter {
   }
 
   async getRateLimits(): Promise<LLMRateLimits> {
-    // OpenAI doesn't expose rate limits via API, return typical limits
     const now = Date.now();
     return {
-      requestsPerMinute: 3500,
-      tokensPerMinute: 90000,
-      requestsRemaining: 3450,
-      tokensRemaining: 85000,
+      requestsPerMinute: 4000,
+      tokensPerMinute: 400000,
+      requestsRemaining: 3950,
+      tokensRemaining: 395000,
       resetAtMs: now + 60000,
     };
   }
@@ -220,7 +224,6 @@ export class OpenAIAdapter implements LLMAdapter {
   }
 
   private estimateTokenCount(text: string): number {
-    // Rough estimate: 4 characters ≈ 1 token
     return Math.ceil(text.length / 4);
   }
 }
