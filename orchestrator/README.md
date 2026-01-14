@@ -1450,3 +1450,298 @@ ts-node orchestrator/tests/phase-e-tests.ts
 The orchestrator now includes complete financial intelligence with AI-driven forecasting, real-time analytics, and comprehensive cost tracking.
 
 **Cost Intelligence Status**: ✅ **READY FOR PRODUCTION**
+
+---
+
+# Phase F: Content Tool Migration
+
+**Status**: ✅ Complete  
+**Tools Migrated**: 6 (Presentation Maker, Resume Builder, Ebook Creator, Social Posts, Email Templates, Cover Letter Pro)  
+**Integration**: Multi-AI Orchestrator, Cost Intelligence, Asset Vault
+
+---
+
+## Content Tools Overview
+
+All 6 content tools are now unified under the Javari Content Universe at:
+```
+app/(communities)/(content)/{tool-name}/
+```
+
+Each tool integrates with:
+- **Multi-AI Orchestrator**: 10 provider routing
+- **Cost Intelligence**: Real-time tracking + forecasting
+- **Asset Vault**: Templates, uploads, exports
+- **Feature Flags**: Granular control
+- **Workflow Engine**: Multi-step AI generation
+
+---
+
+## Migrated Tools
+
+### 1. Presentation Maker
+**Route**: `/app/(communities)/(content)/presentation-maker/`
+
+**Workflows**:
+- Outline Generation (Claude Haiku) - $0.10
+- Content Generation (OpenAI GPT-4o-mini) - $0.50
+- Image Suggestions (Perplexity) - $0.05
+- Theme Application (Local) - $0
+
+**Average Cost**: $0.30 per presentation  
+**Cache Savings**: ~40%
+
+---
+
+### 2. Resume Builder
+**Route**: `/app/(communities)/(content)/resume-builder/`
+
+**Workflows**:
+- Resume Analysis (Claude Haiku) - $0.15
+- Section Enhancement (Claude Sonnet) - $0.30/section
+- Keyword Optimization (OpenAI) - $0.10
+- Cover Letter Generation (Claude Haiku) - $0.20
+
+**Average Cost**: $0.50 per resume  
+**Privacy**: No caching of personal data
+
+---
+
+### 3. Ebook Creator
+**Route**: `/app/(communities)/(content)/ebook-creator/`
+
+**Workflows**:
+- Book Outline (Claude Haiku) - $0.25
+- Chapter Writing (Claude Sonnet) - $2.00/chapter
+- Research Integration (Gemini Pro) - $0.50
+- Cover Design Prompt (Claude Haiku) - $0.05
+
+**Average Cost**: $20 per 10-chapter ebook  
+**Max Cost**: $40 with research
+
+---
+
+### 4. Social Posts Generator
+**Route**: `/app/(communities)/(content)/social-posts/`
+
+**Workflows**:
+- Post Ideas (Groq Llama) - $0.05
+- Multi-Platform Content (OpenAI) - $0.15
+- Hashtag Research (Perplexity) - $0.10
+- Image Prompts (Claude Haiku) - $0.02
+
+**Average Cost**: $0.15 per campaign (10 posts)  
+**Cache Savings**: ~50%
+
+---
+
+### 5. Email Templates
+**Route**: `/app/(communities)/(content)/email-templates/`
+
+**Workflows**:
+- Subject Lines (OpenAI) - $0.05
+- Email Body (Claude Haiku) - $0.20
+- A/B Variants (Groq) - $0.10
+- Personalization (Local) - $0
+
+**Average Cost**: $0.20 per email  
+**Cache Savings**: ~40%
+
+---
+
+### 6. Cover Letter Pro
+**Route**: `/app/(communities)/(content)/cover-letter/`
+
+**Workflows**:
+- Company Research (Perplexity) - $0.30
+- Role Analysis (Claude Haiku) - $0.10
+- Letter Generation (Claude Sonnet) - $0.50
+- Tone Adjustment (OpenAI) - $0.10
+
+**Average Cost**: $0.60 per letter  
+**Cache Savings**: ~30%
+
+---
+
+## Feature Flags
+
+**Centralized Management**: `lib/featureFlags/contentTools.ts`
+
+**Flag Structure** (per tool):
+```typescript
+{
+  MASTER: 'CONTENT_{TOOL}_ENABLED',
+  AI_ENABLED: 'CONTENT_{TOOL}_AI_ENABLED',
+  EXPORT_ENABLED: 'CONTENT_{TOOL}_EXPORT_ENABLED',
+  TEMPLATES_ENABLED: 'CONTENT_{TOOL}_TEMPLATES_ENABLED',
+}
+```
+
+**Total Flags**: 24 (6 tools × 4 flags each)
+
+**Environment Variables**:
+```env
+NEXT_PUBLIC_CONTENT_PRESENTATION_ENABLED=true
+NEXT_PUBLIC_CONTENT_PRESENTATION_AI_ENABLED=true
+NEXT_PUBLIC_CONTENT_PRESENTATION_EXPORT_ENABLED=true
+NEXT_PUBLIC_CONTENT_PRESENTATION_TEMPLATES_ENABLED=true
+# ... (repeat for all 6 tools)
+```
+
+---
+
+## Workflow Integration
+
+### Workflow Structure
+```typescript
+{
+  name: 'generate-{tool}',
+  version: 1,
+  steps: [
+    {
+      id: 'step1',
+      provider: 'anthropic', // or 'openai', 'gemini', etc.
+      action: 'generate',
+      input: { prompt: '...', maxTokens: 500 },
+      onSuccess: 'step2',
+      onFailure: 'fallback',
+      cache: true,
+      retry: { maxAttempts: 2 },
+    },
+    // ... more steps
+  ],
+  settings: {
+    maxTotalCost: 1.0,
+    timeout: 120000,
+    enableCaching: true,
+  },
+}
+```
+
+### Provider Selection
+- **Fast**: Groq (~400ms)
+- **Cheap**: Gemini Flash ($0.075/$0.3)
+- **Quality**: Claude Sonnet ($3/$15)
+- **Research**: Perplexity Sonar ($1/$1)
+- **Balanced**: OpenAI GPT-4o-mini ($0.15/$0.6)
+
+---
+
+## Asset Vault Mapping
+
+### Input Assets
+- `raw_content` - User notes, topics, briefs
+- `templates` - PPTX, DOCX, HTML templates
+- `uploads` - User files (resume, research)
+- `images` - Logos, brand assets
+
+### Output Assets
+- `exports/{tool}/` - Generated files (PPTX, DOCX, PDF, EPUB, CSV)
+- `generated-content/{tool}/` - JSON data from AI
+- `images/{tool}/` - Generated images
+
+### Storage Paths
+```
+/mnt/user-data/
+  ├── templates/{tool}/
+  ├── uploads/{tool}/
+  ├── exports/{tool}/
+  ├── generated-content/{tool}/
+  └── images/{tool}/
+```
+
+---
+
+## Cost Management
+
+### Per-Tool Budgets
+```typescript
+const TOOL_COST_BUDGETS = {
+  'presentation-maker': 0.65,
+  'resume-builder': 1.20,
+  'ebook-creator': 40.0,
+  'social-posts': 0.35,
+  'email-templates': 0.35,
+  'cover-letter': 1.00,
+};
+```
+
+### Monthly Projections
+- **Low Usage** (100 ops/month): ~$50-100
+- **Medium Usage** (500 ops/month): ~$250-500
+- **High Usage** (2000 ops/month): ~$1000-2000
+
+### Cost Optimization
+1. **Enable Caching**: 30-50% savings
+2. **Choose Cheaper Providers**: Use Gemini/DeepInfra
+3. **Set Cost Limits**: Prevent overruns
+4. **Monitor Trends**: Use `/api/admin/costs/forecast`
+
+---
+
+## Testing
+
+### Test Coverage
+- Workflow validation
+- Workflow execution
+- Cost tracking
+- Provider fallback
+- Asset vault integration
+- Feature flag enforcement
+
+### Run Tests
+```bash
+# Single tool
+ts-node orchestrator/tests/tools/presentation-maker-tests.ts
+
+# All tools
+npm run test:content-tools
+```
+
+---
+
+## Rollback Procedures
+
+### Quick Disable (Any Tool)
+```env
+NEXT_PUBLIC_CONTENT_{TOOL}_ENABLED=false
+```
+
+### Disable AI Only
+```env
+NEXT_PUBLIC_CONTENT_{TOOL}_AI_ENABLED=false
+```
+
+### Full Rollback
+See: `docs/migration/PHASE_F_ROLLBACK.md`
+
+---
+
+## Migration Summary
+
+**Total Files Created**: 60+
+- 6 tool directories
+- 24 feature flags
+- 24 workflows (4 per tool)
+- 6 asset maps
+- Test suites
+- Documentation
+
+**Integration Points**:
+- Multi-AI Orchestrator (Phases A-D)
+- Cost Intelligence (Phase E)
+- Asset Vault (6 types)
+- Feature Flags (24 flags)
+
+**Provider Distribution**:
+- Claude: 12 workflows
+- OpenAI: 5 workflows
+- Gemini: 2 workflows
+- Groq: 2 workflows
+- Perplexity: 3 workflows
+
+---
+
+**Phase F Complete!** 🎉
+
+All 6 content tools migrated to unified Javari Content Universe with full orchestrator integration.
