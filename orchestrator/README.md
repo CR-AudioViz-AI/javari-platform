@@ -1745,3 +1745,300 @@ See: `docs/migration/PHASE_F_ROLLBACK.md`
 **Phase F Complete!** 🎉
 
 All 6 content tools migrated to unified Javari Content Universe with full orchestrator integration.
+
+---
+
+# Phase G: Community Engine
+
+**Status**: ✅ Complete  
+**Features**: Communities, Neighborhoods, Projects, Activity Feeds, RBAC, Content Integration
+
+---
+
+## Community Model
+
+### Architecture
+```
+Communities (Top Level)
+├── Members (with roles)
+├── Neighborhoods (sub-spaces)
+├── Projects
+├── Activity Feed
+└── Content Tools (integrated)
+```
+
+### Database Schema
+
+**5 New Tables**:
+1. **communities** - Top-level organization
+2. **community_members** - Membership with roles
+3. **neighborhoods** - Sub-spaces within communities
+4. **projects** - Projects scoped to communities/neighborhoods
+5. **activity_log** - Complete activity tracking
+
+---
+
+## Roles & Permissions
+
+### Role Hierarchy
+```
+Owner > Admin > Member > Guest
+```
+
+### Permission Matrix
+
+| Permission | Owner | Admin | Member | Guest |
+|-----------|-------|-------|--------|-------|
+| Create Content | ✅ | ✅ | ✅ | ❌ |
+| Run Workflows | ✅ | ✅ | ✅ | ❌ |
+| Invite Members | ✅ | ✅ | ❌ | ❌ |
+| Manage Settings | ✅ | ✅ | ❌ | ❌ |
+| Manage Projects | ✅ | ✅ | ✅ | ❌ |
+| Manage Neighborhoods | ✅ | ✅ | ❌ | ❌ |
+| View Activity | ✅ | ✅ | ✅ | ✅ |
+| Export Content | ✅ | ✅ | ✅ | ❌ |
+| Delete Content | ✅ | ✅ | ❌ | ❌ |
+| Manage Roles | ✅ | ❌ | ❌ | ❌ |
+
+### RBAC Implementation
+**File**: `orchestrator/security/communityRoles.ts`
+
+```typescript
+import { canCreateContent, canManageSettings } from '@/orchestrator/security/communityRoles';
+
+// Check permissions
+if (!canCreateContent(userRole)) {
+  throw new Error('Insufficient permissions');
+}
+```
+
+---
+
+## Activity Feed
+
+### Tracked Events
+- Workflow runs
+- Content creation
+- Content exports
+- Member actions (join, leave, role change)
+- Project creation/updates
+- Neighborhood creation/updates
+
+### Activity Tracking
+**File**: `orchestrator/analytics/activity.ts`
+
+```typescript
+import { activityTracker } from '@/orchestrator/analytics/activity';
+
+// Record workflow run
+await activityTracker.recordWorkflowRun(
+  communityId,
+  userId,
+  workflowId,
+  workflowName,
+  cost
+);
+
+// Get community activity
+const activities = await activityTracker.getActivityForCommunity(communityId, 50);
+```
+
+---
+
+## Community Content Tools
+
+### Integration Architecture
+All 6 content tools from Phase F are integrated with community context:
+
+**Path Structure**:
+```
+/communities/{communityId}/content/{tool-name}/
+```
+
+**Example**:
+```
+/communities/abc-123/content/presentation-maker/
+```
+
+### Community-Scoped Workflows
+Each workflow execution includes:
+- `communityId` - Links to community
+- `userId` - User who triggered
+- Cost tracking per community
+- Activity logging
+- Community asset vault paths
+
+### Content Tools Available
+1. **Presentation Maker**
+2. **Resume Builder**
+3. **Ebook Creator**
+4. **Social Posts Generator**
+5. **Email Templates**
+6. **Cover Letter Pro**
+
+---
+
+## Neighborhoods
+
+### Purpose
+Sub-spaces within communities for organization and content categorization.
+
+### Features
+- Scoped to parent community
+- Can contain projects
+- Optional content organization
+- Separate activity tracking
+
+### API
+```typescript
+// Create neighborhood
+POST /api/communities/{id}/neighborhoods/create
+
+// List neighborhoods
+GET /api/communities/{id}/neighborhoods
+
+// Update neighborhood
+PUT /api/communities/{id}/neighborhoods/{nid}/update
+```
+
+---
+
+## Projects
+
+### Structure
+```typescript
+interface Project {
+  id: string;
+  communityId: string;
+  neighborhoodId?: string; // Optional
+  name: string;
+  description: string;
+  createdBy: string;
+  status: 'active' | 'archived' | 'completed';
+  metadata: Record<string, any>;
+}
+```
+
+### API
+```typescript
+// Create project
+POST /api/communities/{id}/projects/create
+
+// List projects
+GET /api/communities/{id}/projects
+
+// Update project
+PUT /api/communities/{id}/projects/{pid}/update
+```
+
+---
+
+## Community Asset Vault
+
+### Path Structure
+```
+/mnt/user-data/communities/{communityId}/{tool}/{assetType}/{year}/{month}/
+```
+
+**Example Paths**:
+```
+/mnt/user-data/communities/abc-123/presentation-maker/exports/2026/01/
+/mnt/user-data/communities/abc-123/resume-builder/templates/
+/mnt/user-data/communities/xyz-456/ebook-creator/uploads/
+```
+
+### Asset Resolver
+**File**: `orchestrator/assets/communityResolver.ts`
+
+```typescript
+import { resolveCommunityAssetPath } from '@/orchestrator/assets/communityResolver';
+
+const path = resolveCommunityAssetPath({
+  communityId: 'abc-123',
+  tool: 'presentation-maker',
+  assetType: 'exports',
+  year: 2026,
+  month: 1,
+});
+// Returns: /mnt/user-data/communities/abc-123/presentation-maker/exports/2026/01
+```
+
+---
+
+## API Routes
+
+### Community Management
+- `POST /api/communities/create` - Create community
+- `PUT /api/communities/{id}/update` - Update community
+- `GET /api/communities/{id}` - Get community details
+
+### Member Management
+- `POST /api/communities/{id}/members/add` - Add member
+- `POST /api/communities/{id}/members/remove` - Remove member
+- `PUT /api/communities/{id}/members/role` - Update member role
+
+### Activity
+- `GET /api/communities/{id}/activity` - Get activity feed
+
+### Projects
+- `GET /api/communities/{id}/projects` - List projects
+- `POST /api/communities/{id}/projects/create` - Create project
+- `PUT /api/communities/{id}/projects/{pid}/update` - Update project
+
+---
+
+## UI Routes
+
+### Community Pages
+```
+/communities/{communityId}/ - Home
+/communities/{communityId}/members - Member list
+/communities/{communityId}/settings - Settings
+/communities/{communityId}/activity - Activity feed
+/communities/{communityId}/projects - Projects list
+/communities/{communityId}/neighborhoods - Neighborhoods
+```
+
+### Content Tools (Community Context)
+```
+/communities/{communityId}/content/presentation-maker/
+/communities/{communityId}/content/resume-builder/
+/communities/{communityId}/content/ebook-creator/
+/communities/{communityId}/content/social-posts/
+/communities/{communityId}/content/email-templates/
+/communities/{communityId}/content/cover-letter/
+```
+
+---
+
+## Testing
+
+### Test Coverage
+- Role permission validation
+- Asset path resolution
+- Activity tracking
+- Community creation
+- Member management
+- Project creation
+
+### Run Tests
+```bash
+ts-node orchestrator/tests/phase-g-tests.ts
+```
+
+---
+
+## Phase G Metrics
+
+- **Database Tables**: 5
+- **API Routes**: 10+
+- **UI Pages**: 8+
+- **Roles**: 4 (Owner, Admin, Member, Guest)
+- **Permissions**: 10 per role
+- **Integration Points**: 6 content tools
+
+---
+
+**Phase G Complete!** 🎉
+
+The Community Engine brings together all previous phases into a unified, multi-user collaborative platform.
