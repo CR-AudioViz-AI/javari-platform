@@ -396,11 +396,13 @@ export class RouterEngine {
   }
 
   /**
-   * Log audit event
+   * Log audit event (to persistent storage)
    */
-  private logAudit(entry: AuditLogEntry): void {
+  private async logAudit(entry: AuditLogEntry): Promise<void> {
     if (this.config.enableAudit) {
-      this.auditLog.push(entry);
+      // Import here to avoid circular dependency
+      const { auditLogger } = await import('../audit/audit');
+      await auditLogger.logEvent(entry);
     }
   }
 

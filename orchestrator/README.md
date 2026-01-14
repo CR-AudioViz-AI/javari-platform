@@ -402,3 +402,357 @@ Phase C will add:
 **Phase B Complete!** 🎉
 
 The Multi-AI Orchestrator now supports 10 providers with intelligent routing, automatic fallback, and comprehensive monitoring.
+
+---
+
+# Phase C: Workflows, Persistence & Analytics
+
+**Status**: ✅ Complete  
+**Features**: Workflow Engine, Supabase Persistence, Caching, Analytics
+
+---
+
+## New Capabilities
+
+### 🔄 Workflow Engine
+Execute multi-step AI workflows with:
+- Sequential execution
+- Conditional branching
+- Retry logic
+- Variable interpolation
+- Cost limits
+- Approval gates
+
+### 💾 Supabase Persistence
+- Audit logs stored in database
+- Workflow definitions saved
+- Workflow run history tracked
+- Response caching with TTL
+- Analytics pre-computation
+
+### 📊 Analytics
+- Provider usage statistics
+- Cost analysis
+- Latency metrics
+- Cache hit rates
+- Workflow success rates
+
+### ⚡ Caching
+- Request deduplication
+- Response caching (24hr TTL)
+- In-memory + Supabase tiers
+- Hit count tracking
+
+---
+
+## Supabase Setup
+
+### 1. Create Supabase Project
+```
+1. Go to https://supabase.com
+2. Create new project
+3. Copy URL and anon key
+```
+
+### 2. Run Migrations
+```bash
+# In Supabase SQL Editor
+psql -f orchestrator/db/supabase/001_initial_schema.sql
+```
+
+### 3. Configure Environment
+```env
+SUPABASE_URL=https://your-project.supabase.co
+SUPABASE_ANON_KEY=your-anon-key
+```
+
+---
+
+## Workflow DSL
+
+### Basic Workflow
+```json
+{
+  "name": "content-generation",
+  "version": 1,
+  "steps": [
+    {
+      "id": "generate",
+      "action": "generate",
+      "provider": "openai",
+      "input": {
+        "prompt": "Write a blog post about AI",
+        "maxTokens": 500
+      }
+    }
+  ]
+}
+```
+
+### Multi-Step Workflow
+```json
+{
+  "name": "research-and-summarize",
+  "version": 1,
+  "steps": [
+    {
+      "id": "research",
+      "action": "generate",
+      "provider": "perplexity",
+      "input": {
+        "prompt": "Research latest AI trends",
+        "maxTokens": 1000
+      },
+      "onSuccess": "summarize"
+    },
+    {
+      "id": "summarize",
+      "action": "generate",
+      "provider": "anthropic",
+      "input": {
+        "prompt": "Summarize: {{research.output}}",
+        "maxTokens": 200
+      }
+    }
+  ]
+}
+```
+
+### Workflow with Retry
+```json
+{
+  "name": "resilient-generation",
+  "version": 1,
+  "steps": [
+    {
+      "id": "generate",
+      "action": "generate",
+      "input": { "prompt": "Generate content" },
+      "retry": {
+        "maxAttempts": 3,
+        "delayMs": 1000
+      },
+      "onFailure": "fallback"
+    },
+    {
+      "id": "fallback",
+      "action": "generate",
+      "provider": "groq",
+      "input": { "prompt": "Simple fallback" }
+    }
+  ]
+}
+```
+
+---
+
+## API Endpoints (Phase C)
+
+### POST /api/workflows/run
+Execute a workflow.
+
+**Request**:
+```json
+{
+  "workflow": { ... },  // Or use workflowId
+  "userId": "user-123"
+}
+```
+
+**Response**:
+```json
+{
+  "success": true,
+  "runId": "uuid",
+  "status": "completed",
+  "steps": [...],
+  "totalCostUSD": 0.024,
+  "totalLatencyMs": 1500
+}
+```
+
+### POST /api/workflows/create
+Save a workflow definition.
+
+**Request**:
+```json
+{
+  "name": "my-workflow",
+  "version": 1,
+  "definition": { ... }
+}
+```
+
+### GET /api/workflows/list
+List all saved workflows.
+
+**Response**:
+```json
+{
+  "total": 5,
+  "workflows": [...]
+}
+```
+
+### GET /api/workflows/runs
+Get workflow execution history.
+
+**Query Params**:
+- `workflowId` - Filter by workflow
+- `userId` - Filter by user
+- `limit` - Max results (default: 50)
+
+### GET /api/ai/analytics
+Get usage analytics.
+
+**Response**:
+```json
+{
+  "overview": {
+    "totalEvents": 1250,
+    "totalCostUSD": "15.432000"
+  },
+  "providers": [
+    { "provider": "openai", "requestCount": 500, "percentage": "40.0" }
+  ],
+  "cache": {
+    "inMemorySize": 42
+  }
+}
+```
+
+---
+
+## Database Schema
+
+### ai_audit_log
+Persistent audit trail for all AI requests.
+
+**Key Fields**:
+- `event_id`, `event_type`, `timestamp`
+- `provider`, `model`, `tokens_in/out`
+- `cost_usd`, `latency_ms`
+- `routing_decision`, `fallback_used`
+- `request_body`, `response_body` (JSONB)
+
+**Indexes**:
+- timestamp, user_id, provider, event_type
+
+### ai_workflows
+Workflow definitions storage.
+
+**Key Fields**:
+- `name`, `version`, `definition` (JSONB)
+- `status` (active/archived/draft)
+
+### ai_workflow_runs
+Workflow execution history.
+
+**Key Fields**:
+- `workflow_id`, `user_id`, `status`
+- `steps` (JSONB array)
+- `total_cost_usd`, `total_latency_ms`
+
+### ai_cache
+Response caching for deduplication.
+
+**Key Fields**:
+- `request_hash` (unique)
+- `response_body` (JSONB)
+- `expires_at`, `hit_count`
+
+---
+
+## Caching Behavior
+
+### Cache Key Generation
+```typescript
+const hash = SHA256({
+  prompt,
+  systemPrompt,
+  temperature,
+  maxTokens,
+  provider
+});
+```
+
+### Cache Tiers
+1. **In-Memory** - Fastest, session-scoped
+2. **Supabase** - Persistent, cross-session
+
+### Cache Hit Flow
+```
+Request → Check Memory → HIT? Return
+              ↓ MISS
+         Check Supabase → HIT? Return + Store in Memory
+              ↓ MISS
+         Execute Request → Cache Result
+```
+
+### TTL Management
+- Default: 24 hours
+- Configurable per request
+- Auto-cleanup via Supabase function
+
+---
+
+## Testing Phase C
+
+### Run Test Harness
+```bash
+ts-node orchestrator/tests/phase-c-tests.ts
+```
+
+### Expected Output
+```
+══════════════════════════════════════
+   Phase C Test Harness
+══════════════════════════════════════
+
+✓ Supabase Connection: configured
+✓ Workflow Validation: passed
+✓ Simple Workflow: completed (850ms, $0.000024)
+✓ Branching Workflow: 2 steps executed
+✓ Caching: hit/set working (1 entries)
+✓ Audit Logging: 15 events, $0.000120 total cost
+
+══════════════════════════════════════
+   Test Summary: 6/6 passed
+══════════════════════════════════════
+```
+
+---
+
+## Performance Optimizations
+
+### Caching Benefits
+- ~100% cost reduction on cache hits
+- Near-zero latency for cached responses
+- Automatic deduplication
+
+### Workflow Efficiency
+- Parallel step execution (future)
+- Early termination on failure
+- Conditional branching reduces unnecessary calls
+
+### Database Indexing
+- Optimized queries on timestamp, user_id, provider
+- JSONB indexes for fast metadata queries
+
+---
+
+## Phase C Metrics
+
+- **Files Added**: 15
+- **Database Tables**: 5
+- **API Endpoints**: 8 total
+- **Test Suites**: 6
+- **Lines of Code**: ~2,500
+
+---
+
+**Phase C Complete!** 🎉
+
+The orchestrator now includes workflow execution, persistent storage, intelligent caching, and comprehensive analytics.
+
+**Next Phase (D)**: Advanced features like parallel execution, A/B testing, quality monitoring, and user quotas.
