@@ -3024,4 +3024,358 @@ DLPOS is the last line of defense for data trust.
 
 ---
 
+
+
+---
+
+## APPENDIX A — REQUIRED IMPLEMENTATION EXTENSIONS
+
+### A.1 RBAC Role Hierarchy
+
+**Purpose:** Define explicit role hierarchy, inheritance, and permission boundaries.
+
+#### A.1.1 Role Definitions
+
+**System Roles (Platform-Wide):**
+
+1. **Super Admin** (Highest Privilege)
+   - **Permissions:** All system operations, including security policy modification
+   - **Scope:** Entire platform across all organizations
+   - **Assignment:** CEO, CTO only
+   - **Inheritance:** Inherits all permissions from all roles
+
+2. **Platform Admin**
+   - **Permissions:** User management, organization management, platform configuration
+   - **Scope:** Entire platform
+   - **Assignment:** VP Engineering, Head of Operations
+   - **Inheritance:** Inherits Organization Admin + Developer
+
+3. **Security Admin**
+   - **Permissions:** Security policy management, audit log access, incident response
+   - **Scope:** Security and compliance functions only
+   - **Assignment:** CISO, Security Engineers
+   - **Inheritance:** Inherits Auditor permissions
+   - **Restrictions:** Cannot modify business logic or user data
+
+4. **Compliance Officer**
+   - **Permissions:** Compliance policy management, audit reports, data retention policies
+   - **Scope:** Compliance and regulatory functions
+   - **Assignment:** Legal, Compliance team
+   - **Inheritance:** Inherits Auditor permissions
+   - **Restrictions:** Read-only access to user data
+
+**Organization Roles (Per-Organization):**
+
+5. **Organization Owner**
+   - **Permissions:** All operations within organization scope
+   - **Scope:** Single organization
+   - **Assignment:** Organization creator, primary billing contact
+   - **Inheritance:** Inherits Organization Admin + Billing Admin
+
+6. **Organization Admin**
+   - **Permissions:** User management, project management, organization settings
+   - **Scope:** Single organization
+   - **Assignment:** Organization leadership
+   - **Inheritance:** Inherits Developer + Operator
+
+7. **Billing Admin**
+   - **Permissions:** Billing, invoices, payment methods, subscription management
+   - **Scope:** Organization billing only
+   - **Assignment:** Finance team
+   - **Inheritance:** Inherits Viewer permissions for projects
+   - **Restrictions:** No access to user data or application logic
+
+**Project Roles (Per-Project):**
+
+8. **Project Admin**
+   - **Permissions:** Project settings, team management, deployment configuration
+   - **Scope:** Single project
+   - **Assignment:** Project leads
+   - **Inheritance:** Inherits Developer + Operator
+
+9. **Developer**
+   - **Permissions:** Code deployment, API access, database read/write, logs access
+   - **Scope:** Assigned projects
+   - **Assignment:** Engineering team
+   - **Inheritance:** Inherits Operator permissions
+
+10. **Operator**
+    - **Permissions:** Deployment management, monitoring, log viewing
+    - **Scope:** Assigned projects
+    - **Assignment:** DevOps, SRE team
+    - **Inheritance:** Inherits Viewer permissions
+    - **Restrictions:** No code modification, no database schema changes
+
+**Read-Only Roles:**
+
+11. **Auditor**
+    - **Permissions:** Read-only access to audit logs, security events, compliance reports
+    - **Scope:** Audit and compliance data only
+    - **Assignment:** Internal audit team, external auditors
+    - **Inheritance:** None
+    - **Restrictions:** No write access anywhere
+
+12. **Viewer**
+    - **Permissions:** Read-only access to assigned projects
+    - **Scope:** Assigned projects
+    - **Assignment:** Stakeholders, observers
+    - **Inheritance:** None
+    - **Restrictions:** No write access, no sensitive data access
+
+13. **Support Agent**
+    - **Permissions:** User support, ticket management, limited user data access (PII redacted)
+    - **Scope:** Support tickets and user inquiries
+    - **Assignment:** Customer support team
+    - **Inheritance:** Inherits Viewer + limited user data access
+    - **Restrictions:** Cannot modify user accounts, no financial data access
+
+**Guest/Public Roles:**
+
+14. **Authenticated User**
+    - **Permissions:** Access own data, create content, use platform features
+    - **Scope:** Own user account and created resources
+    - **Assignment:** All registered users
+    - **Inheritance:** None
+
+15. **Anonymous** (Lowest Privilege)
+    - **Permissions:** Public API endpoints only, rate-limited
+    - **Scope:** Public resources
+    - **Assignment:** Unauthenticated requests
+    - **Restrictions:** No data access, no account operations
+
+#### A.1.2 Role Inheritance Model
+
+**Inheritance Rules:**
+- Child roles inherit ALL permissions from parent roles
+- Child roles MAY have additional permissions
+- Permissions are additive (no subtraction)
+- Explicit denies override inherited permissions
+
+**Inheritance Hierarchy:**
+```
+Super Admin
+  ├─ Platform Admin
+  │   └─ Organization Owner
+  │       ├─ Organization Admin
+  │       │   ├─ Project Admin
+  │       │   │   └─ Developer
+  │       │   │       └─ Operator
+  │       │   │           └─ Viewer
+  │       │   └─ Support Agent
+  │       └─ Billing Admin
+  ├─ Security Admin
+  │   └─ Auditor
+  └─ Compliance Officer
+      └─ Auditor
+
+Authenticated User (separate tree)
+Anonymous (separate tree)
+```
+
+### A.2 Permission Model
+
+#### A.2.1 Permission Structure
+
+**Format:** `{resource}:{action}:{scope}`
+
+**Examples:**
+- `users:read:own` - Read own user data
+- `users:write:org` - Write user data within organization
+- `projects:delete:platform` - Delete any project on platform
+- `billing:read:org` - Read billing data for organization
+
+**Permission Components:**
+
+**Resources:**
+- `users`, `organizations`, `projects`, `deployments`, `billing`, `audit_logs`, `security_events`, `compliance_reports`, `api_keys`, `secrets`, `databases`, `functions`, `domains`
+
+**Actions:**
+- `create`, `read`, `update`, `delete`, `execute`, `deploy`, `approve`, `audit`
+
+**Scopes:**
+- `own` - Own resources only
+- `project` - Within assigned project
+- `org` - Within organization
+- `platform` - Platform-wide
+- `public` - Public resources
+
+#### A.2.2 Permission Granularity
+
+**Atomic Permissions (Lowest Level):**
+- Single resource + single action + single scope
+- Example: `users:read:own`
+
+**Permission Sets (Bundled):**
+- Multiple atomic permissions bundled for common roles
+- Example: `developer_permissions` includes `projects:read:project`, `projects:write:project`, `deployments:create:project`, etc.
+
+**Role-Based Permissions:**
+- Roles assigned permission sets
+- Additional atomic permissions can be granted per user
+
+#### A.2.3 Deny Precedence Model
+
+**Rule:** Explicit denies ALWAYS override allows
+
+**Evaluation Order:**
+1. Check for explicit deny on resource
+2. If denied → DENY access (stop evaluation)
+3. If not denied → Check for explicit allow
+4. If allowed → ALLOW access
+5. If not explicitly allowed → DENY by default (principle of least privilege)
+
+**Example:**
+```
+User has role: Developer (allows projects:write:project)
+User has explicit deny: projects:delete:project
+
+Result: User can write to projects but cannot delete projects
+```
+
+### A.3 Data Retention & Archival Policies
+
+#### A.3.1 Retention Periods by Data Category
+
+**User Data:**
+- **Active user accounts:** Indefinite (until user deletion request)
+- **Deleted user accounts:** 30 days soft delete, then hard delete
+- **User PII:** Deleted immediately upon user deletion request (GDPR compliance)
+
+**Audit Logs:**
+- **Security events:** 7 years (regulatory requirement)
+- **Access logs:** 1 year hot storage, 6 years cold storage
+- **API logs:** 90 days hot storage, 1 year cold storage
+- **Deployment logs:** 90 days
+
+**Financial Data:**
+- **Invoices:** 7 years (tax requirement)
+- **Payment transactions:** 7 years (PCI-DSS requirement)
+- **Credit usage logs:** 2 years
+
+**Application Data:**
+- **User-generated content:** Indefinite (user controls deletion)
+- **System-generated artifacts:** 1 year unless user-pinned
+- **Temporary files:** 24 hours
+- **Cache data:** Per-cache policy (typically 1-24 hours)
+
+**Backup Data:**
+- **Full backups:** 30 days
+- **Incremental backups:** 7 days
+- **Snapshot backups:** 90 days
+
+#### A.3.2 Archival Triggers
+
+**Automatic Archival:**
+- Age-based: Data older than hot retention period
+- Size-based: Storage approaching capacity limits
+- Cost-based: Move infrequently accessed data to cheaper storage
+
+**Manual Archival:**
+- Compliance requirement (legal hold)
+- User request (export and archive)
+- Project closure (archive entire project)
+
+**Archival Process:**
+1. Identify data eligible for archival
+2. Compress data (gzip or similar)
+3. Encrypt archive (AES-256)
+4. Transfer to cold storage (S3 Glacier, Azure Archive)
+5. Update metadata in archive registry
+6. Verify archive integrity (checksum)
+7. Delete from hot storage (after verification)
+
+#### A.3.3 Data Deletion Policies
+
+**Soft Delete (Reversible):**
+- Duration: 30 days
+- Behavior: Data marked as deleted, not visible to users, recoverable by admins
+- Use case: Account deletion, accidental deletions
+
+**Hard Delete (Irreversible):**
+- Trigger: After soft delete period OR immediate for GDPR requests
+- Behavior: Data permanently deleted, not recoverable
+- Process:
+  1. Remove from primary database
+  2. Remove from backups (mark for exclusion)
+  3. Remove from search indices
+  4. Remove from cache
+  5. Emit deletion event to audit log
+  6. Confirm deletion to user (if applicable)
+
+**Right to Deletion (GDPR):**
+- User requests account deletion
+- System performs immediate hard delete of PII
+- Non-PII data (anonymized logs) retained for analytics
+- Deletion completed within 30 days
+- Confirmation sent to user
+
+### A.4 Audit Log Lifecycle
+
+#### A.4.1 Audit Log Structure
+
+**Required Fields:**
+```json
+{
+  "timestamp": "ISO8601 datetime",
+  "event_type": "user_login | resource_created | permission_granted | etc.",
+  "actor": {
+    "user_id": "user-id",
+    "role": "role-name",
+    "ip_address": "IP address",
+    "user_agent": "browser/client info"
+  },
+  "resource": {
+    "type": "users | projects | deployments | etc.",
+    "id": "resource-id",
+    "organization_id": "org-id"
+  },
+  "action": "create | read | update | delete | execute",
+  "result": "success | failure | denied",
+  "metadata": {
+    "reason": "failure/denial reason (if applicable)",
+    "changes": "what changed (for updates)",
+    "cost": "operation cost (if applicable)"
+  }
+}
+```
+
+#### A.4.2 Audit Log Retention
+
+**Hot Storage (Queryable):**
+- Duration: 90 days
+- Storage: PostgreSQL (Supabase)
+- Access: Real-time via audit dashboard
+
+**Warm Storage (Archived, Queryable):**
+- Duration: 1 year
+- Storage: S3 with Athena queries
+- Access: On-demand queries (slower)
+
+**Cold Storage (Compliance Archive):**
+- Duration: 7 years
+- Storage: S3 Glacier Deep Archive
+- Access: Legal/compliance requests only (24-48 hour retrieval)
+
+#### A.4.3 Audit Log Processing
+
+**Real-Time Processing:**
+- Security events trigger alerts (e.g., failed login attempts, privilege escalation)
+- Suspicious patterns trigger automated investigation
+- Critical events notify security team immediately
+
+**Batch Processing:**
+- Daily: Aggregate metrics, anomaly detection
+- Weekly: Compliance reports, trend analysis
+- Monthly: Security posture reviews, access recertification
+
+**Audit Log Immutability:**
+- Audit logs CANNOT be modified or deleted (except by automated retention policies)
+- All audit log access is itself audited
+- Tampering attempts trigger critical security alerts
+
+---
+
+**END OF APPENDIX A**
+
+
 **SECURITY & RESILIENCE SPECIFICATION COMPLETE.** 🔒

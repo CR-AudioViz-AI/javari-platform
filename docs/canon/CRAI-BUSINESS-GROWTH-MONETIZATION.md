@@ -3175,4 +3175,268 @@ GrowthOS is the engine of sustainable revenue expansion.
 
 ---
 
+
+
+---
+
+## APPENDIX A — REQUIRED IMPLEMENTATION EXTENSIONS
+
+### A.1 CRAI Credits Rate Card
+
+**Purpose:** Define exact credit costs for all platform operations to enable transparent billing and cost prediction.
+
+#### A.1.1 AI Operations
+
+**Text Generation (per 1,000 tokens):**
+- GPT-4o: 15 credits input, 60 credits output
+- Claude Sonnet 4: 30 credits input, 150 credits output
+- Gemini Pro: 10 credits input, 40 credits output
+- GPT-3.5 Turbo: 5 credits input, 15 credits output
+
+**Image Generation:**
+- DALL-E 3 (1024x1024): 400 credits per image
+- DALL-E 3 (1024x1792, 1792x1024): 800 credits per image
+- DALL-E 2 (1024x1024): 200 credits per image
+- Stable Diffusion XL: 100 credits per image
+
+**Image Analysis:**
+- GPT-4 Vision: 85 credits per image
+- Claude Vision: 75 credits per image
+- Gemini Vision: 60 credits per image
+
+**Audio Operations:**
+- Whisper transcription: 60 credits per minute
+- TTS (standard voice): 150 credits per 1M characters
+- TTS (premium voice): 300 credits per 1M characters
+
+**Embeddings:**
+- text-embedding-3-small: 2 credits per 1,000 tokens
+- text-embedding-3-large: 13 credits per 1,000 tokens
+
+#### A.1.2 Platform Operations
+
+**Storage:**
+- File storage: 1 credit per GB per month
+- Database storage: 2 credits per GB per month
+- Backup storage: 0.5 credits per GB per month
+
+**Compute:**
+- Edge function execution: 2 credits per million invocations
+- Background job: 10 credits per job
+- Scheduled cron job: 20 credits per execution
+
+**Network:**
+- Bandwidth (egress): 5 credits per GB
+- CDN requests: 0.5 credits per 10,000 requests
+- Webhook delivery: 1 credit per webhook
+
+**Data Operations:**
+- Database query: 0.1 credits per 1,000 queries
+- Full-text search: 1 credit per 1,000 searches
+- Data export: 10 credits per GB
+
+#### A.1.3 Creator Tools
+
+**Document Generation:**
+- PDF creation: 50 credits per document
+- DOCX creation: 30 credits per document
+- PPTX creation: 40 credits per presentation
+- XLSX creation: 35 credits per spreadsheet
+
+**Media Processing:**
+- Image optimization: 5 credits per image
+- Video transcoding (SD): 100 credits per minute
+- Video transcoding (HD): 200 credits per minute
+- Audio processing: 20 credits per minute
+
+**Diagram Generation:**
+- Mermaid diagram: 20 credits per diagram
+- PlantUML diagram: 25 credits per diagram
+- D3.js visualization: 30 credits per viz
+
+#### A.1.4 Marketplace Operations
+
+**Listing Fees:**
+- Create listing: FREE (0 credits)
+- Featured listing: 500 credits per 30 days
+- Premium listing: 1,000 credits per 30 days
+
+**Transaction Fees:**
+- Platform transaction fee: 2.5% of transaction value (in credits)
+- Payment processing: Included (no additional credits)
+- Escrow service: 50 credits per transaction
+
+**Valuation & Authentication:**
+- AI valuation: 100 credits per item
+- Provenance verification: 200 credits per item
+- Expert authentication: 500 credits per item
+
+#### A.1.5 Collectors Features
+
+**Asset Management:**
+- Asset cataloging: 10 credits per item
+- Collection insurance quote: 50 credits per collection
+- Market trend analysis: 100 credits per report
+- Portfolio valuation: 200 credits per portfolio
+
+**Discovery & Research:**
+- Image similarity search: 20 credits per search
+- Market data query: 10 credits per query
+- Historical price data: 5 credits per data point
+
+### A.2 Credit Refund Model
+
+#### A.2.1 Automatic Refunds
+
+**Trigger Conditions:**
+- AI operation fails before completion
+- Platform error prevents operation completion
+- Operation produces invalid/corrupted output
+- SLA violation (>99.9% uptime target)
+
+**Refund Amount:**
+- 100% of credits consumed for failed operation
+- Additional 10% bonus credits as service recovery (for platform errors)
+
+**Processing:**
+- Automatic refund within 5 minutes of failure
+- Notification sent to user
+- Logged in billing history
+
+#### A.2.2 Manual Refund Requests
+
+**Eligible Reasons:**
+- Unsatisfactory AI output quality
+- Unexpected credit consumption
+- Duplicate charges
+- Service disruption impacting work
+
+**Request Process:**
+1. User submits refund request via support ticket
+2. Support team reviews within 24 hours
+3. Approval/denial with explanation
+4. If approved, credits refunded within 1 business day
+
+**Refund Limits:**
+- Maximum 1,000 credits per manual request
+- Maximum 3 manual requests per month
+- Refund window: 30 days from credit consumption
+
+#### A.2.3 Subscription Refunds
+
+**Pro-Rated Refunds:**
+- Downgrade subscription: Pro-rated refund in credits
+- Cancel subscription: Pro-rated refund to payment method
+- Service outage >4 hours: 1 day of credits refunded
+
+**No Refund Scenarios:**
+- Credits expired due to free-tier expiration policy
+- User violated terms of service
+- Credits consumed before cancellation request
+
+### A.3 Zero-Credit Behavior Model
+
+#### A.3.1 Free Tier (0 credits remaining)
+
+**Allowed Operations:**
+- View existing content (unlimited)
+- Access account settings (unlimited)
+- Download previously generated content (unlimited)
+- Browse marketplace listings (read-only)
+
+**Blocked Operations:**
+- AI operations (text generation, image generation, etc.)
+- New file creation (documents, presentations, etc.)
+- Media processing (video transcoding, image optimization)
+- Marketplace transactions
+- Background jobs and automations
+
+**User Experience:**
+```
+┌─────────────────────────────────────────────┐
+│  ⚠️  Insufficient Credits                   │
+├─────────────────────────────────────────────┤
+│  You need 60 credits to generate AI text.  │
+│  Current balance: 0 credits                 │
+│                                             │
+│  [Top Up Credits]  [Upgrade to Pro]        │
+└─────────────────────────────────────────────┘
+```
+
+#### A.3.2 Paid Tier (0 credits remaining, but active subscription)
+
+**Allowed Operations:**
+- All free tier operations
+- Limited AI operations (5 requests per day)
+- Basic document creation (3 documents per day)
+
+**Blocked Operations:**
+- Advanced AI operations
+- Bulk operations
+- High-cost operations (video transcoding, premium AI models)
+
+**Auto-Replenishment:**
+- Monthly credit allocation: Delivered 1st of each month
+- One-time top-up: Immediate delivery
+- Rollover: Unused credits from paid subscriptions DO NOT expire
+
+#### A.3.3 Mid-Operation Credit Exhaustion
+
+**Graceful Degradation:**
+
+**Scenario 1: Long-running operation (e.g., video transcoding)**
+- Operation continues to completion
+- User goes into negative credit balance
+- Must top up before starting new operations
+- Notification sent: "Operation completed. Balance: -150 credits. Please top up."
+
+**Scenario 2: Batch operation (e.g., 100 AI requests)**
+- Process as many items as credits allow
+- Stop when credits exhausted
+- Return partial results
+- Notification: "Processed 73 of 100 items. 27 items remaining. Top up to continue."
+
+**Scenario 3: Streaming operation (e.g., real-time AI chat)**
+- Warn user at 80% credit consumption: "20% credits remaining"
+- Warn user at 95% credit consumption: "5% credits remaining"
+- At 0 credits: Stop streaming, return partial response
+- Prompt to top up for continuation
+
+#### A.3.4 Credit Exhaustion Notifications
+
+**Proactive Warnings:**
+- 50% remaining: Dashboard badge
+- 20% remaining: Email notification
+- 10% remaining: Push notification (if enabled)
+- 5% remaining: Prominent dashboard alert
+
+**Post-Exhaustion:**
+- Immediate notification upon reaching 0 credits
+- Email with top-up link
+- Dashboard banner: "Top up credits to continue using CRAI"
+- Mobile push notification (if enabled)
+
+#### A.3.5 Enterprise Zero-Credit Handling
+
+**For Enterprise Customers:**
+- Negative balance allowed (configurable limit)
+- Monthly invoicing for overages
+- No service interruption
+- Finance team notified of overages
+- Automatic top-up available (configure threshold + amount)
+
+**Example:**
+```
+Enterprise Account: Acme Corp
+Credit Limit: -10,000 credits (configurable)
+Current Balance: -2,500 credits
+Status: Active (within limit)
+Auto-Topup: When balance < 1,000 credits, add 50,000 credits
+```
+
+---
+
+**END OF APPENDIX A**
+
+
 **BUSINESS, GROWTH & MONETIZATION SPECIFICATION COMPLETE.** 💰
