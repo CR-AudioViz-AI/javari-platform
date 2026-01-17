@@ -1,0 +1,423 @@
+{
+  "version": "1.0.0",
+  "generated_at": "2026-01-17T22:45:00Z",
+  "status": "operational",
+  
+  "execution_paths": {
+    "primary": {
+      "id": "direct_credential",
+      "name": "Direct Credential Injection",
+      "status": "validated",
+      "reliability": 100,
+      "priority": 1,
+      "method": "hardcoded_token",
+      "capabilities": [
+        "github_api",
+        "file_operations",
+        "commit_creation",
+        "repository_push",
+        "branch_management"
+      ],
+      "limitations": [
+        "token_rotation_requires_manual_update"
+      ]
+    },
+    "fallback": [
+      {
+        "id": "github_actions",
+        "name": "GitHub Actions Workflow",
+        "status": "untested",
+        "reliability": 0,
+        "priority": 3,
+        "method": "workflow_dispatch",
+        "capabilities": [
+          "deployment",
+          "testing",
+          "scheduled_tasks",
+          "async_operations"
+        ],
+        "limitations": [
+          "requires_workflow_file",
+          "async_only"
+        ],
+        "setup_required": true
+      },
+      {
+        "id": "webhook",
+        "name": "Webhook Integration",
+        "status": "requires_setup",
+        "reliability": 0,
+        "priority": 4,
+        "method": "http_post",
+        "capabilities": [
+          "external_integrations",
+          "event_triggers",
+          "async_notifications"
+        ],
+        "limitations": [
+          "requires_endpoint_setup"
+        ],
+        "setup_required": true
+      }
+    ],
+    "unavailable": [
+      {
+        "id": "environment_variables",
+        "name": "Environment Variables",
+        "reason": "not_accessible_in_claude_environment"
+      },
+      {
+        "id": "vercel_api",
+        "name": "Vercel API",
+        "reason": "token_not_accessible"
+      },
+      {
+        "id": "supabase_api",
+        "name": "Supabase API",
+        "reason": "token_not_accessible"
+      }
+    ],
+    "escalation": {
+      "method": "human_intervention",
+      "channels": ["in_conversation", "audit_log"],
+      "response_sla_minutes": 60
+    }
+  },
+  
+  "routing_logic": {
+    "decision_tree": [
+      {
+        "condition": "operation_type == 'github'",
+        "path": "direct_credential",
+        "reason": "Fast and reliable for GitHub operations"
+      },
+      {
+        "condition": "operation_type == 'deployment'",
+        "path": "github_actions",
+        "reason": "Async deployment via workflow"
+      },
+      {
+        "condition": "operation_type == 'external'",
+        "path": "webhook",
+        "reason": "External system notification"
+      },
+      {
+        "condition": "default",
+        "path": "escalation",
+        "reason": "Unknown operation type"
+      }
+    ],
+    "selection_algorithm": "type_based_routing",
+    "fallback_enabled": true
+  },
+  
+  "failover_policy": {
+    "transient_failures": {
+      "types": [
+        "network_timeout",
+        "rate_limit_exceeded",
+        "service_unavailable",
+        "connection_reset"
+      ],
+      "action": "retry_with_backoff",
+      "max_attempts": 3
+    },
+    "permanent_failures": {
+      "types": [
+        "invalid_credentials",
+        "permission_denied",
+        "bad_request",
+        "resource_not_found"
+      ],
+      "action": "escalate_to_human"
+    },
+    "failure_actions": {
+      "token_invalid": "halt_and_notify",
+      "api_rate_limit": "exponential_backoff",
+      "network_error": "retry_with_backoff",
+      "permission_denied": "escalate_to_human",
+      "resource_not_found": "log_and_continue",
+      "validation_failed": "halt_and_report",
+      "timeout": "cancel_and_retry"
+    }
+  },
+  
+  "retry_policy": {
+    "max_attempts": 3,
+    "backoff_multiplier": 2,
+    "initial_delay_ms": 1000,
+    "max_delay_ms": 60000,
+    "retry_on": [
+      "network_timeout",
+      "rate_limit_exceeded",
+      "service_unavailable",
+      "connection_reset"
+    ],
+    "do_not_retry": [
+      "invalid_credentials",
+      "permission_denied",
+      "bad_request",
+      "resource_not_found"
+    ]
+  },
+  
+  "circuit_breakers": [
+    {
+      "name": "api_error_rate",
+      "type": "error_rate",
+      "threshold": {
+        "errors": 5,
+        "window_seconds": 60
+      },
+      "action": "open_circuit",
+      "open_duration_seconds": 300,
+      "reset_strategy": "after_successful_operation"
+    },
+    {
+      "name": "invalid_credentials",
+      "type": "credential_failure",
+      "threshold": {
+        "errors": 1,
+        "window_seconds": 1
+      },
+      "action": "halt_and_escalate",
+      "reset_strategy": "manual"
+    },
+    {
+      "name": "rate_limit",
+      "type": "rate_limit",
+      "threshold": {
+        "errors": 1,
+        "window_seconds": 1
+      },
+      "action": "exponential_backoff",
+      "reset_strategy": "after_rate_limit_reset"
+    }
+  ],
+  
+  "safety_gates": {
+    "pre_execution": [
+      {
+        "name": "validate_credentials",
+        "required": true,
+        "failure_action": "halt_and_escalate"
+      },
+      {
+        "name": "verify_permissions",
+        "required": true,
+        "failure_action": "halt_and_escalate"
+      },
+      {
+        "name": "check_rate_limits",
+        "required": true,
+        "failure_action": "delay_execution"
+      },
+      {
+        "name": "validate_input_data",
+        "required": true,
+        "failure_action": "reject_operation"
+      },
+      {
+        "name": "verify_target_exists",
+        "required": false,
+        "failure_action": "create_or_skip"
+      }
+    ],
+    "execution_monitoring": [
+      "track_api_calls",
+      "log_all_operations",
+      "monitor_error_rates",
+      "detect_anomalies",
+      "real_time_alerting"
+    ],
+    "post_execution": [
+      {
+        "name": "verify_operation_success",
+        "required": true
+      },
+      {
+        "name": "check_data_integrity",
+        "required": true
+      },
+      {
+        "name": "validate_side_effects",
+        "required": true
+      },
+      {
+        "name": "update_audit_log",
+        "required": true
+      },
+      {
+        "name": "generate_summary",
+        "required": false
+      }
+    ]
+  },
+  
+  "escalation_matrix": {
+    "levels": [
+      {
+        "level": 0,
+        "name": "normal_operation",
+        "status": "green",
+        "action": "execute_autonomously",
+        "human_involvement": "none"
+      },
+      {
+        "level": 1,
+        "name": "retryable_failure",
+        "status": "yellow",
+        "action": "automatic_retry_with_backoff",
+        "human_involvement": "none",
+        "notification": "logged_for_review"
+      },
+      {
+        "level": 2,
+        "name": "non_retryable_failure",
+        "status": "orange",
+        "action": "log_and_skip",
+        "human_involvement": "notified_non_urgent"
+      },
+      {
+        "level": 3,
+        "name": "critical_failure",
+        "status": "red",
+        "action": "halt_workflow",
+        "human_involvement": "required_for_resolution"
+      },
+      {
+        "level": 4,
+        "name": "system_wide_failure",
+        "status": "critical_red",
+        "action": "emergency_stop",
+        "human_involvement": "escalate_to_admin_immediately"
+      }
+    ],
+    "triggers": {
+      "l0_to_l1": "single_operation_failure",
+      "l1_to_l2": "retry_exhausted_without_success",
+      "l2_to_l3": "multiple_operations_failing",
+      "l3_to_l4": "credential_failure_or_security_incident"
+    },
+    "notification_channels": {
+      "level_0": [],
+      "level_1": ["audit_log"],
+      "level_2": ["audit_log", "in_conversation"],
+      "level_3": ["audit_log", "in_conversation", "email"],
+      "level_4": ["audit_log", "in_conversation", "email", "slack"]
+    }
+  },
+  
+  "credential_mode": "direct",
+  "credential_management": {
+    "storage": "in_code",
+    "rotation_procedure": "manual_update_required",
+    "validation": "test_before_use",
+    "fallback": "halt_if_invalid",
+    "security_measures": [
+      "never_log_plain_text",
+      "never_return_in_responses",
+      "never_expose_in_errors",
+      "validate_before_first_use",
+      "immediate_halt_if_invalid"
+    ]
+  },
+  
+  "timeouts": {
+    "individual_api_call_seconds": 30,
+    "complete_operation_seconds": 300,
+    "workflow_execution_seconds": 1800,
+    "background_job_seconds": 3600
+  },
+  
+  "audit_logging": {
+    "enabled": true,
+    "log_all_operations": true,
+    "retention_policy": {
+      "real_time_days": 7,
+      "summary_days": 90,
+      "audit_years": 7
+    },
+    "log_format": "json",
+    "log_level": "info",
+    "sensitive_data_handling": "redact"
+  },
+  
+  "monitoring": {
+    "enabled": true,
+    "metrics": [
+      "operations_per_minute",
+      "success_rate_percentage",
+      "average_latency_ms",
+      "error_rate_percentage",
+      "circuit_breaker_status",
+      "active_operations_count"
+    ],
+    "alerting": {
+      "enabled": true,
+      "channels": ["audit_log", "in_conversation"],
+      "alert_levels": ["critical", "high", "medium", "low"]
+    }
+  },
+  
+  "multi_agent_delegation": {
+    "enabled": true,
+    "agent_selection": {
+      "code_generation": "chatgpt-4",
+      "code_review": "claude-opus",
+      "visual_design": "dall-e-3",
+      "data_analysis": "claude-sonnet",
+      "documentation": "claude-sonnet",
+      "testing": "github-copilot",
+      "deployment": "github-actions"
+    },
+    "handoff_protocol": "json_payload_with_context",
+    "result_validation": true
+  },
+  
+  "signed_requests": {
+    "enabled": false,
+    "algorithm": "HMAC-SHA256",
+    "timestamp_window_seconds": 300,
+    "secret_key_storage": "secure_vault"
+  },
+  
+  "no_dead_end_guarantee": {
+    "enabled": true,
+    "terminal_states": [
+      "success",
+      "graceful_failure",
+      "human_escalation",
+      "timeout"
+    ],
+    "guaranteed_protections": [
+      "no_infinite_hangs",
+      "no_unlogged_failures",
+      "no_permanent_blocks",
+      "no_data_loss_without_recovery",
+      "no_undetected_deadlocks"
+    ],
+    "recovery_mechanisms": {
+      "automatic": [
+        "rollback_changes",
+        "complete_or_revert",
+        "restore_from_backup",
+        "reset_to_known_good_state"
+      ],
+      "manual": [
+        "human_override",
+        "manual_completion",
+        "manual_rollback",
+        "manual_retry"
+      ]
+    }
+  },
+  
+  "metadata": {
+    "created_by": "javari-ai",
+    "created_at": "2026-01-17T22:45:00Z",
+    "last_updated": "2026-01-17T22:45:00Z",
+    "schema_version": "1.0.0",
+    "documentation": "docs/javari/JAVARI-AUTONOMY-ENGINE.md"
+  }
+}
