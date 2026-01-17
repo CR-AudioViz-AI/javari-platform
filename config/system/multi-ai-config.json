@@ -1,0 +1,38 @@
+{
+  "version": "1.0.0",
+  "ai_agents": {
+    "claude_javari": {
+      "role": "orchestrator",
+      "capabilities": [
+        "repo_ops",
+        "system_design"
+      ]
+    },
+    "chatgpt4": {
+      "role": "code_specialist",
+      "capabilities": [
+        "algorithms",
+        "complex_logic"
+      ]
+    },
+    "github_copilot": {
+      "role": "code_assistant",
+      "capabilities": [
+        "completion",
+        "tests"
+      ]
+    }
+  },
+  "routing_rules": {
+    "orchestration": "claude_javari",
+    "complex_code": "chatgpt4",
+    "code_completion": "github_copilot"
+  },
+  "arbitration": {
+    "method": "weighted_voting",
+    "tie_breaker": "human"
+  },
+  "metadata": {
+    "created_at": "2026-01-17T22:54:00Z"
+  }
+}

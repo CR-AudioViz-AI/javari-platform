@@ -1,0 +1,31 @@
+{
+  "version": "1.0.0",
+  "routing_rules": {
+    "file_operations": {
+      "path": "direct_credential",
+      "validation": "required"
+    },
+    "deployments": {
+      "path": "github_actions",
+      "validation": "required",
+      "approval": "auto"
+    },
+    "documentation": {
+      "path": "autonomous",
+      "validation": "optional"
+    },
+    "code_generation": {
+      "path": "autonomous",
+      "validation": "required",
+      "tests": "required"
+    }
+  },
+  "safety_gates": [
+    "input_sanitization",
+    "permission_check",
+    "dry_run_destructive"
+  ],
+  "metadata": {
+    "created_at": "2026-01-17T22:54:00Z"
+  }
+}

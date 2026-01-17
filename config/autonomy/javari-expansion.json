@@ -1,0 +1,334 @@
+{
+  "version": "1.0.0",
+  "status": "active",
+  "generated_at": "2026-01-17T22:52:00Z",
+  
+  "expansion_config": {
+    "enabled": true,
+    "auto_expansion_enabled": false,
+    "require_human_approval": true,
+    "max_expansions_per_week": 3
+  },
+  
+  "detection": {
+    "triggers": [
+      {
+        "type": "failure_analysis",
+        "enabled": true,
+        "lookback_days": 7,
+        "min_frequency": 3
+      },
+      {
+        "type": "user_request",
+        "enabled": true,
+        "lookback_days": 30,
+        "priority_threshold": "medium"
+      },
+      {
+        "type": "pattern_recognition",
+        "enabled": true,
+        "min_occurrences": 5
+      },
+      {
+        "type": "self_assessment",
+        "enabled": true,
+        "schedule": "weekly"
+      }
+    ],
+    "gap_analysis": {
+      "criteria": {
+        "frequency_weight": 0.3,
+        "impact_weight": 0.4,
+        "feasibility_weight": 0.2,
+        "risk_weight": 0.1
+      },
+      "priority_matrix": {
+        "high_freq_high_impact": "CRITICAL",
+        "high_freq_low_impact": "QUICK_WIN",
+        "low_freq_high_impact": "STRATEGIC",
+        "low_freq_low_impact": "DEFER"
+      }
+    }
+  },
+  
+  "installation_pipeline": {
+    "phases": [
+      {
+        "name": "research",
+        "required": true,
+        "activities": [
+          "search_documentation",
+          "review_best_practices",
+          "identify_patterns",
+          "assess_complexity"
+        ]
+      },
+      {
+        "name": "design",
+        "required": true,
+        "activities": [
+          "create_specification",
+          "define_interfaces",
+          "plan_integration",
+          "design_tests"
+        ]
+      },
+      {
+        "name": "implementation",
+        "required": true,
+        "activities": [
+          "generate_code",
+          "create_config",
+          "write_documentation",
+          "implement_tests"
+        ]
+      },
+      {
+        "name": "validation",
+        "required": true,
+        "activities": [
+          "run_unit_tests",
+          "run_integration_tests",
+          "performance_validation",
+          "security_scan"
+        ]
+      },
+      {
+        "name": "integration",
+        "required": true,
+        "activities": [
+          "create_feature_branch",
+          "commit_changes",
+          "run_ci_cd",
+          "create_pull_request"
+        ]
+      },
+      {
+        "name": "deployment",
+        "required": true,
+        "activities": [
+          "human_review_if_flagged",
+          "merge_to_main",
+          "deploy_to_staging",
+          "validate_in_staging",
+          "deploy_to_production"
+        ]
+      },
+      {
+        "name": "verification",
+        "required": true,
+        "activities": [
+          "monitor_for_errors",
+          "validate_functionality",
+          "measure_performance",
+          "update_capability_map"
+        ]
+      }
+    ]
+  },
+  
+  "safety_guards": {
+    "pre_implementation_checks": [
+      "capability_is_viable",
+      "dependencies_satisfied",
+      "no_conflicts",
+      "test_coverage_planned",
+      "rollback_plan_defined"
+    ],
+    "implementation_boundaries": {
+      "max_file_size_lines": 1000,
+      "max_cyclomatic_complexity": 10,
+      "min_test_coverage_percent": 80,
+      "documentation_required": true,
+      "security_review_required_if": [
+        "touches_auth",
+        "touches_credentials",
+        "touches_payment",
+        "touches_pii"
+      ]
+    },
+    "forbidden_areas": [
+      "authentication_logic",
+      "authorization_logic",
+      "database_schema_changes",
+      "api_contract_breaking_changes",
+      "security_critical_code",
+      "billing_payment_logic",
+      "credential_management"
+    ],
+    "human_approval_required_for": [
+      "major_version_bumps",
+      "new_external_dependencies",
+      "security_related_changes",
+      "database_migrations",
+      "api_contract_changes",
+      "cost_impacting_changes",
+      "first_production_deployment"
+    ]
+  },
+  
+  "improvement_cycles": {
+    "daily": {
+      "enabled": true,
+      "activities": [
+        "review_previous_day_operations",
+        "identify_inefficiencies",
+        "propose_micro_optimizations",
+        "implement_low_risk_improvements"
+      ]
+    },
+    "weekly": {
+      "enabled": true,
+      "activities": [
+        "analyze_week_performance",
+        "identify_capability_gaps",
+        "prioritize_implementations",
+        "execute_top_3_improvements"
+      ]
+    },
+    "monthly": {
+      "enabled": true,
+      "activities": [
+        "comprehensive_capability_assessment",
+        "major_feature_planning",
+        "refactoring_initiatives",
+        "technical_debt_reduction"
+      ]
+    },
+    "quarterly": {
+      "enabled": true,
+      "activities": [
+        "strategic_capability_expansion",
+        "architecture_evolution",
+        "major_version_upgrades",
+        "performance_benchmarking"
+      ]
+    }
+  },
+  
+  "version_management": {
+    "semver_enabled": true,
+    "auto_version_bump": true,
+    "bump_rules": {
+      "breaking_change": "MAJOR",
+      "new_feature": "MINOR",
+      "bug_fix": "PATCH"
+    },
+    "version_files": [
+      "package.json",
+      "docs/VERSION.md",
+      "config/version.json"
+    ],
+    "changelog_auto_generation": true,
+    "git_tag_on_version": true
+  },
+  
+  "rollback": {
+    "enabled": true,
+    "automatic_rollback_triggers": [
+      {
+        "condition": "test_suite_fails",
+        "action": "immediate_rollback"
+      },
+      {
+        "condition": "error_rate_exceeds_1_percent",
+        "duration_minutes": 60,
+        "action": "immediate_rollback"
+      },
+      {
+        "condition": "performance_degradation_exceeds_20_percent",
+        "action": "immediate_rollback"
+      },
+      {
+        "condition": "memory_leak_detected",
+        "action": "immediate_rollback"
+      },
+      {
+        "condition": "security_vulnerability_introduced",
+        "action": "immediate_rollback"
+      }
+    ],
+    "rollback_procedure": [
+      "detect_failure",
+      "halt_deployment",
+      "revert_to_last_known_good",
+      "validate_rollback",
+      "analyze_root_cause",
+      "prevent_recurrence"
+    ],
+    "partial_rollback_options": [
+      "feature_flag_disable",
+      "single_file_rollback",
+      "config_only_rollback",
+      "dependency_rollback"
+    ]
+  },
+  
+  "monitoring": {
+    "post_deployment_monitoring": {
+      "enabled": true,
+      "metrics": [
+        "error_rate",
+        "response_time",
+        "resource_utilization",
+        "user_impact",
+        "dependency_health"
+      ],
+      "monitoring_duration": {
+        "critical_changes_hours": 48,
+        "major_changes_hours": 24,
+        "minor_changes_hours": 4,
+        "patches_hours": 1
+      }
+    },
+    "success_criteria": {
+      "max_error_rate_percent": 0.1,
+      "max_performance_degradation_percent": 5,
+      "all_tests_passing": true,
+      "no_security_vulnerabilities": true,
+      "positive_user_feedback": true
+    }
+  },
+  
+  "learning": {
+    "enabled": true,
+    "learning_log_retention_days": 90,
+    "pattern_recognition": {
+      "success_patterns": true,
+      "failure_patterns": true,
+      "min_pattern_occurrences": 3
+    },
+    "continuous_improvement": {
+      "analyze_patterns_frequency": "daily",
+      "suggest_improvements_frequency": "weekly",
+      "implement_improvements_frequency": "weekly"
+    }
+  },
+  
+  "metrics": {
+    "tracked_metrics": [
+      "capabilities_added_per_week",
+      "auto_expansion_success_rate",
+      "rollback_frequency",
+      "detection_to_deployment_time_hours",
+      "human_intervention_rate",
+      "test_coverage_percent",
+      "code_complexity_average"
+    ],
+    "goals": {
+      "auto_expansion_success_rate_min": 90,
+      "rollback_rate_max": 5,
+      "detection_to_deployment_max_hours": 48,
+      "human_intervention_rate_max": 10,
+      "test_coverage_min": 80
+    }
+  },
+  
+  "metadata": {
+    "created_by": "javari-ai",
+    "created_at": "2026-01-17T22:52:00Z",
+    "last_updated": "2026-01-17T22:52:00Z",
+    "schema_version": "1.0.0",
+    "documentation": "docs/javari/JAVARI-SELF-EXPANSION-ENGINE.md"
+  }
+}

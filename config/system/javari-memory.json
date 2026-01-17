@@ -1,0 +1,29 @@
+{
+  "version": "1.0.0",
+  "memory_types": {
+    "short_term": {
+      "retention_hours": 24,
+      "storage": "in_memory"
+    },
+    "mid_term": {
+      "retention_days": 7,
+      "storage": "audit_log"
+    },
+    "long_term": {
+      "retention": "permanent",
+      "storage": "canonical_docs"
+    }
+  },
+  "compression": {
+    "enabled": true,
+    "schedule": "daily",
+    "strategy": "summarize_aggregate"
+  },
+  "purge_policy": {
+    "require_approval": true,
+    "archive_before_delete": true
+  },
+  "metadata": {
+    "created_at": "2026-01-17T22:54:00Z"
+  }
+}

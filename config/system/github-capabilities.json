@@ -1,0 +1,45 @@
+{
+  "version": "1.0.0",
+  "access_matrix": {
+    "read": [
+      "all_files",
+      "commit_history",
+      "branches",
+      "tags"
+    ],
+    "write": [
+      "docs/**",
+      "config/**",
+      "src/** (with_tests)"
+    ],
+    "restricted": [
+      "workflows",
+      "secrets",
+      "branch_protection",
+      "webhooks"
+    ]
+  },
+  "file_classification": {
+    "full_autonomous": [
+      "docs/canon/**",
+      "docs/javari/**",
+      "config/**"
+    ],
+    "conditional_autonomous": [
+      "src/**",
+      "package.json"
+    ],
+    "human_required": [
+      ".github/workflows/**",
+      "secrets"
+    ]
+  },
+  "pr_capabilities": {
+    "create": true,
+    "merge": false,
+    "review": false
+  },
+  "metadata": {
+    "created_at": "2026-01-17T22:54:00Z"
+  }
+}
