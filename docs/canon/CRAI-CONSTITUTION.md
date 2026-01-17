@@ -1,1043 +1,399 @@
-# CRAI CONSTITUTION
-## Executive Authority & Architectural Foundation
-
-**Version:** 2.3.0 — CANON LOCK + EXECUTION EDITION  
-**Date:** January 18, 2026  
-**Document Status:** CONSTITUTIONAL AUTHORITY — HIGHEST PRECEDENCE
+# CRAI-CONSTITUTION.md
+**CRAudioVizAI Canonical Document 1 of 12**  
+**Version:** 3.0 — EXECUTION CANON  
+**Status:** PRIMARY GOVERNING CHARTER (LOCKED UPON APPROVAL)
 
 ---
 
-## Document Authority
+## 0. PURPOSE OF THIS CONSTITUTION
 
-**This document is the constitutional foundation of CRAudioVizAI.**
+This Constitution defines the core identity, principles, governance, and operating mandate of the CRAudioVizAI ecosystem (CRAI).
 
-It establishes:
-- Executive vision and philosophy
-- Non-negotiable principles
-- Core architectural invariants
-- Platform boundaries and technology standards
+It establishes the rules of execution, the rights and responsibilities of all subsystems, and the structural foundation upon which all other documents depend.
 
-**Canonical Authority:**
-- This document governs all other CRAI canonical documents
-- In case of conflict between CRAI documents, this Constitution takes precedence
-- Changes to this document require executive approval and full Canon review
-- This document may only be amended through formal Change Control process
-
-**Relationship to Other Documents:**
-- All CRAI operating systems must comply with principles defined here
-- All technical implementations must align with architecture defined here
-- All business decisions must respect non-negotiables defined here
-
-**Source Attribution:**
-- Extracted from CRAI-Master-Bible-v2_3_0-CANON-LOCKED.md
-- Originally Section 1 and Section 2 of the Master Bible
-- Maintained as standalone constitutional reference
+**This is the highest-order document in the CRAI canon.**  
+**All other documents must comply with it.**
 
 ---
 
-## Table of Contents
+## 1. CRAI IDENTITY & MISSION
 
-1. [Executive Vision, Philosophy, and Non-Negotiable Principles](#section-1)
-2. [Platform Architecture, Core Stack, and System Boundaries](#section-2)
+### 1.1 Identity
 
----
+CRAI is a multi-domain, multi-universe, AI-powered operating platform designed to:
 
-<a name="section-1"></a>
+- enable creators, collectors, enterprises, and institutions
+- unify digital and physical asset ecosystems
+- centralize AI orchestration, governance, and automation
+- provide a scalable foundation for every product, universe, and service
 
----
+### 1.2 Mission
 
-# SECTION 1
-## Executive Vision, Philosophy, and Non-Negotiable Principles
+CRAI exists to:
 
-**Originally Section 1 in CRAI Master Bible**
-
----
-
-## 1.1 Purpose of This Document
-
-This document is the authoritative, canonical source of truth for the CRAudioVizAI (CRAV) ecosystem and its flagship intelligence system, Javari.
-
-**It replaces:**
-
-- All prior overviews
-- All partial roadmaps
-- All duplicated platform summaries
-- All informal architectural notes
-
-If a rule, system behavior, workflow, or decision is not represented here, it is not considered approved for long-term implementation.
-
-**This document governs:**
-
-- Product design
-- Engineering architecture
-- AI behavior
-- Monetization
-- Security
-- Operations
-- Expansion into future universes
+- reduce execution time across all domains
+- accelerate creation, transformation, intelligence, and recovery
+- provide universal operating systems (OS layers) for markets, creators, organizations, and AI-driven agents
+- ensure stability, governance, and truth across a growing ecosystem
+- deliver a platform capable of continuous, autonomous improvement
 
 ---
 
-## 1.2 What CRAudioVizAI Is
+## 2. CANONICAL STRUCTURE
 
-CRAudioVizAI is a multi-universe AI platform company designed to:
+### 2.1 Canon Overview
 
-- Build production-grade AI systems, not demos
-- Operate revenue-generating products, not experiments
-- Maintain auditability, reversibility, and control
-- Scale across many verticals using shared intelligence
+The CRAI Canon is composed of 12 core documents (this being Document 1).  
+These represent the complete, versioned, authoritative specification of CRAI.
 
-**The company does not build one-off apps.**
+The Canon defines:
 
-**It builds engines that produce apps.**
+- the platform architecture
+- operating system layers
+- governance
+- monetization
+- security
+- universe model
+- collector and marketplace foundations
+- developer and communication frameworks
+- AI intelligence and agent governance
 
----
+### 2.2 Canon Rules
 
-## 1.3 The Role of Javari
+- All documents must be internally consistent.
+- No document may contradict this Constitution.
+- Any change must follow the Change Control rules (Section 7).
+- Canon versions increase only when changes are approved and reviewed.
+- Canon must always reflect the latest source of truth for implementation.
 
-**Javari is not a chatbot.**
+### 2.3 Canon Versioning Principles
 
-**Javari is:**
+- **Major versions** = breaking conceptual changes
+- **Minor versions** = new systems, new layers, new capabilities
+- **Patch versions** = corrections, clarifications, compliance updates
 
-- An AI operating system
-- A universal intelligence layer
-- A context engine
-- A memory fabric
-- A routing orchestrator
-- A multi-domain expert system
-- A code-capable agent
-
-**Javari runs across every universe.**
-
-Every universe may look different to customers, but behind the scenes, Javari is the shared brain—continuously learning, routing, predicting, and optimizing.
-
----
-
-## 1.4 Core Philosophy
-
-### 1.4.1 Revenue First
-
-**The platform generates revenue.**
-
-CRAudioVizAI exists to build businesses, not tech demos.
-
-Every feature, every AI capability, every universe expansion must be evaluated by one question:
-
-**"Does this generate or enable revenue?"**
-
-If the answer is unclear, the feature is not yet justified.
+This Constitution is version 3.0, the first rewrite aligned to the 12-document architecture.
 
 ---
 
-### 1.4.2 Code Ownership & Portability
+## 3. FOUNDATIONAL PRINCIPLES
 
-**All code, all data, all systems belong to the company.**
+CRAI is built on 12 immutable principles:
 
-Every universe, every module, every feature is engineered to be:
+1. **Truth First** — All systems prioritize correctness over convenience.
+2. **Execution Over Theory** — Functionality must be deliverable in practice.
+3. **AI as Force Multiplier** — AI augments, not replaces, human strategic control.
+4. **Zero Duplication** — Every system has one authoritative location.
+5. **Universal Shared Services** — Everything reusable is centralized.
+6. **Composable Architecture** — Every OS and universe must be modular.
+7. **Security Without Exception** — No subsystem bypasses governance.
+8. **Data Integrity is Law** — Data must be consistent, validated, and governed.
+9. **User Sovereignty** — Users retain rights over identity, data, and assets.
+10. **Audit Everything** — All actions, AI or human, must be traceable.
+11. **Graceful Degradation** — The system must operate safely under failure.
+12. **Continuous Improvement** — CRAI evolves without requiring rebuilds.
 
-- Fully owned
-- Self-hostable
-- Transferable
-- Auditable
-
-**There is no vendor lock-in.**
-
-If the company chose to move every system to a different cloud provider tomorrow, it could do so with zero disruption.
-
----
-
-### 1.4.3 AI as Infrastructure, Not Decoration
-
-**AI is not bolted on—it is foundational.**
-
-Every decision, every workflow, every customer-facing system benefits from:
-
-- Intelligent routing (multi-AI orchestration)
-- Contextual memory (remembers every user, every asset, every prior action)
-- Reasoning capabilities (not keyword matching)
-- Continuous learning (feedback loops improve behavior)
-
-Javari is not an "add-on."
-
-**It is the infrastructure.**
+These principles apply globally across all CRAI systems.
 
 ---
 
-### 1.4.4 Universal Collectors Framework
+## 4. SYSTEM ORGANIZATION OF CRAI
 
-**Everything is a collectible.**
+CRAI consists of five foundational pillars:
 
-From wine bottles to trading cards, from antiques to real estate, from NFTs to intellectual property:
+### 4.1 Platform Pillar
 
-**CRAudioVizAI builds universal intelligence systems.**
+Defines infrastructure, architecture, hosting, API layers, and systems integration.  
+(See CRAI-PLATFORM-ARCHITECTURE.md)
 
-The Collectors Framework is a reusable engine for:
+### 4.2 Intelligence Pillar
 
-- Asset cataloging
-- Valuation
-- Provenance tracking
-- Insurance
-- Auctions
-- Marketplace transactions
+Defines Javari AI, AI orchestration, multi-model collaboration, safety, and execution.  
+(See CRAI-JAVARI-INTELLIGENCE.md)
 
-One system. Infinite verticals.
+### 4.3 Operating System Pillar
 
----
+Defines all domain-specific OS layers powering universes and applications.  
+(See CRAI-OPERATING-SYSTEMS.md)
 
-### 1.4.5 Multi-Universe Architecture
+### 4.4 Marketplace & Asset Pillar
 
-**The company does not build standalone apps.**
+Defines collectors, assets, marketplace logic, valuations, auctions, and commerce flows.  
+(See CRAI-MARKETPLACE-ASSET-SYSTEMS.md)
 
-It builds:
+### 4.5 Governance & Lifecycle Pillar
 
-- **Universes:** complete product ecosystems (e.g., Wine Universe, Card Universe, Antiques Universe)
-- **Shared Layers:** authentication, payments, AI, analytics, security
-- **Modular Systems:** reusable engines like Collectors, Marketplace, Insurance, Auctions
-
-Each universe looks different to the end user. Each universe reuses 90% of the platform.
-
-This is what enables:
-
-- Fast launches
-- Low engineering overhead
-- Consistent quality
+Defines org creation, universe creation, roles, permissions, compliance, approvals, and lifecycle rules.  
+(See CRAI-GOVERNANCE-LIFECYCLE-OPERATIONS.md)
 
 ---
 
-### 1.4.6 Auditability & Reversibility
+## 5. ROLE OF AI IN CRAI
 
-**Every action is logged.**
+### 5.1 AI as Execution Engine
 
-**Every AI decision is traceable.**
+AI systems (Javari AI + others) are authorized to:
 
-**Every deployment is reversible.**
+- propose actions
+- generate solutions
+- automate workflows
+- assist in code, content, and operational processes
 
-CRAudioVizAI operates in regulated industries (finance, insurance, alcohol, real estate).
+AI is not authorized to execute irreversible actions without explicit approval.  
+(Defined fully in CRAI-JAVARI-INTELLIGENCE.md)
 
-Auditability is not optional.
+### 5.2 Human Oversight
 
-Every system includes:
+Humans may override AI at any time.  
+AI must defer to human authority under all conditions.
 
-- Full audit trails
-- Rollback mechanisms
-- Evidence chains
-- Versioned configurations
-- Self-documenting workflows
+### 5.3 AI Boundaries
 
-If a regulator, investor, or auditor asks, "How did the system make this decision?" the platform can provide:
+AI cannot:
 
-- The inputs
-- The reasoning
-- The model version
-- The timestamp
-- The rollback path
+- bypass governance
+- modify canon directly
+- deploy unverified code
+- alter data without audit trails
+- escalate privileges
 
----
-
-### 1.4.7 No Surprises
-
-**The system is predictable.**
-
-**The system is testable.**
-
-**The system is controllable.**
-
-No "black box" AI decisions.
-
-No hidden behaviors.
-
-No unpredictable outcomes.
-
-Every AI interaction includes:
-
-- Confidence scores
-- Explanation paths
-- Human override options
-- Escalation workflows
-
-Javari may be intelligent, but it is never autonomous without oversight.
+These boundaries apply globally.
 
 ---
 
-### 1.4.8 Customer Obsession
+## 6. RIGHTS & RESPONSIBILITIES WITHIN THE ECOSYSTEM
 
-**The platform exists to serve customers.**
+### 6.1 Rights of Users
 
-Every feature must answer:
+Users have the right to:
 
-- Does this make the customer more successful?
-- Does this save them time?
-- Does this increase their revenue?
-- Does this reduce their risk?
+- maintain ownership over identity
+- export their data
+- understand how AI uses their data
+- operate within universes of their choosing
+- access transparent monetization models
 
-Internal elegance does not matter if the customer experience is poor.
+### 6.2 Responsibilities of Users
 
----
+Users must:
 
-## 1.5 Non-Negotiable Principles
+- comply with universe rules
+- avoid harmful or fraudulent actions
+- respect creators, collectors, and institutions
 
-### 1.5.1 Security First
+### 6.3 Rights of Developers
 
-**The platform operates under zero-trust principles.**
+Developers have the right to:
 
-- Row-level security everywhere
-- API key rotation
-- Encrypted secrets
-- Multi-factor authentication
-- Role-based access control
-- Audit logs for every action
+- clear APIs
+- complete documentation
+- consistent schemas
+- stable platform behaviors
 
-Security is not an afterthought.
+### 6.4 Responsibilities of Developers
 
-**It is embedded.**
+Developers must:
 
----
+- follow OS boundaries
+- not introduce duplicate features
+- ensure security and data integrity
+- maintain auditability
 
-### 1.5.2 No Vendor Lock-In
+### 6.5 Rights of AIs
 
-**The platform is portable.**
+AI systems have the right to:
 
-Every component can be:
+- access necessary context
+- operate within their permission boundaries
+- remain versioned and governed
 
-- Self-hosted
-- Migrated
-- Replaced
-- Audited
+### 6.6 Responsibilities of AIs
 
-There are no external dependencies that cannot be swapped.
+AI must:
 
----
-
-### 1.5.3 Multi-AI Strategy
-
-**The platform does not depend on one AI provider.**
-
-It routes between:
-
-- OpenAI
-- Anthropic
-- Google Gemini
-- Perplexity
-- Any future model
-
-**Routing decisions are made by:**
-
-- Cost
-- Speed
-- Capability
-- Availability
-
-If one provider goes down, traffic automatically reroutes.
-
-If one provider becomes expensive, workloads shift.
-
-**The platform is provider-agnostic.**
+- deliver consistent outputs
+- avoid hallucinations
+- document operations
+- operate deterministically through policy
 
 ---
 
-### 1.5.4 Incremental, Testable Rollouts
+## 7. CANON GOVERNANCE & CHANGE CONTROL
 
-**No "big bang" launches.**
+### 7.1 Ownership
 
-Every feature goes through:
+This Constitution governs all CRAI systems.  
+Changes may only occur when:
 
-- Local testing
-- Preview deployment
-- Gradual rollout
-- Monitoring
-- Rollback-ready state
+- proposed through a structured review
+- validated by cross-AI alignment (Claude + ChatGPT + Copilot)
+- accepted by CRAI executive authority
 
-If a feature breaks, it is immediately rolled back.
+### 7.2 Change Request Workflow
 
----
+1. Create change request
+2. AI review (all 3 engines)
+3. Human executive approval
+4. Rewrite staged
+5. Canon updated with new version
 
-### 1.5.5 Revenue-Safe Systems
+### 7.3 Canon Modification Rules
 
-**No system launches if it risks revenue.**
-
-Before any universe or feature goes live:
-
-- Payment processing is tested
-- Refund logic is validated
-- Fraud detection is active
-- Revenue tracking is confirmed
-
-If money is involved, the system is verified twice.
+- No document may be changed without version update
+- No breaking change may occur without major version bump
+- All changes must maintain internal consistency
 
 ---
 
-## 1.6 What This Document Contains
+## 8. UNIVERSES AS FIRST-CLASS CITIZENS
 
-This Master Bible defines:
+### 8.1 What Is a Universe?
 
-1. **Architecture** — how the platform is built
-2. **Governance** — who decides what, when, and why
-3. **AI Behavior** — what Javari can and cannot do
-4. **Revenue Models** — how each universe monetizes
-5. **Security** — how data is protected
-6. **Operations** — how systems are maintained
-7. **Expansion** — how new universes are added
-8. **Compliance** — how regulations are handled
+A universe is an autonomous domain within CRAI, each governed by:
 
-If a question is not answered here, the default answer is:
+- OS layers
+- policies
+- templates
+- APIs
+- analytics
+- permissions
 
-**"It has not yet been approved."**
+### 8.2 Universe Lifecycle
 
----
+Fully defined in CRAI-GOVERNANCE-LIFECYCLE-OPERATIONS.md, but summarized:
 
-## 1.7 How to Use This Document
+1. Create
+2. Configure
+3. Launch
+4. Operate
+5. Evolve
+6. Deprecate
+7. Archive
 
-**Engineers:** This is your blueprint. Follow it.
+### 8.3 Universe Isolation
 
-**AI Systems:** This is your policy framework. Enforce it.
+Each universe must:
 
-**Product Managers:** This is your roadmap. Prioritize from it.
-
-**Leadership:** This is your governance structure. Decide from it.
-
-**Investors:** This is your audit trail. Review it.
-
-**Regulators:** This is your compliance documentation. Reference it.
-
----
-
-## 1.8 Evolution of This Document
-
-**This document is living.**
-
-It evolves as the platform evolves.
-
-**But it evolves slowly and deliberately.**
-
-Changes require:
-
-- Executive approval
-- Engineering review
-- Documentation updates
-- Version control
-- Audit trail
-
-**No informal edits.**
-
-**No undocumented changes.**
-
-**No shortcuts.**
+- maintain its own policies and data boundaries
+- operate without interfering with others
+- remain governed through platform rules
 
 ---
 
-✅ **SECTION 1 COMPLETE**
+## 9. CROSS-SYSTEM INTEGRITY RULES
+
+To ensure stability:
+
+- Every OS must declare a SINGLE source of truth.
+- No system duplicates logic that belongs to a shared service.
+- All AI actions must be logged.
+- All external APIs must be versioned.
+- All user flows must map to governance and security layers.
+- All marketplaces must comply with platform-wide policies.
+- All universes must follow lifecycle governance.
 
 ---
 
-<a name="section-2"></a>
+## 10. IDENTITY, ACCESS, & PERMISSIONS
+
+### 10.1 Identity Layer
+
+IdentityOS governs identity rules.  
+Users may:
+
+- authenticate
+- manage credentials
+- manage linked accounts
+- manage permissions
+
+### 10.2 Access Control
+
+RBAC applies globally:
+
+- roles
+- scopes
+- permissions
+
+Defined in detail in CRAI-SECURITY-RESILIENCE.md.
+
+### 10.3 Governance Enforcement
+
+A policy engine evaluates every action.  
+AI cannot override permissions.
 
 ---
 
-# SECTION 2
-## Platform Architecture, Core Stack, and System Boundaries
+## 11. ECONOMIC SYSTEM & CREDITS
 
-**Originally Section 2 in CRAI Master Bible**
+### 11.1 Credits as the Universal Currency
 
----
+Credits may be:
 
-## 2.1 Architectural Objective
+- earned
+- purchased
+- spent
+- refunded
 
-The CRAudioVizAI platform architecture is designed to achieve five primary objectives simultaneously:
+Credits govern usage of OS layers, tools, and universes.
 
-1. Scalability across many verticals (Universes)
-2. Strict cost control for AI and infrastructure
-3. Security and compliance by default
-4. Operational reversibility (rollback at every layer)
-5. Long-term maintainability with minimal re-architecture
+### 11.2 Transparency
 
-**Every architectural decision must satisfy all five.**  
-**If it does not, it is rejected.**
+All credit-consuming operations must declare:
 
----
+- cost
+- refund logic
+- failure handling
 
-## 2.2 High-Level System Topology
+### 11.3 Monetization Integrity
 
-At a high level, the platform consists of:
-
-- A shared frontend layer
-- A shared backend and orchestration layer
-- A shared data and identity layer
-- A shared AI intelligence layer (Javari)
-- Multiple Universe-specific configurations
-
-**This is a hub-and-spoke model, not a collection of independent apps.**
+No OS may introduce monetization rules that conflict with the central model.
 
 ---
 
-## 2.3 Frontend Architecture
+## 12. AUDITABILITY & TRUTH
 
-### Framework
+Every critical action must generate an audit record:
 
-- Next.js (App Router)
-- Server Components by default
-- Client Components only when explicitly required
+- AI actions
+- user actions
+- deployment actions
+- configuration actions
+- universe lifecycle changes
+- marketplace transactions
 
-### Hosting
+Audit logs are:
 
-**CRAudioVizAI supports multi-host deployment.**
-
-**Netlify + Supabase are the canonical default stack.**
-
-Vercel is supported as an optional or legacy deployment target.
-
-**Rationale:**
-- Netlify: Industry-leading serverless deployment with excellent Next.js support, automatic previews, and seamless CI/CD
-- Supabase: Open-source PostgreSQL with built-in auth, real-time subscriptions, Row Level Security, and complete data portability
-- Vercel: Optional for specific projects requiring its unique features or for legacy continuity
-- Portability: Both platforms support self-hosting and migration without vendor lock-in
-- Cost efficiency: Generous free tiers and predictable scaling costs
-
-**Deployment flexibility:**
-- All code is platform-agnostic and can deploy to either Netlify or Vercel
-- Migration scripts exist for moving projects between platforms
-- Edge rendering available on both platforms
-- Static generation preferred when possible
-
-### Design Rules
-
-- Shared layout shell across all universes
-- Universe-specific theming via configuration
-- Feature flags control visibility, not routing hacks
-
-### Accessibility
-
-- WCAG 2.2 AA minimum
-- Keyboard-first navigation
-- Semantic HTML enforced
+- immutable
+- accessible
+- governed
+- essential for trust
 
 ---
 
-## 2.4 Backend Architecture
+## 13. CANON ENFORCEMENT
 
-### Primary Backend
+Breaking rules of this Constitution results in:
 
-**Serverless Functions:**
-- Netlify Functions (canonical default)
-- Vercel Serverless Functions (optional)
-- Platform-agnostic code design
+- rejected operations
+- AI de-escalation
+- termination of unsafe workflows
+- mandatory human intervention
 
-**Edge Functions:**
-- Netlify Edge Functions (canonical default)
-- Vercel Edge Functions (optional)
-- Used for latency-sensitive features
-
-### Design Principles
-
-- Stateless functions
-- Idempotent by design
-- Explicit input validation
-- Explicit output schemas
-- Request ID propagation
-
-**No backend function may:**
-
-- Assume client trust
-- Perform silent retries
-- Mutate data without audit logging
+CRAI prioritizes safety and consistency above speed when necessary.
 
 ---
 
-## 2.5 Database & Data Layer
+## 14. FINAL DECLARATION
 
-### Primary Database
+This Constitution defines the law of CRAI.  
+All systems derive their authority from it.  
+No OS, universe, marketplace, AI, or developer may act outside it.
 
-Supabase (PostgreSQL)
+Once approved by all three engines and CRAI executive authority, this document becomes:
 
-### Core Capabilities Used
+**THE LOCKED, PERMANENT CANONICAL GOVERNING DOCUMENT OF CRAI**
 
-- Auth (with RBAC)
-- Row Level Security (RLS)
-- Storage
-- Realtime (selectively)
-
-### Rules
-
-- All access governed by RLS
-- No "service role" usage in user-facing flows
-- No direct client writes without policy enforcement
-- All mutations logged
-
----
-
-## 2.6 Identity, Auth, and RBAC
-
-### Authentication
-
-- Supabase Auth
-- Email, OAuth, and future passkeys
-
-### Authorization
-
-- Row Level Security (RLS)
-- Role-based access control (RBAC)
-- Scoped permissions per universe
-- Explicit allow-lists, not deny-lists
-
-### Identity Rules
-
-- Every user has exactly one identity
-- Cross-universe identity is unified (one login = all universes)
-- Universe-level permissions are additive
-- No implicit permissions
-
----
-
-## 2.7 AI & Intelligence Layer
-
-### Multi-AI Routing
-
-**Primary AI Providers:**
-
-- OpenAI (GPT-4, GPT-3.5, embeddings)
-- Anthropic (Claude Sonnet, Haiku, Opus)
-- Google (Gemini Pro, Flash)
-- Perplexity (search-augmented responses)
-
-### Routing Logic
-
-- Task type (code generation, reasoning, search)
-- Cost optimization
-- Latency requirements
-- Provider availability
-- Failover rules
-
-**Every AI call is routed through Javari.**
-
-No direct AI provider usage in application code.
-
----
-
-## 2.8 Payment & Revenue Infrastructure
-
-### Primary Payment Processor
-
-**Stripe**
-
-- Subscriptions
-- One-time payments
-- Marketplace splits
-- Refunds
-- Webhooks
-
-### Secondary Payment Processor
-
-**PayPal**
-
-- Alternative payment option
-- Subscription support
-
-### Rules
-
-- All payments logged
-- All transactions reversible
-- All revenue attributed to source universe
-- All refunds automated
-
----
-
-## 2.9 Storage & CDN
-
-### File Storage
-
-**Supabase Storage**
-
-- Public buckets (images, documents)
-- Private buckets (user uploads)
-- Signed URLs for temporary access
-- Image transformations
-
-### CDN
-
-- Netlify Edge (primary)
-- Vercel Edge (optional)
-- Global distribution
-- Automatic cache invalidation
-
----
-
-## 2.10 Monitoring, Logging, and Observability
-
-### Error Tracking
-
-**Sentry**
-
-- Frontend errors
-- Backend errors
-- Performance monitoring
-- Release tracking
-
-### Application Logs
-
-**Supabase Logs**
-
-- Database queries
-- Auth events
-- Edge Function logs
-- Storage access
-
-### Custom Monitoring
-
-- Health checks
-- Uptime monitoring
-- Alert systems
-- Custom dashboards
-
----
-
-## 2.11 Email & Communication
-
-### Transactional Email
-
-**Resend** (Primary)
-
-- User notifications
-- Password resets
-- Receipts
-- Alerts
-
-**SendGrid** (Backup)
-
-- Failover option
-
-### Rules
-
-- All emails templated
-- All sends logged
-- Unsubscribe enforced
-- Delivery tracking
-
----
-
-## 2.12 Analytics & Intelligence
-
-### Web Analytics
-
-- Custom analytics layer
-- Event tracking
-- User journeys
-- Revenue attribution
-- Conversion funnels
-
-### Storage
-
-- All analytics data stored in Supabase
-- Real-time dashboards
-- Historical analysis
-- Export capabilities
-
----
-
-## 2.13 System Boundaries
-
-### What Is Inside the Platform
-
-✅ **Included:**
-
-- All application code
-- All database schemas
-- All authentication logic
-- All payment processing
-- All AI orchestration
-- All analytics and monitoring
-- All admin dashboards
-- All customer-facing UIs
-
----
-
-### What Is Outside the Platform
-
-❌ **External Dependencies:**
-
-- AI model training (uses vendor APIs)
-- Credit card processing (Stripe/PayPal handle PCI compliance)
-- Email delivery infrastructure (Resend/SendGrid)
-- CDN edge nodes (Netlify/Vercel)
-
-**BUT:** All these dependencies can be swapped without code changes.
-
----
-
-## 2.14 Data Ownership
-
-**All data belongs to CRAudioVizAI.**
-
-- User accounts
-- Transaction history
-- Asset catalogs
-- AI conversation logs
-- Analytics data
-- Audit trails
-
-**Export capabilities:**
-
-- Full database dumps
-- Per-user data exports
-- API-based data access
-- CSV/JSON exports
-
----
-
-## 2.15 Environment Structure
-
-### Development
-
-- Local machines
-- Supabase local development
-- Mock payment providers
-- Test AI keys
-
----
-
-### Preview/Staging
-
-- Automatic preview deployments
-- Supabase preview instances
-- Test payment mode
-- Limited AI usage
-
----
-
-### Production
-
-- Live customer traffic
-- Production database
-- Live payment processing
-- Full AI capabilities
-- Monitoring and alerts
-
----
-
-## 2.16 Deployment Model
-
-### Continuous Deployment
-
-**Every commit triggers:**
-
-1. Automated tests
-2. Type checking
-3. Build verification
-4. Preview deployment (for PRs)
-5. Production deployment (for main branch, if enabled)
-
----
-
-### Rollback Strategy
-
-**If a deployment fails:**
-
-1. Automatic health checks detect failure
-2. System reverts to previous deployment
-3. Team is alerted
-4. Investigation begins
-
-**Manual rollback:**
-
-- One-click via hosting platform dashboard
-- Previous deployments preserved for 30 days
-- Database migrations reversible via scripts
-
----
-
-## 2.17 Security Architecture
-
-### Zero-Trust Principles
-
-**Every request is authenticated.**
-
-**Every database query is authorized.**
-
-**Every secret is encrypted.**
-
----
-
-### Row-Level Security
-
-**Every Supabase table has RLS enabled.**
-
-Users can only access:
-
-- Their own data
-- Data they've been granted access to
-- Public data
-
----
-
-### API Security
-
-**All API routes validate:**
-
-- Authentication tokens
-- Authorization permissions
-- Input data
-- Rate limits
-
----
-
-### Secret Management
-
-**Secrets are stored in:**
-
-- Netlify environment variables (preferred)
-- Vercel environment variables (for Vercel projects)
-- Supabase secrets (for Edge Functions)
-
-**Never in:**
-
-- Git repositories
-- Frontend code
-- Documentation
-
----
-
-## 2.18 Scaling Strategy
-
-### Horizontal Scaling
-
-**Netlify/Vercel automatically scales:**
-
-- Serverless functions
-- Edge functions
-- Static assets
-
-**No manual intervention required.**
-
----
-
-### Database Scaling
-
-**Supabase supports:**
-
-- Connection pooling
-- Read replicas
-- Database extensions
-- Custom indexes
-- Query optimization
-
----
-
-### Cost Management
-
-**Monitoring includes:**
-
-- Serverless function usage
-- Database storage
-- AI API costs
-- Payment processing fees
-- CDN bandwidth
-
-**Alerts trigger when:**
-
-- Costs exceed thresholds
-- Usage spikes unexpectedly
-- Quotas approach limits
-
----
-
-## 2.19 Technology Decisions — Canonical Rules
-
-### Frontend
-
-✅ **Allowed:**
-
-- Next.js (App Router)
-- React
-- TypeScript
-- Tailwind CSS
-- shadcn/ui components
-
-❌ **Not Allowed:**
-
-- Vue, Angular, Svelte (different framework)
-- JavaScript (TypeScript required)
-- CSS-in-JS libraries (use Tailwind)
-
----
-
-### Backend
-
-✅ **Allowed:**
-
-- Supabase PostgreSQL
-- Supabase Edge Functions
-- Serverless functions (Netlify/Vercel)
-- SQL queries
-
-❌ **Not Allowed:**
-
-- MongoDB (schema flexibility not worth complexity)
-- GraphQL (REST + Postgrest sufficient)
-- Custom server deployments (stay serverless)
-
----
-
-### AI Integration
-
-✅ **Allowed:**
-
-- OpenAI, Anthropic, Google, Perplexity, OpenRouter
-- Multi-provider routing
-- Streaming responses
-- Embeddings for search
-
-❌ **Not Allowed:**
-
-- Self-hosted models (too expensive)
-- Single-provider lock-in
-- Unmonitored AI usage
-
----
-
-### Payments
-
-✅ **Allowed:**
-
-- Stripe (primary)
-- PayPal (secondary)
-- Stripe Connect (marketplace)
-
-❌ **Not Allowed:**
-
-- Direct credit card handling (PCI compliance)
-- Cryptocurrency payments (regulatory uncertainty)
-- Manual invoicing (automation required)
-
----
-
-## 2.20 Documentation Standards
-
-**Every system component must have:**
-
-- Architecture diagram
-- API documentation
-- Setup instructions
-- Environment variables list
-- Deployment checklist
-- Rollback procedures
-
-**If it's not documented, it's not done.**
-
----
-
-✅ **SECTION 2 COMPLETE**
-
----
-
-## END OF CRAI CONSTITUTION
-
-**Document Version:** 2.3.0 — CANON LOCK + EXECUTION EDITION  
-**Date:** January 18, 2026  
-**Status:** CONSTITUTIONAL AUTHORITY — LOCKED FOR EXECUTION
-
-**Governance:**
-- This document establishes the constitutional foundation for all CRAudioVizAI systems
-- All other CRAI canonical documents must comply with principles defined here
-- Changes require executive approval and formal Change Control process
-- In case of conflict, this Constitution takes precedence
+**Document 1 of 12 — Foundation for All Execution**
 
 ---
 
@@ -1048,4 +404,4 @@ Users can only access:
 
 ---
 
-**CONSTITUTIONAL AUTHORITY ESTABLISHED.** ⚖️
+✅ **END OF CRAI-CONSTITUTION.md v3.0 — READY FOR CANON LOCK**
