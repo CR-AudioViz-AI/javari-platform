@@ -1,0 +1,44 @@
+{
+  "admin": {
+    "enabled": true,
+    "superAdminEnabled": true,
+    "serviceAccountsEnabled": true,
+    "adminExecutorEnabled": true,
+    "auditAll": true,
+    "bypassProtection": false
+  },
+  "superAdmin": {
+    "role": "super_admin",
+    "protected": true,
+    "nonDeletable": true,
+    "nonDowngradable": true,
+    "inheritAllPermissions": true,
+    "explicitAllow": true,
+    "auditRequired": true
+  },
+  "serviceAccounts": {
+    "enabled": true,
+    "defaultRateLimit": 1000,
+    "javari": {
+      "enabled": true,
+      "email": "javari@craudiovizai.com",
+      "name": "Javari AI",
+      "roles": ["super_admin"],
+      "rateLimit": 10000
+    }
+  },
+  "adminExecutor": {
+    "enabled": true,
+    "requirePolicyCheck": true,
+    "requireAudit": true,
+    "allowMultiPath": true,
+    "failoverEnabled": true
+  },
+  "compliance": {
+    "fullAuditTrail": true,
+    "noBypass": true,
+    "policyEnforced": true,
+    "traceable": true,
+    "revocable": true
+  }
+}
