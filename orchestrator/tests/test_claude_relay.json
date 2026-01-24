@@ -1,0 +1,109 @@
+{
+  "_comment": "=============================================================================",
+  "_comment_usage": "Test Payload: Claude Relay → Merged File Output",
+  "_comment_purpose": "Tests the processClaudeTask Supabase Edge Function end-to-end workflow",
+  "_comment_workflow": [
+    "1. Reads pending task from ai_tasks table",
+    "2. Calls Claude API (Anthropic) with task payload",
+    "3. Commits Claude's response to GitHub repository",
+    "4. Updates ai_tasks with completion status and GitHub URLs",
+    "5. Logs commit event to ai_events table"
+  ],
+  "_comment_usage_instructions": [
+    "SETUP:",
+    "1. First create a task using test_orchestrator_payload.json (see that file)",
+    "2. Verify task exists in ai_tasks table with status='pending'",
+    "3. Note the task_id from the response",
+    "",
+    "METHOD 1 - Manual Edge Function Trigger (Recommended for Testing):",
+    "  curl -X POST https://your-project.supabase.co/functions/v1/processClaudeTask \\",
+    "    -H 'Authorization: Bearer YOUR_ANON_KEY' \\",
+    "    -H 'Content-Type: application/json'",
+    "  Note: Function automatically reads next pending task from database",
+    "",
+    "METHOD 2 - Simulate Full Workflow (For Integration Testing):",
+    "  1. Create task via orchestrator API",
+    "  2. Wait 1-2 seconds for database write",
+    "  3. Trigger processClaudeTask",
+    "  4. Verify results",
+    "",
+    "VERIFICATION STEPS:",
+    "  SQL Query 1 - Check task status:",
+    "    SELECT id, status, started_at, completed_at FROM ai_tasks WHERE id = 'task_id_here';",
+    "  ",
+    "  SQL Query 2 - View Claude's output:",
+    "    SELECT result->'content' as output, result->'github_url' as file_url FROM ai_tasks WHERE id = 'task_id_here';",
+    "  ",
+    "  SQL Query 3 - Check commit event:",
+    "    SELECT * FROM ai_events WHERE event_type = 'commit' AND task_id = 'task_id_here';",
+    "  ",
+    "  GitHub Verification:",
+    "    1. Go to your GitHub repository",
+    "    2. Navigate to the specified filePath",
+    "    3. Verify the file was created/updated",
+    "    4. Check commit message includes task_id"
+  ],
+  "_comment_expected_results": {
+    "task_status": "completed",
+    "result_fields": ["content", "github_commit", "github_url", "raw_response"],
+    "github_commit_format": "sha hash (40 characters)",
+    "ai_events_entry": "event_type='commit' with GitHub metadata"
+  },
+  "_comment_troubleshooting": [
+    "Error: 'No pending tasks found' → Create a task first using test_orchestrator_payload.json",
+    "Error: 'Claude API error: 401' → Verify ANTHROPIC_API_KEY is set in Supabase secrets",
+    "Error: 'GitHub commit failed: 404' → Verify repository exists and GITHUB_TOKEN has access",
+    "Error: 'GitHub commit failed: 422' → File path may be invalid, check filePath in task payload",
+    "Task stuck in 'processing' → Check Supabase Edge Function logs for errors"
+  ],
+  "_comment_test_variations": [
+    "Test Case 1: New file creation (file doesn't exist yet)",
+    "Test Case 2: File update (file already exists, will update with new SHA)",
+    "Test Case 3: Different repository (change context.repository in original task)",
+    "Test Case 4: Different branch (change context.branch in original task)"
+  ],
+  "_comment_separator": "=============================================================================",
+  
+  "_note": "This file serves as documentation. The processClaudeTask function does not accept a JSON payload.",
+  "_note_2": "Instead, it automatically reads the next pending task from the ai_tasks database table.",
+  "_note_3": "To test, you must first create a task in the database using the orchestrator API.",
+  
+  "example_task_context_for_reference": {
+    "description": "Generate a comprehensive user guide for the Javariverse virtual world including navigation, avatar customization, and social features.",
+    "context": {
+      "repository": "CR-AudioViz-AI/crav-docs",
+      "filePath": "docs/guides/javariverse-user-guide.md",
+      "branch": "main",
+      "fileName": "javariverse-user-guide.md",
+      "systemPrompt": "You are a user experience writer creating friendly, accessible documentation for non-technical users. Use clear language, include screenshots placeholders, and organize content with helpful headers and sections."
+    }
+  },
+  
+  "expected_claude_response_structure": {
+    "content": [
+      {
+        "type": "text",
+        "text": "# Javariverse User Guide\n\n## Welcome to Javariverse...\n\n[Claude's full markdown output here]"
+      }
+    ],
+    "usage": {
+      "input_tokens": 150,
+      "output_tokens": 2000
+    },
+    "model": "claude-sonnet-4-20250514"
+  },
+  
+  "expected_database_update": {
+    "status": "completed",
+    "completed_at": "2026-01-23T20:35:00.000Z",
+    "result": {
+      "content": "[Claude's generated markdown content]",
+      "github_commit": "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0",
+      "github_url": "https://github.com/CR-AudioViz-AI/crav-docs/blob/main/docs/guides/javariverse-user-guide.md",
+      "raw_response": {
+        "content": [],
+        "usage": {}
+      }
+    }
+  }
+}
