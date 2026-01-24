@@ -1,0 +1,46 @@
+{
+  "_comment": "=============================================================================",
+  "_comment_usage": "Test Payload: Orchestrator API → ai_tasks Insertion",
+  "_comment_purpose": "Tests the /api/orchestrator endpoint to validate task creation flow",
+  "_comment_usage_instructions": [
+    "1. Start your Vercel development server: npm run dev",
+    "2. Ensure Supabase is running and migrations are applied",
+    "3. Run this test with curl:",
+    "   curl -X POST http://localhost:3000/api/orchestrator \\",
+    "     -H 'Content-Type: application/json' \\",
+    "     -d @orchestrator/tests/test_orchestrator_payload.json",
+    "4. Expected response: { success: true, task_id: 'uuid', assigned_agent: 'claude', status: 'pending' }",
+    "5. Verify in Supabase SQL Editor:",
+    "   SELECT * FROM ai_tasks ORDER BY created_at DESC LIMIT 1;",
+    "   SELECT * FROM ai_events WHERE event_type = 'task_created' ORDER BY timestamp DESC LIMIT 1;"
+  ],
+  "_comment_production_url": "Replace localhost:3000 with your-domain.vercel.app for production testing",
+  "_comment_test_variations": [
+    "Test Case 1: Valid documentation task (this file)",
+    "Test Case 2: Change taskType to 'code_generation' to test Claude assignment",
+    "Test Case 3: Change priority to 'critical' to test priority handling",
+    "Test Case 4: Change taskType to 'analysis' to test Javari assignment",
+    "Test Case 5: Omit 'description' to test validation error handling"
+  ],
+  "_comment_separator": "=============================================================================",
+  
+  "taskType": "documentation",
+  "priority": "high",
+  "payload": {
+    "description": "Create comprehensive API documentation for the CRAudioVizAI Orchestrator system including all endpoints, request/response formats, error codes, and usage examples.",
+    "context": {
+      "repository": "CR-AudioViz-AI/crav-docs",
+      "filePath": "docs/api/orchestrator-api-reference.md",
+      "branch": "main",
+      "systemPrompt": "You are a technical documentation expert for the CRAudioVizAI platform. Write clear, comprehensive API documentation following industry best practices. Include code examples in multiple languages (cURL, JavaScript, Python). Format output as Markdown with proper headers and sections.",
+      "targetAudience": "developers",
+      "outputFormat": "markdown"
+    }
+  },
+  "metadata": {
+    "source": "test_harness",
+    "test_run_id": "test_001",
+    "created_by": "orchestrator_test_suite",
+    "tags": ["documentation", "api", "orchestrator"]
+  }
+}
