@@ -1,0 +1,172 @@
+{
+  "_comment": "=============================================================================",
+  "_comment_usage": "Test Payload: GitHub Webhook → Push Event Processing",
+  "_comment_purpose": "Tests the /api/github-webhook endpoint to validate commit event logging",
+  "_comment_workflow": [
+    "1. Receives GitHub push webhook event",
+    "2. Logs main event to ai_events (event_type='github_push')",
+    "3. Logs individual commits to ai_events (event_type='commit' for each)",
+    "4. Detects documentation changes",
+    "5. Optionally triggers knowledge base update"
+  ],
+  "_comment_usage_instructions": [
+    "METHOD 1 - Manual Testing with cURL:",
+    "  curl -X POST http://localhost:3000/api/github-webhook \\",
+    "    -H 'Content-Type: application/json' \\",
+    "    -H 'X-GitHub-Event: push' \\",
+    "    -d @orchestrator/tests/test_github_commit.json",
+    "",
+    "METHOD 2 - Production GitHub Webhook:",
+    "  1. Go to GitHub Repository → Settings → Webhooks",
+    "  2. Click 'Add webhook'",
+    "  3. Payload URL: https://your-domain.vercel.app/api/github-webhook",
+    "  4. Content type: application/json",
+    "  5. Select 'Just the push event' or 'Let me select individual events'",
+    "  6. Click 'Add webhook'",
+    "  7. Push a commit to your repository",
+    "  8. Verify webhook delivery in Settings → Webhooks → Recent Deliveries",
+    "",
+    "VERIFICATION STEPS:",
+    "  SQL Query 1 - Check push event logged:",
+    "    SELECT * FROM ai_events WHERE event_type = 'github_push' ORDER BY timestamp DESC LIMIT 1;",
+    "  ",
+    "  SQL Query 2 - Check individual commit events:",
+    "    SELECT event_type, event_data->>'commit_id' as commit, event_data->>'commit_message' as message",
+    "    FROM ai_events WHERE event_type = 'commit' ORDER BY timestamp DESC LIMIT 5;",
+    "  ",
+    "  SQL Query 3 - Count commits logged from this push:",
+    "    SELECT COUNT(*) FROM ai_events WHERE event_type = 'commit' ",
+    "    AND event_data->>'repository' = 'CR-AudioViz-AI/crav-docs' ",
+    "    AND timestamp > NOW() - INTERVAL '1 minute';"
+  ],
+  "_comment_expected_results": {
+    "api_response": {
+      "success": true,
+      "event": "push",
+      "processed": true,
+      "commits_logged": 2
+    },
+    "database_entries": {
+      "ai_events_github_push": 1,
+      "ai_events_commit": 2,
+      "total_events": 3
+    }
+  },
+  "_comment_test_variations": [
+    "Test Case 1: Push with documentation changes (triggers knowledge update)",
+    "Test Case 2: Push without doc changes (normal commit logging only)",
+    "Test Case 3: Multiple commits in single push (tests batch logging)",
+    "Test Case 4: Different branch (tests branch tracking)",
+    "Test Case 5: Pull request event (change X-GitHub-Event header to 'pull_request')"
+  ],
+  "_comment_documentation_detection": [
+    "Files ending in .md trigger knowledge update",
+    "Files in /docs/ directory trigger knowledge update",
+    "Example: docs/blueprints/file.md → triggers updateKnowledge function"
+  ],
+  "_comment_separator": "=============================================================================",
+  
+  "ref": "refs/heads/main",
+  "before": "0000000000000000000000000000000000000000",
+  "after": "a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2",
+  "repository": {
+    "id": 123456789,
+    "name": "crav-docs",
+    "full_name": "CR-AudioViz-AI/crav-docs",
+    "private": true,
+    "owner": {
+      "name": "CR-AudioViz-AI",
+      "login": "CR-AudioViz-AI"
+    },
+    "html_url": "https://github.com/CR-AudioViz-AI/crav-docs",
+    "description": "Documentation for CRAudioVizAI platform",
+    "default_branch": "main"
+  },
+  "pusher": {
+    "name": "roy-henderson",
+    "email": "roy@craudiovizai.com"
+  },
+  "sender": {
+    "login": "roy-henderson",
+    "id": 987654321,
+    "type": "User"
+  },
+  "commits": [
+    {
+      "id": "a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2",
+      "tree_id": "b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3",
+      "message": "docs: add orchestrator deployment guide\n\nComprehensive guide for deploying the orchestrator system including Vercel and Supabase setup, environment variables, and testing procedures.",
+      "timestamp": "2026-01-23T20:30:00-05:00",
+      "url": "https://github.com/CR-AudioViz-AI/crav-docs/commit/a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2",
+      "author": {
+        "name": "Roy Henderson",
+        "email": "roy@craudiovizai.com",
+        "username": "roy-henderson"
+      },
+      "committer": {
+        "name": "Roy Henderson",
+        "email": "roy@craudiovizai.com",
+        "username": "roy-henderson"
+      },
+      "added": [
+        "docs/deployment/orchestrator-setup.md",
+        "docs/deployment/troubleshooting.md"
+      ],
+      "removed": [],
+      "modified": [
+        "README.md",
+        "docs/index.md"
+      ]
+    },
+    {
+      "id": "c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4",
+      "tree_id": "d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5",
+      "message": "feat: update orchestrator API examples with production URLs",
+      "timestamp": "2026-01-23T20:32:00-05:00",
+      "url": "https://github.com/CR-AudioViz-AI/crav-docs/commit/c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4",
+      "author": {
+        "name": "Roy Henderson",
+        "email": "roy@craudiovizai.com",
+        "username": "roy-henderson"
+      },
+      "committer": {
+        "name": "Roy Henderson",
+        "email": "roy@craudiovizai.com",
+        "username": "roy-henderson"
+      },
+      "added": [],
+      "removed": [],
+      "modified": [
+        "docs/api/orchestrator-reference.md",
+        "docs/examples/curl-examples.sh"
+      ]
+    }
+  ],
+  "head_commit": {
+    "id": "c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4",
+    "tree_id": "d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5",
+    "message": "feat: update orchestrator API examples with production URLs",
+    "timestamp": "2026-01-23T20:32:00-05:00",
+    "author": {
+      "name": "Roy Henderson",
+      "email": "roy@craudiovizai.com",
+      "username": "roy-henderson"
+    },
+    "committer": {
+      "name": "Roy Henderson",
+      "email": "roy@craudiovizai.com",
+      "username": "roy-henderson"
+    }
+  },
+  "created": false,
+  "deleted": false,
+  "forced": false,
+  "compare": "https://github.com/CR-AudioViz-AI/crav-docs/compare/0000000000000000...c3d4e5f6a1b2c3d4",
+  
+  "_note_testing_variations": {
+    "test_doc_detection": "This payload includes .md files, so it should detect documentation changes",
+    "test_files_tracked": "Note the 'added' and 'modified' arrays in each commit - these are logged",
+    "test_branch": "ref field shows the branch - change to 'refs/heads/develop' to test other branches",
+    "test_multiple_commits": "This payload has 2 commits to test batch logging"
+  }
+}
