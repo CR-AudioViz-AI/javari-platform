@@ -1,4 +1,4 @@
-# CRAI-COMMS-DEVELOPER-EXPORT.md
+# JAVARI-COMMS-DEVELOPER-EXPORT.md
 **CRAudioVizAI Canonical Document 9 of 12**  
 **Version:** 3.0 — EXECUTION CANON  
 **Status:** AUTHORITATIVE COMMUNICATIONS, DEVELOPER EXPERIENCE & EXPORT SPECIFICATION
@@ -7,7 +7,7 @@
 
 ## 0. PURPOSE OF THIS DOCUMENT
 
-This document defines the communications, developer experience, and data export architecture for CRAI.
+This document defines the communications, developer experience, and data export architecture for Javari.
 
 This includes:
 - Communications & Branding — Brand identity, messaging, voice
@@ -19,7 +19,7 @@ This includes:
 
 This document establishes enterprise-grade communication, developer tools, and data portability capabilities.
 
-**Governed by:** CRAI-CONSTITUTION.md  
+**Governed by:** JAVARI-CONSTITUTION.md  
 **Coordinates with:** All 11 other canonical documents
 
 ---
@@ -31,7 +31,7 @@ This document establishes enterprise-grade communication, developer tools, and d
 **Company Name:** CR AudioViz AI, LLC
 
 **Brand Names:**
-- CRAI (primary platform brand)
+- Javari (primary platform brand)
 - Javari AI (AI orchestration system)
 - CollectorsOS™, CreatorOS™, MarketplaceOS™ (operating systems)
 
@@ -88,8 +88,8 @@ This document establishes enterprise-grade communication, developer tools, and d
 **Brand Colors:**
 ```
 Primary:
-- CRAI Blue:    #2563EB
-- CRAI Navy:    #1E3A8A
+- Javari Blue:    #2563EB
+- Javari Navy:    #1E3A8A
 
 Secondary:
 - Success Green: #10B981
@@ -131,7 +131,7 @@ Font Sizes:
 ### 1.4 Messaging Framework
 
 **Positioning Statement:**
-"CRAI is the AI-powered platform that empowers creators and collectors to build, organize, and monetize their passions through professional-grade tools, intelligent automation, and vibrant marketplaces."
+"Javari is the AI-powered platform that empowers creators and collectors to build, organize, and monetize their passions through professional-grade tools, intelligent automation, and vibrant marketplaces."
 
 **Key Messages:**
 
@@ -151,7 +151,7 @@ Font Sizes:
 - "Global marketplace, local community"
 
 **For Developers:**
-- "Build on CRAI with powerful APIs"
+- "Build on Javari with powerful APIs"
 - "Comprehensive docs, helpful support"
 - "Scale with confidence"
 
@@ -247,10 +247,10 @@ DELETE - Remove resource
 
 **JavaScript/TypeScript SDK:**
 ```typescript
-import { CRAIClient } from '@craudiovizai/sdk'
+import { JavariClient } from '@craudiovizai/sdk'
 
-const client = new CRAIClient({
-  apiKey: process.env.CRAI_API_KEY
+const client = new JavariClient({
+  apiKey: process.env.JAVARI_API_KEY
 })
 
 // Create collection
@@ -268,9 +268,9 @@ const item = await client.collections.items.create(collection.id, {
 
 **Python SDK:**
 ```python
-from crai import CRAIClient
+from javari import JavariClient
 
-client = CRAIClient(api_key=os.environ['CRAI_API_KEY'])
+client = JavariClient(api_key=os.environ['JAVARI_API_KEY'])
 
 # Create collection
 collection = client.collections.create(
@@ -553,7 +553,7 @@ interface NotificationPreferences {
 **Email Templates:**
 ```handlebars
 {{!-- welcome-email.hbs --}}
-<h1>Welcome to CRAI, {{user.name}}!</h1>
+<h1>Welcome to Javari, {{user.name}}!</h1>
 
 <p>We're excited to have you join our community of creators and collectors.</p>
 
@@ -1029,7 +1029,7 @@ GET  /api/v1/docs/status
 
 ## 11. FINAL DECLARATION
 
-This document establishes comprehensive communications, developer experience, and data export capabilities for CRAI, including:
+This document establishes comprehensive communications, developer experience, and data export capabilities for Javari, including:
 - Brand identity and messaging
 - Developer-first API design
 - Comprehensive documentation systems
@@ -1037,7 +1037,7 @@ This document establishes comprehensive communications, developer experience, an
 - Data export and portability (ExportOS™)
 - Visual documentation (DiagramOS™)
 
-All communications, developer tools, and export operations are governed by CRAI-CONSTITUTION.md and coordinated with all other canonical documents.
+All communications, developer tools, and export operations are governed by JAVARI-CONSTITUTION.md and coordinated with all other canonical documents.
 
 **Document 9 of 12 — Communications, Developer Experience & Export Foundation**
 
@@ -1050,4 +1050,4 @@ All communications, developer tools, and export operations are governed by CRAI-
 
 ---
 
-✅ **END OF CRAI-COMMS-DEVELOPER-EXPORT.md v3.0 — READY FOR CANON LOCK**
+✅ **END OF JAVARI-COMMS-DEVELOPER-EXPORT.md v3.0 — READY FOR CANON LOCK**

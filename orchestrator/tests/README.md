@@ -194,7 +194,7 @@ curl -X POST http://localhost:3000/api/orchestrator \
     "payload": {
       "description": "Create a test document",
       "context": {
-        "repository": "CR-AudioViz-AI/crav-docs",
+        "repository": "CR-AudioViz-AI/javari-docs",
         "filePath": "docs/test.md",
         "branch": "main"
       }
@@ -232,7 +232,7 @@ WHERE id = 'a1b2c3d4-e5f6-7890-abcd-ef1234567890';
 ```
 
 **Step 6: Check GitHub**
-- Navigate to repository: `CR-AudioViz-AI/crav-docs`
+- Navigate to repository: `CR-AudioViz-AI/javari-docs`
 - Check file: `docs/test.md`
 - Verify commit message includes task_id
 

@@ -1,9 +1,9 @@
 /**
- * @crai/policy — PolicyOS™
+ * @javari/policy — PolicyOS™
  * 
  * Platform-wide policy definition and enforcement
  * 
- * @package @crai/policy
+ * @package @javari/policy
  * @module PolicyOS
  */
 

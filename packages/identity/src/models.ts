@@ -2,9 +2,9 @@
  * IdentityOS™ — Core Types and Models
  * 
  * Canonical user identity and authentication models
- * Aligns with: CRAI-OPERATING-SYSTEMS.md (Section 2.2)
+ * Aligns with: JAVARI-OPERATING-SYSTEMS.md (Section 2.2)
  * 
- * @package @crai/identity
+ * @package @javari/identity
  * @module IdentityOS/Models
  */
 

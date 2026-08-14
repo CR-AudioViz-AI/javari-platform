@@ -1,4 +1,4 @@
-# CRAI-SECURITY-RESILIENCE.md
+# JAVARI-SECURITY-RESILIENCE.md
 **CRAudioVizAI Canonical Document 7 of 12**  
 **Version:** 3.0 — EXECUTION CANON  
 **Status:** AUTHORITATIVE SECURITY & RESILIENCE SPECIFICATION
@@ -7,7 +7,7 @@
 
 ## 0. PURPOSE OF THIS DOCUMENT
 
-This document defines the complete security and resilience architecture for CRAI.
+This document defines the complete security and resilience architecture for JAVARI.
 
 This includes:
 - SecurityOS™ — Platform security enforcement
@@ -20,9 +20,9 @@ This includes:
 - ConsentOS™ — User consent management
 - RiskOS™ — Risk assessment and mitigation
 
-This document establishes enterprise-grade security and resilience capabilities across all CRAI systems.
+This document establishes enterprise-grade security and resilience capabilities across all JAVARI systems.
 
-**Governed by:** CRAI-CONSTITUTION.md  
+**Governed by:** JAVARI-CONSTITUTION.md  
 **Coordinates with:** All 11 other canonical documents
 
 ---
@@ -59,7 +59,7 @@ This document establishes enterprise-grade security and resilience capabilities 
 
 ### 2.1 Purpose & Scope
 
-**Purpose:** Enforce security policies across all CRAI systems
+**Purpose:** Enforce security policies across all JAVARI systems
 
 **Responsibilities:**
 - Authentication and authorization
@@ -957,7 +957,7 @@ Risk Level:
 
 ## 13. FINAL DECLARATION
 
-This document establishes comprehensive security and resilience capabilities for CRAI, including:
+This document establishes comprehensive security and resilience capabilities for JAVARI, including:
 - Multi-layered security controls (SecurityOS™)
 - Business continuity and disaster recovery (ResilienceOS™)
 - Encryption key management (KeyManagementOS™)
@@ -968,7 +968,7 @@ This document establishes comprehensive security and resilience capabilities for
 - Consent management (ConsentOS™)
 - Risk management (RiskOS™)
 
-All security and resilience operations are governed by CRAI-CONSTITUTION.md and coordinated with all other canonical documents.
+All security and resilience operations are governed by JAVARI-CONSTITUTION.md and coordinated with all other canonical documents.
 
 **Document 7 of 12 — Security & Resilience Foundation**
 
@@ -981,4 +981,4 @@ All security and resilience operations are governed by CRAI-CONSTITUTION.md and 
 
 ---
 
-✅ **END OF CRAI-SECURITY-RESILIENCE.md v3.0 — READY FOR CANON LOCK**
+✅ **END OF JAVARI-SECURITY-RESILIENCE.md v3.0 — READY FOR CANON LOCK**

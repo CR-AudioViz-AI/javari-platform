@@ -29,7 +29,7 @@ interface UpdateKnowledgeRequest {
 serve(async (req) => {
   try {
     const {
-      repository = 'CR-AudioViz-AI/crav-docs',
+      repository = 'CR-AudioViz-AI/javari-docs',
       filePath = 'docs/blueprints/Javariverse_Master_Blueprint.md',
       branch = 'main',
       content: providedContent,

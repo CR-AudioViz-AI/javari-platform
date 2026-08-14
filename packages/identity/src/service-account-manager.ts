@@ -3,7 +3,7 @@
  * 
  * Manages service accounts for automated system operations
  * 
- * @package @crai/identity
+ * @package @javari/identity
  * @module IdentityOS/ServiceAccountManager
  */
 
@@ -116,7 +116,7 @@ export class ServiceAccountManager {
    * Generate secure API key
    */
   private generateApiKey(): string {
-    const prefix = 'crai';
+    const prefix = 'javari';
     const entropy = randomUUID().replace(/-/g, '');
     return `${prefix}_${entropy}`;
   }

@@ -1,4 +1,4 @@
-# CRAI-PLATFORM-ARCHITECTURE.md
+# JAVARI-PLATFORM-ARCHITECTURE.md
 **CRAudioVizAI Canonical Document 3 of 12**  
 **Version:** 3.0 — EXECUTION CANON  
 **Status:** AUTHORITATIVE PLATFORM ARCHITECTURE SPECIFICATION
@@ -7,7 +7,7 @@
 
 ## 0. PURPOSE OF THIS DOCUMENT
 
-This document defines the complete platform architecture of CRAI, including:
+This document defines the complete platform architecture of JAVARI, including:
 - Infrastructure and hosting architecture
 - Deployment models and environments
 - API architecture and versioning
@@ -16,9 +16,9 @@ This document defines the complete platform architecture of CRAI, including:
 - Integration patterns and service mesh
 - Monitoring, observability, and resilience
 
-This document establishes the technical foundation upon which all CRAI systems are built and deployed.
+This document establishes the technical foundation upon which all JAVARI systems are built and deployed.
 
-**Governed by:** CRAI-CONSTITUTION.md  
+**Governed by:** JAVARI-CONSTITUTION.md  
 **Coordinates with:** All 11 other canonical documents
 
 ---
@@ -27,8 +27,8 @@ This document establishes the technical foundation upon which all CRAI systems a
 
 ### 1.1 Platform Mission
 
-The CRAI platform exists to provide:
-- Scalable, reliable infrastructure for all CRAI systems
+The JAVARI platform exists to provide:
+- Scalable, reliable infrastructure for all JAVARI systems
 - Secure, compliant hosting environments
 - High-performance APIs and data access
 - Seamless integration across all OS layers
@@ -695,7 +695,7 @@ Observability Stack
 
 **WebSocket Endpoints:**
 ```
-wss://api.crai.com/realtime
+wss://api.javari.com/realtime
 ```
 
 **Connection Management:**
@@ -1137,14 +1137,14 @@ POST /api/webhooks/supabase
 
 ## 13. FINAL DECLARATION
 
-This platform architecture establishes the technical foundation for all CRAI systems, ensuring:
+This platform architecture establishes the technical foundation for all JAVARI systems, ensuring:
 - Scalable, reliable infrastructure
 - Secure, compliant operations
 - High-performance APIs and data access
 - Comprehensive monitoring and observability
 - Disaster recovery and resilience
 
-All platform operations are governed by CRAI-CONSTITUTION.md and coordinated with all other canonical documents.
+All platform operations are governed by JAVARI-CONSTITUTION.md and coordinated with all other canonical documents.
 
 **Document 3 of 12 — Platform Architecture Foundation**
 
@@ -1157,4 +1157,4 @@ All platform operations are governed by CRAI-CONSTITUTION.md and coordinated wit
 
 ---
 
-✅ **END OF CRAI-PLATFORM-ARCHITECTURE.md v3.0 — READY FOR CANON LOCK**
+✅ **END OF JAVARI-PLATFORM-ARCHITECTURE.md v3.0 — READY FOR CANON LOCK**

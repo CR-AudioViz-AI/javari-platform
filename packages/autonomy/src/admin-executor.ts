@@ -4,13 +4,13 @@
  * Elevated execution layer for super_admin operations
  * All executions fully audited and policy-compliant
  * 
- * @package @crai/autonomy
+ * @package @javari/autonomy
  * @module AutonomyEngine/AdminExecutor
  */
 
-import { audit } from '@crai/audit';
-import { policyEngine } from '@crai/policy';
-import type { AdminExecutionContext, AdminExecutionResult } from '@crai/identity';
+import { audit } from '@javari/audit';
+import { policyEngine } from '@javari/policy';
+import type { AdminExecutionContext, AdminExecutionResult } from '@javari/identity';
 import { CommandRouter } from './command-router';
 
 export class AdminExecutor {
@@ -155,7 +155,7 @@ export class AdminExecutor {
     // Admin system info
     this.commandRouter.registerRoute('admin.systemInfo', async () => {
       return {
-        platform: 'CRAI Platform',
+        platform: 'JAVARI Platform',
         version: '1.0.0',
         autonomyEngine: 'active',
         timestamp: new Date().toISOString(),

@@ -104,7 +104,7 @@ CREATE INDEX idx_ai_events_metadata_gin ON ai_events USING GIN (metadata);
 -- Sample data for testing (remove in production)
 -- INSERT INTO ai_events (event_type, source, event_data, priority) VALUES
 --   ('task_created', 'orchestrator', '{"task_id": "123", "type": "code_generation"}'::jsonb, 'medium'),
---   ('github_push', 'github_webhook', '{"repository": "crav-docs", "commits": 3}'::jsonb, 'low'),
+--   ('github_push', 'github_webhook', '{"repository": "javari-docs", "commits": 3}'::jsonb, 'low'),
 --   ('claude_task_completed', 'claude_api', '{"task_id": "123", "execution_time": 2500}'::jsonb, 'medium'),
 --   ('knowledge_gap', 'javari_chat', '{"query": "How do I deploy to Vercel?", "user_id": "456"}'::jsonb, 'high');
 

@@ -1,4 +1,4 @@
-# CRAI-MARKETPLACE-ASSET-SYSTEMS.md
+# JAVARI-MARKETPLACE-ASSET-SYSTEMS.md
 **CRAudioVizAI Canonical Document 10 of 12**  
 **Version:** 3.0 — EXECUTION CANON  
 **Status:** AUTHORITATIVE MARKETPLACE & ASSET SYSTEMS SPECIFICATION
@@ -7,7 +7,7 @@
 
 ## 0. PURPOSE OF THIS DOCUMENT
 
-This document defines the marketplace and specialized asset management systems within CRAI.
+This document defines the marketplace and specialized asset management systems within JAVARI.
 
 This includes:
 - MarketplaceOS™ — Core marketplace functionality
@@ -20,8 +20,8 @@ This includes:
 
 This document establishes enterprise-grade marketplace, asset management, and commerce capabilities.
 
-**Governed by:** CRAI-CONSTITUTION.md  
-**Coordinates with:** CRAI-COLLECTORS-FRAMEWORK.md, CRAI-BUSINESS-GROWTH-MONETIZATION.md
+**Governed by:** JAVARI-CONSTITUTION.md  
+**Coordinates with:** JAVARI-COLLECTORS-FRAMEWORK.md, JAVARI-BUSINESS-GROWTH-MONETIZATION.md
 
 ---
 
@@ -1026,7 +1026,7 @@ GET    /api/v1/provenance/verify/:certificateId
 
 ## 10. FINAL DECLARATION
 
-This document establishes comprehensive marketplace and asset management systems for CRAI, including:
+This document establishes comprehensive marketplace and asset management systems for JAVARI, including:
 - Core marketplace functionality (MarketplaceOS™)
 - Asset insurance (InsuranceOS™)
 - Auction capabilities (AuctionOS™)
@@ -1035,7 +1035,7 @@ This document establishes comprehensive marketplace and asset management systems
 - Real estate management (RealEstateOS™)
 - Gaming assets (GameOS™)
 
-All marketplace and asset operations are governed by CRAI-CONSTITUTION.md and coordinated with all other canonical documents.
+All marketplace and asset operations are governed by JAVARI-CONSTITUTION.md and coordinated with all other canonical documents.
 
 **Document 10 of 12 — Marketplace & Asset Systems Foundation**
 
@@ -1048,4 +1048,4 @@ All marketplace and asset operations are governed by CRAI-CONSTITUTION.md and co
 
 ---
 
-✅ **END OF CRAI-MARKETPLACE-ASSET-SYSTEMS.md v3.0 — READY FOR CANON LOCK**
+✅ **END OF JAVARI-MARKETPLACE-ASSET-SYSTEMS.md v3.0 — READY FOR CANON LOCK**

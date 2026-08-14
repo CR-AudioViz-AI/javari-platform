@@ -1,4 +1,4 @@
-# CRAI-ECOSYSTEM-FEDERATION-COMMERCE.md
+# JAVARI-ECOSYSTEM-FEDERATION-COMMERCE.md
 **CRAudioVizAI Canonical Document 12 of 12**  
 **Version:** 3.0 — EXECUTION CANON  
 **Status:** AUTHORITATIVE ECOSYSTEM, FEDERATION & COMMERCE SPECIFICATION
@@ -7,7 +7,7 @@
 
 ## 0. PURPOSE OF THIS DOCUMENT
 
-This document defines the ecosystem, federation, and extended commerce capabilities of CRAI.
+This document defines the ecosystem, federation, and extended commerce capabilities of JAVARI.
 
 This includes:
 - EcosystemOS™ — Platform ecosystem management
@@ -21,7 +21,7 @@ This includes:
 
 This document establishes enterprise-grade ecosystem, federation, and commerce extension capabilities.
 
-**Governed by:** CRAI-CONSTITUTION.md  
+**Governed by:** JAVARI-CONSTITUTION.md  
 **Coordinates with:** All 11 other canonical documents
 
 ---
@@ -30,7 +30,7 @@ This document establishes enterprise-grade ecosystem, federation, and commerce e
 
 ### 1.1 Purpose & Scope
 
-**Purpose:** Manage the CRAI platform ecosystem including partners, developers, and third-party integrations
+**Purpose:** Manage the JAVARI platform ecosystem including partners, developers, and third-party integrations
 
 **Responsibilities:**
 - Partner ecosystem development
@@ -437,11 +437,11 @@ interface TrackingEvent {
 - Seller handles returns
 - Seller manages inventory
 
-**CRAI Fulfilled (Future):**
+**JAVARI Fulfilled (Future):**
 - Central warehouse
-- CRAI handles shipping
-- CRAI handles returns
-- Inventory managed by CRAI
+- JAVARI handles shipping
+- JAVARI handles returns
+- Inventory managed by JAVARI
 
 **Third-Party Fulfillment:**
 - Integration with 3PL providers
@@ -990,7 +990,7 @@ GET  /api/v1/vendors/:id/scorecard
 
 ## 11. FINAL DECLARATION
 
-This document establishes comprehensive ecosystem, federation, and commerce extension capabilities for CRAI, including:
+This document establishes comprehensive ecosystem, federation, and commerce extension capabilities for JAVARI, including:
 - Partner ecosystem management (EcosystemOS™)
 - Cross-platform federation (FederationOS™)
 - Physical product commerce (PhysicalCommerceOS™)
@@ -1000,7 +1000,7 @@ This document establishes comprehensive ecosystem, federation, and commerce exte
 - Sustainability initiatives (SustainabilityOS™)
 - Legacy system integration (LegacyOS™)
 
-All ecosystem, federation, and commerce operations are governed by CRAI-CONSTITUTION.md and coordinated with all 11 other canonical documents.
+All ecosystem, federation, and commerce operations are governed by JAVARI-CONSTITUTION.md and coordinated with all 11 other canonical documents.
 
 **Document 12 of 12 — Ecosystem, Federation & Commerce Foundation**
 
@@ -1017,4 +1017,4 @@ All ecosystem, federation, and commerce operations are governed by CRAI-CONSTITU
 
 ---
 
-✅ **END OF CRAI-ECOSYSTEM-FEDERATION-COMMERCE.md v3.0 — READY FOR CANON LOCK**
+✅ **END OF JAVARI-ECOSYSTEM-FEDERATION-COMMERCE.md v3.0 — READY FOR CANON LOCK**

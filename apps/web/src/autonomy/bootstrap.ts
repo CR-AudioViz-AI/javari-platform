@@ -4,7 +4,7 @@
  * Initializes and starts the Autonomy Kernel
  */
 
-import { autonomyKernel } from '@crai/autonomy';
+import { autonomyKernel } from '@javari/autonomy';
 import { initializeAdminCore, verifyAdminCore } from './initialize-admin';
 
 /**

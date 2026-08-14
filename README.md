@@ -326,7 +326,7 @@ javari-platform/
 ## Documentation
 
 - **[ARCHITECTURE.md](./ARCHITECTURE.md)** - Detailed architecture design
-- **[Consolidation Report](https://github.com/CR-AudioViz-AI/crav-docs/blob/main/docs/system/consolidation/LAYER_0.7.1_REPO_APP_CONSOLIDATION_REPORT.md)** - Full consolidation analysis
+- **[Consolidation Report](https://github.com/CR-AudioViz-AI/javari-docs/blob/main/docs/system/consolidation/LAYER_0.7.1_REPO_APP_CONSOLIDATION_REPORT.md)** - Full consolidation analysis
 
 ---
 
@@ -372,7 +372,7 @@ Proprietary - CR AudioViz AI, LLC
 **CMO & Co-Founder:** Cindy Henderson  
 **Mission:** "Your Story. Our Design"
 
-For questions about this consolidation initiative, please refer to the comprehensive consolidation report in crav-docs.
+For questions about this consolidation initiative, please refer to the comprehensive consolidation report in javari-docs.
 
 ---
 

@@ -1,9 +1,9 @@
 /**
- * @crai/autonomy — Autonomy Engine™
+ * @javari/autonomy — Autonomy Engine™
  * 
- * Core autonomous execution engine for CRAI Platform
+ * Core autonomous execution engine for JAVARI Platform
  * 
- * @package @crai/autonomy
+ * @package @javari/autonomy
  */
 
 export const OS_NAME = 'AutonomyEngine';

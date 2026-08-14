@@ -1,4 +1,4 @@
-# CRAI-COLLECTORS-FRAMEWORK.md
+# JAVARI-COLLECTORS-FRAMEWORK.md
 **CRAudioVizAI Canonical Document 4 of 12**  
 **Version:** 3.0 — EXECUTION CANON  
 **Status:** AUTHORITATIVE COLLECTORS FRAMEWORK SPECIFICATION
@@ -7,7 +7,7 @@
 
 ## 0. PURPOSE OF THIS DOCUMENT
 
-This document defines the Collectors Framework, the specialized system within CRAI designed for collectors of physical and digital assets.
+This document defines the Collectors Framework, the specialized system within JAVARI designed for collectors of physical and digital assets.
 
 The Collectors Framework enables:
 - Asset cataloging and management
@@ -17,10 +17,10 @@ The Collectors Framework enables:
 - Marketplace integration
 - Community and social features
 
-This document establishes the architecture for all collector-focused operations within CRAI.
+This document establishes the architecture for all collector-focused operations within JAVARI.
 
-**Governed by:** CRAI-CONSTITUTION.md  
-**Coordinates with:** CRAI-MARKETPLACE-ASSET-SYSTEMS.md, CRAI-OPERATING-SYSTEMS.md
+**Governed by:** JAVARI-CONSTITUTION.md  
+**Coordinates with:** JAVARI-MARKETPLACE-ASSET-SYSTEMS.md, JAVARI-OPERATING-SYSTEMS.md
 
 ---
 
@@ -492,7 +492,7 @@ interface CollectionItem {
 
 ---
 
-## 6. INTEGRATION WITH CRAI ECOSYSTEM
+## 6. INTEGRATION WITH JAVARI ECOSYSTEM
 
 ### 6.1 Operating System Integration
 
@@ -554,7 +554,7 @@ interface CollectionItem {
 **Payment Integration:**
 - Credit card processing (Stripe)
 - Alternative payments (PayPal)
-- Credits system (CRAI Credits)
+- Credits system (JAVARI Credits)
 - Subscription billing
 
 **Analytics Integration:**
@@ -782,7 +782,7 @@ GET    /api/v1/portfolio/performance
 
 ### 9.1 Onboarding Flow
 
-1. User signs up for CRAI
+1. User signs up for JAVARI
 2. User selects "Collectors" interest
 3. System presents collection type selection
 4. User creates first collection
@@ -952,7 +952,7 @@ GET    /api/v1/portfolio/performance
 
 The Collectors Framework establishes a comprehensive ecosystem for collectors to catalog, value, authenticate, insure, buy, sell, and showcase their collections.
 
-All Collectors Framework operations are governed by CRAI-CONSTITUTION.md and coordinated with CRAI-MARKETPLACE-ASSET-SYSTEMS.md and CRAI-OPERATING-SYSTEMS.md.
+All Collectors Framework operations are governed by JAVARI-CONSTITUTION.md and coordinated with JAVARI-MARKETPLACE-ASSET-SYSTEMS.md and JAVARI-OPERATING-SYSTEMS.md.
 
 **Document 4 of 12 — Collectors Framework Foundation**
 
@@ -965,4 +965,4 @@ All Collectors Framework operations are governed by CRAI-CONSTITUTION.md and coo
 
 ---
 
-✅ **END OF CRAI-COLLECTORS-FRAMEWORK.md v3.0 — READY FOR CANON LOCK**
+✅ **END OF JAVARI-COLLECTORS-FRAMEWORK.md v3.0 — READY FOR CANON LOCK**

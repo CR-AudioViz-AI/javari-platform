@@ -8,7 +8,7 @@
 
 ## 0. PURPOSE OF THIS DOCUMENT
 
-This document defines the Javari AI Autonomy Engine, a multi-path execution framework that enables autonomous operations across the CRAI platform without constant human intervention.
+This document defines the Javari AI Autonomy Engine, a multi-path execution framework that enables autonomous operations across the JAVARI platform without constant human intervention.
 
 This includes:
 - Execution path taxonomy and capabilities
@@ -20,7 +20,7 @@ This includes:
 - Signed request authentication
 - Implementation guidelines
 
-**Governed by:** CRAI-CONSTITUTION.md  
+**Governed by:** JAVARI-CONSTITUTION.md  
 **Coordinates with:** All 12 canonical documents
 
 ---
@@ -735,7 +735,7 @@ def generate_signature(request_id, timestamp, operation, payload, secret_key):
   "target": {
     "repository": "CR-AudioViz-AI/javari-platform",
     "branch": "main",
-    "files": ["docs/canon/CRAI-CONSTITUTION.md"]
+    "files": ["docs/canon/JAVARI-CONSTITUTION.md"]
   },
   "result": "success",
   "duration_ms": 1234,

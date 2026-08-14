@@ -1,4 +1,4 @@
-# CRAI-DATA-INGESTION-AUTOMATION.md
+# JAVARI-DATA-INGESTION-AUTOMATION.md
 **CRAudioVizAI Canonical Document 5 of 12**  
 **Version:** 3.0 — EXECUTION CANON  
 **Status:** AUTHORITATIVE DATA INGESTION & AUTOMATION SPECIFICATION
@@ -7,7 +7,7 @@
 
 ## 0. PURPOSE OF THIS DOCUMENT
 
-This document defines the data ingestion pipelines and automation frameworks within CRAI.
+This document defines the data ingestion pipelines and automation frameworks within JAVARI.
 
 The Data Ingestion & Automation system enables:
 - Automated data collection from external sources
@@ -18,10 +18,10 @@ The Data Ingestion & Automation system enables:
 - Scheduled job processing
 - Event-driven automation
 
-This document establishes the architecture for all data ingestion and automation operations within CRAI.
+This document establishes the architecture for all data ingestion and automation operations within JAVARI.
 
-**Governed by:** CRAI-CONSTITUTION.md  
-**Coordinates with:** CRAI-PLATFORM-ARCHITECTURE.md, CRAI-OPERATING-SYSTEMS.md
+**Governed by:** JAVARI-CONSTITUTION.md  
+**Coordinates with:** JAVARI-PLATFORM-ARCHITECTURE.md, JAVARI-OPERATING-SYSTEMS.md
 
 ---
 
@@ -800,7 +800,7 @@ External API → Collector → Transformer → Validator → Database
 
 ---
 
-## 9. INTEGRATION WITH CRAI ECOSYSTEM
+## 9. INTEGRATION WITH JAVARI ECOSYSTEM
 
 ### 9.1 Operating System Integration
 
@@ -982,7 +982,7 @@ cron.schedule('0 6 * * *', async () => { // 6 AM daily
   await storeReport(report)
   
   // Email to stakeholders
-  await emailReport(report, ['team@crai.com'])
+  await emailReport(report, ['team@javari.com'])
 })
 ```
 
@@ -1066,7 +1066,7 @@ The Data Ingestion & Automation system establishes comprehensive pipelines and f
 - Scheduled job execution
 - Data quality and governance
 
-All data ingestion and automation operations are governed by CRAI-CONSTITUTION.md and coordinated with all other canonical documents.
+All data ingestion and automation operations are governed by JAVARI-CONSTITUTION.md and coordinated with all other canonical documents.
 
 **Document 5 of 12 — Data Ingestion & Automation Foundation**
 
@@ -1079,4 +1079,4 @@ All data ingestion and automation operations are governed by CRAI-CONSTITUTION.m
 
 ---
 
-✅ **END OF CRAI-DATA-INGESTION-AUTOMATION.md v3.0 — READY FOR CANON LOCK**
+✅ **END OF JAVARI-DATA-INGESTION-AUTOMATION.md v3.0 — READY FOR CANON LOCK**

@@ -227,7 +227,7 @@ test_update_knowledge() {
     
     # Create minimal test payload
     test_payload='{
-      "repository": "CR-AudioViz-AI/crav-docs",
+      "repository": "CR-AudioViz-AI/javari-docs",
       "filePath": "docs/blueprints/Javariverse_Master_Blueprint.md",
       "branch": "main",
       "category": "blueprints"

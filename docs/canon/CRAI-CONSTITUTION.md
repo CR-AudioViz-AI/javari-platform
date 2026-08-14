@@ -1,4 +1,4 @@
-# CRAI-CONSTITUTION.md
+# JAVARI-CONSTITUTION.md
 **CRAudioVizAI Canonical Document 1 of 12**  
 **Version:** 3.0 — EXECUTION CANON  
 **Status:** PRIMARY GOVERNING CHARTER (LOCKED UPON APPROVAL)
@@ -7,20 +7,20 @@
 
 ## 0. PURPOSE OF THIS CONSTITUTION
 
-This Constitution defines the core identity, principles, governance, and operating mandate of the CRAudioVizAI ecosystem (CRAI).
+This Constitution defines the core identity, principles, governance, and operating mandate of the CRAudioVizAI ecosystem (JAVARI).
 
 It establishes the rules of execution, the rights and responsibilities of all subsystems, and the structural foundation upon which all other documents depend.
 
-**This is the highest-order document in the CRAI canon.**  
+**This is the highest-order document in the JAVARI canon.**  
 **All other documents must comply with it.**
 
 ---
 
-## 1. CRAI IDENTITY & MISSION
+## 1. JAVARI IDENTITY & MISSION
 
 ### 1.1 Identity
 
-CRAI is a multi-domain, multi-universe, AI-powered operating platform designed to:
+JAVARI is a multi-domain, multi-universe, AI-powered operating platform designed to:
 
 - enable creators, collectors, enterprises, and institutions
 - unify digital and physical asset ecosystems
@@ -29,7 +29,7 @@ CRAI is a multi-domain, multi-universe, AI-powered operating platform designed t
 
 ### 1.2 Mission
 
-CRAI exists to:
+JAVARI exists to:
 
 - reduce execution time across all domains
 - accelerate creation, transformation, intelligence, and recovery
@@ -43,8 +43,8 @@ CRAI exists to:
 
 ### 2.1 Canon Overview
 
-The CRAI Canon is composed of 12 core documents (this being Document 1).  
-These represent the complete, versioned, authoritative specification of CRAI.
+The JAVARI Canon is composed of 12 core documents (this being Document 1).  
+These represent the complete, versioned, authoritative specification of JAVARI.
 
 The Canon defines:
 
@@ -78,7 +78,7 @@ This Constitution is version 3.0, the first rewrite aligned to the 12-document a
 
 ## 3. FOUNDATIONAL PRINCIPLES
 
-CRAI is built on 12 immutable principles:
+JAVARI is built on 12 immutable principles:
 
 1. **Truth First** — All systems prioritize correctness over convenience.
 2. **Execution Over Theory** — Functionality must be deliverable in practice.
@@ -91,44 +91,44 @@ CRAI is built on 12 immutable principles:
 9. **User Sovereignty** — Users retain rights over identity, data, and assets.
 10. **Audit Everything** — All actions, AI or human, must be traceable.
 11. **Graceful Degradation** — The system must operate safely under failure.
-12. **Continuous Improvement** — CRAI evolves without requiring rebuilds.
+12. **Continuous Improvement** — JAVARI evolves without requiring rebuilds.
 
-These principles apply globally across all CRAI systems.
+These principles apply globally across all JAVARI systems.
 
 ---
 
-## 4. SYSTEM ORGANIZATION OF CRAI
+## 4. SYSTEM ORGANIZATION OF JAVARI
 
-CRAI consists of five foundational pillars:
+JAVARI consists of five foundational pillars:
 
 ### 4.1 Platform Pillar
 
 Defines infrastructure, architecture, hosting, API layers, and systems integration.  
-(See CRAI-PLATFORM-ARCHITECTURE.md)
+(See JAVARI-PLATFORM-ARCHITECTURE.md)
 
 ### 4.2 Intelligence Pillar
 
 Defines Javari AI, AI orchestration, multi-model collaboration, safety, and execution.  
-(See CRAI-JAVARI-INTELLIGENCE.md)
+(See JAVARI-JAVARI-INTELLIGENCE.md)
 
 ### 4.3 Operating System Pillar
 
 Defines all domain-specific OS layers powering universes and applications.  
-(See CRAI-OPERATING-SYSTEMS.md)
+(See JAVARI-OPERATING-SYSTEMS.md)
 
 ### 4.4 Marketplace & Asset Pillar
 
 Defines collectors, assets, marketplace logic, valuations, auctions, and commerce flows.  
-(See CRAI-MARKETPLACE-ASSET-SYSTEMS.md)
+(See JAVARI-MARKETPLACE-ASSET-SYSTEMS.md)
 
 ### 4.5 Governance & Lifecycle Pillar
 
 Defines org creation, universe creation, roles, permissions, compliance, approvals, and lifecycle rules.  
-(See CRAI-GOVERNANCE-LIFECYCLE-OPERATIONS.md)
+(See JAVARI-GOVERNANCE-LIFECYCLE-OPERATIONS.md)
 
 ---
 
-## 5. ROLE OF AI IN CRAI
+## 5. ROLE OF AI IN JAVARI
 
 ### 5.1 AI as Execution Engine
 
@@ -140,7 +140,7 @@ AI systems (Javari AI + others) are authorized to:
 - assist in code, content, and operational processes
 
 AI is not authorized to execute irreversible actions without explicit approval.  
-(Defined fully in CRAI-JAVARI-INTELLIGENCE.md)
+(Defined fully in JAVARI-JAVARI-INTELLIGENCE.md)
 
 ### 5.2 Human Oversight
 
@@ -222,12 +222,12 @@ AI must:
 
 ### 7.1 Ownership
 
-This Constitution governs all CRAI systems.  
+This Constitution governs all JAVARI systems.  
 Changes may only occur when:
 
 - proposed through a structured review
 - validated by cross-AI alignment (Claude + ChatGPT + Copilot)
-- accepted by CRAI executive authority
+- accepted by JAVARI executive authority
 
 ### 7.2 Change Request Workflow
 
@@ -249,7 +249,7 @@ Changes may only occur when:
 
 ### 8.1 What Is a Universe?
 
-A universe is an autonomous domain within CRAI, each governed by:
+A universe is an autonomous domain within JAVARI, each governed by:
 
 - OS layers
 - policies
@@ -260,7 +260,7 @@ A universe is an autonomous domain within CRAI, each governed by:
 
 ### 8.2 Universe Lifecycle
 
-Fully defined in CRAI-GOVERNANCE-LIFECYCLE-OPERATIONS.md, but summarized:
+Fully defined in JAVARI-GOVERNANCE-LIFECYCLE-OPERATIONS.md, but summarized:
 
 1. Create
 2. Configure
@@ -314,7 +314,7 @@ RBAC applies globally:
 - scopes
 - permissions
 
-Defined in detail in CRAI-SECURITY-RESILIENCE.md.
+Defined in detail in JAVARI-SECURITY-RESILIENCE.md.
 
 ### 10.3 Governance Enforcement
 
@@ -379,19 +379,19 @@ Breaking rules of this Constitution results in:
 - termination of unsafe workflows
 - mandatory human intervention
 
-CRAI prioritizes safety and consistency above speed when necessary.
+JAVARI prioritizes safety and consistency above speed when necessary.
 
 ---
 
 ## 14. FINAL DECLARATION
 
-This Constitution defines the law of CRAI.  
+This Constitution defines the law of JAVARI.  
 All systems derive their authority from it.  
 No OS, universe, marketplace, AI, or developer may act outside it.
 
-Once approved by all three engines and CRAI executive authority, this document becomes:
+Once approved by all three engines and JAVARI executive authority, this document becomes:
 
-**THE LOCKED, PERMANENT CANONICAL GOVERNING DOCUMENT OF CRAI**
+**THE LOCKED, PERMANENT CANONICAL GOVERNING DOCUMENT OF JAVARI**
 
 **Document 1 of 12 — Foundation for All Execution**
 
@@ -404,4 +404,4 @@ Once approved by all three engines and CRAI executive authority, this document b
 
 ---
 
-✅ **END OF CRAI-CONSTITUTION.md v3.0 — READY FOR CANON LOCK**
+✅ **END OF JAVARI-CONSTITUTION.md v3.0 — READY FOR CANON LOCK**

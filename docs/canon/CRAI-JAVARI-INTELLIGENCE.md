@@ -1,4 +1,4 @@
-# CRAI-JAVARI-INTELLIGENCE.md
+# JAVARI-JAVARI-INTELLIGENCE.md
 **CRAudioVizAI Canonical Document 2 of 12**  
 **Version:** 3.0 — EXECUTION CANON  
 **Status:** AUTHORITATIVE AI INTELLIGENCE SPECIFICATION
@@ -7,7 +7,7 @@
 
 ## 0. PURPOSE OF THIS DOCUMENT
 
-This document defines Javari AI, the autonomous intelligence layer of CRAI.
+This document defines Javari AI, the autonomous intelligence layer of JAVARI.
 
 Javari AI is the orchestration engine responsible for:
 - Multi-AI routing and collaboration
@@ -17,9 +17,9 @@ Javari AI is the orchestration engine responsible for:
 - Autonomous workflow execution
 - Self-healing and adaptive operations
 
-This document governs all AI operations within CRAI and establishes the rules by which AI systems operate, collaborate, and defer to human authority.
+This document governs all AI operations within JAVARI and establishes the rules by which AI systems operate, collaborate, and defer to human authority.
 
-**Governed by:** CRAI-CONSTITUTION.md  
+**Governed by:** JAVARI-CONSTITUTION.md  
 **Coordinates with:** All 11 other canonical documents
 
 ---
@@ -28,7 +28,7 @@ This document governs all AI operations within CRAI and establishes the rules by
 
 ### 1.1 What Is Javari AI?
 
-Javari AI is the central autonomous intelligence system of CRAI, designed to:
+Javari AI is the central autonomous intelligence system of JAVARI, designed to:
 - Route requests to the optimal AI provider
 - Enforce platform-wide policies
 - Manage costs and budgets
@@ -42,7 +42,7 @@ Javari AI is NOT:
 - Permitted to bypass governance or security policies
 - Capable of modifying canonical documents
 
-### 1.2 Javari AI's Role in CRAI
+### 1.2 Javari AI's Role in JAVARI
 
 Javari AI operates as:
 - **Orchestrator** — Routes AI requests to appropriate providers
@@ -484,7 +484,7 @@ Normal Mode → Degraded Mode → Safe Mode → Kill Switch
 
 ---
 
-## 8. INTEGRATION WITH CRAI ECOSYSTEM
+## 8. INTEGRATION WITH JAVARI ECOSYSTEM
 
 ### 8.1 Operating System Integration
 
@@ -659,14 +659,14 @@ GET  /api/v1/ai/cost-estimate
 
 ## 13. FINAL DECLARATION
 
-Javari AI is the intelligent orchestration layer of CRAI, designed to:
+Javari AI is the intelligent orchestration layer of JAVARI, designed to:
 - Maximize efficiency while minimizing cost
 - Enforce governance without exception
 - Provide transparency through comprehensive logging
 - Enable autonomous operations within safe boundaries
 - Defer to human authority at all times
 
-All Javari AI operations are governed by CRAI-CONSTITUTION.md and coordinated with all other canonical documents.
+All Javari AI operations are governed by JAVARI-CONSTITUTION.md and coordinated with all other canonical documents.
 
 **Document 2 of 12 — AI Intelligence Foundation**
 
@@ -679,4 +679,4 @@ All Javari AI operations are governed by CRAI-CONSTITUTION.md and coordinated wi
 
 ---
 
-✅ **END OF CRAI-JAVARI-INTELLIGENCE.md v3.0 — READY FOR CANON LOCK**
+✅ **END OF JAVARI-JAVARI-INTELLIGENCE.md v3.0 — READY FOR CANON LOCK**

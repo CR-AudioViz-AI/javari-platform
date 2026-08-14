@@ -81,7 +81,7 @@ serve(async (req) => {
     // Commit file to GitHub using GitHub API
     const fileName = task.payload.context?.fileName || `task-${taskId}.md`;
     const filePath = task.payload.context?.filePath || `outputs/${fileName}`;
-    const repository = task.payload.context?.repository || 'CR-AudioViz-AI/crav-docs';
+    const repository = task.payload.context?.repository || 'CR-AudioViz-AI/javari-docs';
     const branch = task.payload.context?.branch || 'main';
 
     const fileContentBase64 = btoa(content);

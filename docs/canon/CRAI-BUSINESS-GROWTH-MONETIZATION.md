@@ -1,4 +1,4 @@
-# CRAI-BUSINESS-GROWTH-MONETIZATION.md
+# JAVARI-BUSINESS-GROWTH-MONETIZATION.md
 **CRAudioVizAI Canonical Document 8 of 12**  
 **Version:** 3.0 — EXECUTION CANON  
 **Status:** AUTHORITATIVE BUSINESS, GROWTH & MONETIZATION SPECIFICATION
@@ -7,7 +7,7 @@
 
 ## 0. PURPOSE OF THIS DOCUMENT
 
-This document defines the complete business, growth, and monetization architecture for CRAI.
+This document defines the complete business, growth, and monetization architecture for JAVARI.
 
 This includes:
 - Revenue architecture and financial model
@@ -17,10 +17,10 @@ This includes:
 - BusinessOS™ — Business intelligence and reporting
 - GrowthOS™ — User acquisition and retention
 
-This document establishes the enterprise-grade financial and growth infrastructure for CRAI.
+This document establishes the enterprise-grade financial and growth infrastructure for JAVARI.
 
-**Governed by:** CRAI-CONSTITUTION.md  
-**Coordinates with:** CRAI-MARKETPLACE-ASSET-SYSTEMS.md, CRAI-OPERATING-SYSTEMS.md
+**Governed by:** JAVARI-CONSTITUTION.md  
+**Coordinates with:** JAVARI-MARKETPLACE-ASSET-SYSTEMS.md, JAVARI-OPERATING-SYSTEMS.md
 
 ---
 
@@ -124,9 +124,9 @@ This document establishes the enterprise-grade financial and growth infrastructu
 
 ## 2. CREDITS SYSTEM (UNIVERSAL CURRENCY)
 
-### 2.1 What Are CRAI Credits?
+### 2.1 What Are JAVARI Credits?
 
-**Definition:** CRAI Credits are the universal currency for all paid operations within CRAI.
+**Definition:** JAVARI Credits are the universal currency for all paid operations within JAVARI.
 
 **Credits are used for:**
 - AI operations (text generation, image creation, analysis)
@@ -1004,7 +1004,7 @@ GET  /api/v1/analytics/forecasts
 
 ## 11. FINAL DECLARATION
 
-This document establishes the complete business, growth, and monetization architecture for CRAI, including:
+This document establishes the complete business, growth, and monetization architecture for JAVARI, including:
 - Multi-stream revenue model
 - Universal credits system
 - Enterprise payment processing (PaymentsOS™)
@@ -1012,7 +1012,7 @@ This document establishes the complete business, growth, and monetization archit
 - Business intelligence (BusinessOS™)
 - Growth and acquisition strategies (GrowthOS™)
 
-All business and monetization operations are governed by CRAI-CONSTITUTION.md and coordinated with all other canonical documents.
+All business and monetization operations are governed by JAVARI-CONSTITUTION.md and coordinated with all other canonical documents.
 
 **Document 8 of 12 — Business, Growth & Monetization Foundation**
 
@@ -1025,4 +1025,4 @@ All business and monetization operations are governed by CRAI-CONSTITUTION.md an
 
 ---
 
-✅ **END OF CRAI-BUSINESS-GROWTH-MONETIZATION.md v3.0 — READY FOR CANON LOCK**
+✅ **END OF JAVARI-BUSINESS-GROWTH-MONETIZATION.md v3.0 — READY FOR CANON LOCK**

@@ -29,7 +29,7 @@
   "payload": {
     "description": "Create comprehensive API documentation for the CRAudioVizAI Orchestrator system including all endpoints, request/response formats, error codes, and usage examples.",
     "context": {
-      "repository": "CR-AudioViz-AI/crav-docs",
+      "repository": "CR-AudioViz-AI/javari-docs",
       "filePath": "docs/api/orchestrator-api-reference.md",
       "branch": "main",
       "systemPrompt": "You are a technical documentation expert for the CRAudioVizAI platform. Write clear, comprehensive API documentation following industry best practices. Include code examples in multiple languages (cURL, JavaScript, Python). Format output as Markdown with proper headers and sections.",

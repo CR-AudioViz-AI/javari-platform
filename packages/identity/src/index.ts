@@ -1,9 +1,9 @@
 /**
- * @crai/identity — IdentityOS™
+ * @javari/identity — IdentityOS™
  * 
  * User identity and authentication management
  * 
- * @package @crai/identity
+ * @package @javari/identity
  * @module IdentityOS
  */
 

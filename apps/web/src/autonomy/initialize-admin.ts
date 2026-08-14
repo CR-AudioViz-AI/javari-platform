@@ -5,10 +5,10 @@
  * All components remain fully audited and policy-compliant
  */
 
-import { initializeJavariServiceAccount } from '@crai/identity';
-import { policyRepository, PROTECTED_SYSTEM_POLICIES } from '@crai/policy';
-import { adminExecutor } from '@crai/autonomy';
-import { audit } from '@crai/audit';
+import { initializeJavariServiceAccount } from '@javari/identity';
+import { policyRepository, PROTECTED_SYSTEM_POLICIES } from '@javari/policy';
+import { adminExecutor } from '@javari/autonomy';
+import { audit } from '@javari/audit';
 
 /**
  * Initialize admin core infrastructure

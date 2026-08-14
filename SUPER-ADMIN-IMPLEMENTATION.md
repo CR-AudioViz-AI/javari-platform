@@ -147,7 +147,7 @@ Created a fully compliant elevated permissions system with SUPER_ADMIN role, ser
 ### As Roy Henderson (User with SUPER_ADMIN)
 
 ```typescript
-import { adminExecutor } from '@crai/autonomy';
+import { adminExecutor } from '@javari/autonomy';
 
 // Execute admin command
 const result = await adminExecutor.execute({
@@ -169,8 +169,8 @@ console.log(result.auditId); // Traceable
 ### As Javari AI (Service Account)
 
 ```typescript
-import { serviceAccountManager } from '@crai/identity';
-import { adminExecutor } from '@crai/autonomy';
+import { serviceAccountManager } from '@javari/identity';
+import { adminExecutor } from '@javari/autonomy';
 
 // Authenticate with API key
 const account = await serviceAccountManager.getServiceAccountByApiKey(apiKey);
@@ -189,7 +189,7 @@ const result = await adminExecutor.execute({
 ### Via Autonomy Kernel
 
 ```typescript
-import { autonomyKernel } from '@crai/autonomy';
+import { autonomyKernel } from '@javari/autonomy';
 
 // Execute through kernel (uses admin executor internally)
 const result = await autonomyKernel.execute('admin.execute', {
@@ -229,7 +229,7 @@ const result = await autonomyKernel.execute('admin.execute', {
 
 ## 🎯 CANONICAL ALIGNMENT
 
-### CRAI-SECURITY-RESILIENCE.md
+### JAVARI-SECURITY-RESILIENCE.md
 
 **Section 2.3 — Authorization:**
 - ✅ Role-Based Access Control (RBAC)
@@ -244,7 +244,7 @@ const result = await autonomyKernel.execute('admin.execute', {
 - ✅ Event correlation
 - ✅ Compliance reporting
 
-### CRAI-OPERATING-SYSTEMS.md
+### JAVARI-OPERATING-SYSTEMS.md
 
 **All OS Integration:**
 - ✅ IdentityOS (user/service account management)

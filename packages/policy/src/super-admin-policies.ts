@@ -3,7 +3,7 @@
  * 
  * Highest privilege tier policies with full audit compliance
  * 
- * @package @crai/policy
+ * @package @javari/policy
  * @module PolicyOS/SuperAdminPolicies
  */
 

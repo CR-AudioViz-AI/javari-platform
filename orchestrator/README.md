@@ -326,7 +326,7 @@ curl -i --location --request POST 'http://localhost:54321/functions/v1/updateKno
   --header 'Authorization: Bearer YOUR_ANON_KEY' \
   --header 'Content-Type: application/json' \
   --data '{
-    "repository": "CR-AudioViz-AI/crav-docs",
+    "repository": "CR-AudioViz-AI/javari-docs",
     "filePath": "docs/blueprints/test.md",
     "branch": "main"
   }'
@@ -371,7 +371,7 @@ curl -X POST https://your-domain.vercel.app/api/orchestrator \
     "payload": {
       "description": "Document the CRAudioVizAI orchestrator system architecture",
       "context": {
-        "repository": "CR-AudioViz-AI/crav-docs",
+        "repository": "CR-AudioViz-AI/javari-docs",
         "filePath": "docs/orchestrator-overview.md",
         "branch": "main"
       }
@@ -453,7 +453,7 @@ curl -X POST https://your-project.supabase.co/functions/v1/updateKnowledge \
   -H "Authorization: Bearer YOUR_ANON_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "repository": "CR-AudioViz-AI/crav-docs",
+    "repository": "CR-AudioViz-AI/javari-docs",
     "filePath": "docs/blueprints/Javariverse_Master_Blueprint.md",
     "branch": "main",
     "category": "blueprints"
@@ -496,7 +496,7 @@ curl -X POST https://your-domain.vercel.app/api/javari-events \
     "source": "updateKnowledge",
     "priority": "medium",
     "data": {
-      "repository": "CR-AudioViz-AI/crav-docs",
+      "repository": "CR-AudioViz-AI/javari-docs",
       "file_path": "docs/test.md",
       "chunks_added": 5
     }

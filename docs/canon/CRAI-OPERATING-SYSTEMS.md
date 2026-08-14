@@ -1,4 +1,4 @@
-# CRAI-OPERATING-SYSTEMS.md
+# JAVARI-OPERATING-SYSTEMS.md
 **CRAudioVizAI Canonical Document 6 of 12**  
 **Version:** 3.0 — EXECUTION CANON  
 **Status:** AUTHORITATIVE OPERATING SYSTEMS SPECIFICATION
@@ -7,7 +7,7 @@
 
 ## 0. PURPOSE OF THIS DOCUMENT
 
-This document defines all Operating System (OS) layers within CRAI.
+This document defines all Operating System (OS) layers within JAVARI.
 
 Each OS represents a specialized subsystem that provides:
 - Domain-specific functionality
@@ -16,18 +16,18 @@ Each OS represents a specialized subsystem that provides:
 - Integration with other OS layers
 - APIs for consumption by applications and universes
 
-This document establishes the complete taxonomy and specifications for all CRAI operating systems.
+This document establishes the complete taxonomy and specifications for all JAVARI operating systems.
 
-**Governed by:** CRAI-CONSTITUTION.md  
+**Governed by:** JAVARI-CONSTITUTION.md  
 **Coordinates with:** All 11 other canonical documents
 
 ---
 
 ## 1. OPERATING SYSTEMS TAXONOMY
 
-### 1.1 What Is an Operating System in CRAI?
+### 1.1 What Is an Operating System in JAVARI?
 
-An Operating System (OS) in CRAI is NOT a traditional computer operating system like Windows or Linux.
+An Operating System (OS) in JAVARI is NOT a traditional computer operating system like Windows or Linux.
 
 Rather, it is a **specialized subsystem** that:
 - Encapsulates domain-specific business logic
@@ -90,7 +90,7 @@ Rather, it is a **specialized subsystem** that:
 
 ### 2.1 SecurityOS™
 
-**Purpose:** Enforce security policies across all CRAI systems
+**Purpose:** Enforce security policies across all JAVARI systems
 
 **Responsibilities:**
 - Authentication and authorization
@@ -180,7 +180,7 @@ POST /api/v1/identity/verify
 
 ### 2.3 DataOS™
 
-**Purpose:** Govern data across all CRAI systems
+**Purpose:** Govern data across all JAVARI systems
 
 **Responsibilities:**
 - Data schema management
@@ -1298,7 +1298,7 @@ interface Asset {
 
 **OS layers defined in other canonical documents:**
 
-**CRAI-MARKETPLACE-ASSET-SYSTEMS.md:**
+**JAVARI-MARKETPLACE-ASSET-SYSTEMS.md:**
 - InsuranceOS™
 - AuctionOS™
 - MarketplaceOS™ (full implementation)
@@ -1307,7 +1307,7 @@ interface Asset {
 - ProvenanceOS™
 - GameOS™
 
-**CRAI-GOVERNANCE-LIFECYCLE-OPERATIONS.md:**
+**JAVARI-GOVERNANCE-LIFECYCLE-OPERATIONS.md:**
 - CommandCenterOS™
 - DeveloperOS™
 - LawfulAccessOS™
@@ -1317,7 +1317,7 @@ interface Asset {
 - ExecutiveBIOS™
 - ProductionReadinessOS™
 
-**CRAI-ECOSYSTEM-FEDERATION-COMMERCE.md:**
+**JAVARI-ECOSYSTEM-FEDERATION-COMMERCE.md:**
 - EcosystemOS™
 - FederationOS™
 - PhysicalCommerceOS™
@@ -1328,7 +1328,7 @@ interface Asset {
 - VendorOS™
 - KnowledgeCommerceOS™
 
-**CRAI-SECURITY-RESILIENCE.md:**
+**JAVARI-SECURITY-RESILIENCE.md:**
 - SecurityOS™ (enhanced specification)
 - ResilienceOS™
 - AuditOS™
@@ -1338,7 +1338,7 @@ interface Asset {
 - AccessReviewOS™
 - DLPOS™
 
-**CRAI-BUSINESS-GROWTH-MONETIZATION.md:**
+**JAVARI-BUSINESS-GROWTH-MONETIZATION.md:**
 - PaymentsOS™
 - MonetizationOS™
 - BusinessOS™
@@ -1348,13 +1348,13 @@ interface Asset {
 
 ## 10. FINAL DECLARATION
 
-This document defines the complete Operating Systems taxonomy for CRAI, establishing:
+This document defines the complete Operating Systems taxonomy for JAVARI, establishing:
 - Clear domain boundaries for each OS
 - Integration patterns between OS layers
 - APIs for consumption by applications and universes
 - Cross-references to detailed specifications in other canonical documents
 
-All Operating Systems are governed by CRAI-CONSTITUTION.md and coordinated with all other canonical documents.
+All Operating Systems are governed by JAVARI-CONSTITUTION.md and coordinated with all other canonical documents.
 
 **Document 6 of 12 — Operating Systems Foundation**
 
@@ -1367,4 +1367,4 @@ All Operating Systems are governed by CRAI-CONSTITUTION.md and coordinated with 
 
 ---
 
-✅ **END OF CRAI-OPERATING-SYSTEMS.md v3.0 — READY FOR CANON LOCK**
+✅ **END OF JAVARI-OPERATING-SYSTEMS.md v3.0 — READY FOR CANON LOCK**
