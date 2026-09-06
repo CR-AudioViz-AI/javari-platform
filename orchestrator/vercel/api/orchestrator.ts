@@ -69,7 +69,7 @@ export default async function handler(req: NextRequest) {
 
     // Insert task into Supabase ai_tasks table with status=pending
     const { data: task, error: insertError } = await supabase
-      .from('ai_tasks')
+      .from('bv_ai_tasks')
       .insert({
         task_type: body.taskType,
         priority: body.priority,
