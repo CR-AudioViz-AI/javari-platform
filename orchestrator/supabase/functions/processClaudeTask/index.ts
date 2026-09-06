@@ -19,7 +19,7 @@ serve(async (req) => {
   try {
     // Read next pending task from ai_tasks table
     const { data: tasks, error: fetchError } = await supabase
-      .from('ai_tasks')
+      .from('bv_ai_tasks')
       .select('*')
       .eq('status', 'pending')
       .eq('assigned_agent', 'claude')
@@ -43,7 +43,7 @@ serve(async (req) => {
 
     // Update task status to 'processing'
     await supabase
-      .from('ai_tasks')
+      .from('bv_ai_tasks')
       .update({ status: 'processing', started_at: new Date().toISOString() })
       .eq('id', taskId);
 
@@ -137,7 +137,7 @@ serve(async (req) => {
 
     // Update ai_tasks → done
     await supabase
-      .from('ai_tasks')
+      .from('bv_ai_tasks')
       .update({
         status: 'completed',
         completed_at: new Date().toISOString(),
